@@ -67,3 +67,40 @@
            return false;  
         }
     }
+
+    // 242: valid anagram
+ //sort the string
+     class Solution {
+        public boolean isAnagram(String s, String t) {
+            char[] schars = s.toCharArray();
+            char[] tchars = t.toCharArray();
+
+            Arrays.sort(schars);
+            Arrays.sort(tchars);
+
+            return Arrays.equals(schars,tchars);
+        }
+    } 
+    
+ //hashmap
+     class Solution {
+        public boolean isAnagram(String s, String t) {
+        HashMap<Character, Integer> occurence = new HashMap<>();
+        
+            for (char x : s.toCharArray()) {
+            occurence.put(x, occurence.getOrDefault(x, 0) + 1);
+            }
+        
+            for (char x : t.toCharArray()) {
+            occurence.put(x, occurence.getOrDefault(x, 0) - 1);
+            }
+        
+            for (int val : occurence.values()) {
+               if (val != 0) {
+                return false;
+               }
+            }
+        
+            return true;
+        }
+    }
