@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="https://media.giphy.com/media/3o6ZsY2YlYlYlYlYlY/giphy.gif" alt="DSA Banner" />
-</p>
 
 <h1 align="center">📘 DSA Journey in Java</h1>
 <p align="center">
@@ -68,10 +65,6 @@ Feel free to fork and submit a pull request!
 💬 Let's Connect!
 🌐 LinkedIn
 💌 Feel free to reach out with questions, suggestions, or just to say hi!
-
-<p align="center"> 
-<img src="https://media.giphy.com/media/26gss2pQWgZ2Y/giphy.gif" width="300" /> 
-</p>
 
 ⭐️ If this helps you, drop a star and share the repo!
 
