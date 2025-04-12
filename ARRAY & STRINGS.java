@@ -53,3 +53,17 @@
             return profit;
         }
     }
+
+    // 217: contains duplcate
+ //created a hashset
+     class Solution {
+        public boolean containsDuplicate(int[] nums) {
+            HashSet<Integer> occur = new HashSet<>();
+            for (int num : nums) {
+                if (occur.contains(num))
+                      return true;
+                occur.add(num);    
+           }
+           return false;  
+        }
+    }
