@@ -40,10 +40,10 @@ dsa/
 ├── Trees/
 ├── Graphs/
 ├── Heaps & Priority Queues/
-├── Greedy
+├── Greedy/
 ├── DP/
 ├── Backtracking/
-├── System Design
+├── System Design/
 └── README.md
 
 🧭 Roadmap
