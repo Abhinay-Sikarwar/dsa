@@ -37,8 +37,8 @@
         }
     }
 
-    // 121: best time to buy and sell stock
-//SINGLE-PASS GREEDY APPROACH
+    // 121: BEST TIME TO BUY AND SELL STOCKS
+// SINGLE-PASS GREEDY APPROACH
     class Solution {
         public int maxProfit(int[] prices) {
             int buy = prices[0];
@@ -54,8 +54,8 @@
         }
     }
 
-    // 217: contains duplcate
- //created a hashset
+    // 217: CONTAINS DUPLICATE
+ // created a hashset
      class Solution {
         public boolean containsDuplicate(int[] nums) {
             HashSet<Integer> occur = new HashSet<>();
@@ -68,8 +68,8 @@
         }
     }
 
-    // 242: valid anagram
- //sort the string
+    // 242: VALID ANAGRAM
+ // sort the string
      class Solution {
         public boolean isAnagram(String s, String t) {
             char[] schars = s.toCharArray();
@@ -82,7 +82,7 @@
         }
     } 
     
- //hashmap
+ // hashmap
      class Solution {
         public boolean isAnagram(String s, String t) {
         HashMap<Character, Integer> occurence = new HashMap<>();
@@ -102,5 +102,24 @@
             }
         
             return true;
+        }
+    }
+
+    // 344: REVERSE STRING
+// two pointers
+    class Solution {
+        public char[] reverseString(char[] s) {
+
+           int left = 0;
+           int right = s.length - 1;
+           while (left < right) {
+               char temp = s[left];
+               s[left] = s[right];
+               s[right] = temp;
+               left++;
+               right--;
+           }
+           
+           return  s;
         }
     }
