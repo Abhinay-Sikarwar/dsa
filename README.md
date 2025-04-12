@@ -32,7 +32,7 @@
 
 ```bash
 dsa/
-├── Arrays & Stringa/
+├── Arrays & Strings/
 ├── Binary Search & Sorting/
 ├── Two Pointers & Sliding Window/
 ├── Stacks & Queues/
