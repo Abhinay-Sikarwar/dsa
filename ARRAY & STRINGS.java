@@ -140,4 +140,26 @@
            }
            return prefix.toString();
         }
-    }   
+    }
+    
+    // 53: MAXIMUM SUBARRAY
+//KADANE'S ALGORITHM
+    class Solution {
+        public int maxSubArray(int[] nums) {
+           int MaxSum = Integer.MIN_VALUE;
+           int CurrentSum = 0;
+
+             for (int i = 0; i < nums.length; i++) {
+              CurrentSum += nums[i];
+
+              if (CurrentSum > MaxSum) {
+                  MaxSum = CurrentSum;
+              }
+
+              if (CurrentSum < 0) {
+                  CurrentSum = 0;
+              }
+           }
+           return MaxSum;
+        }
+    }
