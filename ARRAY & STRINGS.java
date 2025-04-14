@@ -19,7 +19,10 @@
         }
     }
  
-// ONE-PASS HASHTABLE
+    //⏱ time complexity: O(n^2)
+    //🧠 space complexity: O(1)
+
+    // ONE-PASS HASHTABLE
     class Solution {
         public int[] twoSum(int[] nums, int target) {
             Map<Integer, Integer> numMap = new HashMap<>();
@@ -36,6 +39,9 @@
             return new int[] {};//when target is not found
         }
     }
+
+    //⏱ time complexity: O(n)
+    //🧠 space complexity: O(n)
 
     // 121: BEST TIME TO BUY AND SELL STOCKS
 // SINGLE-PASS GREEDY APPROACH
@@ -54,6 +60,9 @@
         }
     }
 
+    //⏱ Time Complexity: O(n)
+    //🧠 Space Complexity: O(1)
+
     // 217: CONTAINS DUPLICATE
  // created a hashset
      class Solution {
@@ -68,6 +77,9 @@
         }
     }
 
+    //⏱ Time Complexity: O(n)
+    //🧠 Space Complexity: O(n)
+
     // 242: VALID ANAGRAM
  // sort the string
      class Solution {
@@ -80,7 +92,10 @@
 
             return Arrays.equals(schars,tchars);
         }
-    } 
+    }
+    
+    // ⏱ Time Complexity: O(n log n)
+    // 🧠 Space Complexity: O(n)
     
  // hashmap
      class Solution {
@@ -104,6 +119,9 @@
             return true;
         }
     }
+
+    // ⏱ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(n)
 
     //VALID PALINDROME
 // TWO POINTERS    
@@ -132,7 +150,10 @@
            }
         return true;
         }
-    }    
+    }
+    
+    // ⏱Time Complexity: O(n)
+    // 🧠Space Complexity: O(1
 
     // 344: REVERSE STRING
 // TWO POINTERS
@@ -153,6 +174,9 @@
         }
     }
 
+    // ⏱ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1)
+
     // 14: LONGEST COMMON PREFIX
  // SORTING AND PREFIX
     class Solution {
@@ -170,9 +194,12 @@
            return prefix.toString();
         }
     }
+
+    // ⏱Time Complexity: O(n log n + m)       //Let m be the length of the shortest string among first and last.
+    // 🧠Space Complexity: O(m)               //prefix is a StringBuilder, which at most will store m characters.
     
     // 53: MAXIMUM SUBARRAY
-//KADANE'S ALGORITHM
+// KADANE'S ALGORITHM
     class Solution {
         public int maxSubArray(int[] nums) {
            int MaxSum = Integer.MIN_VALUE;
@@ -192,3 +219,85 @@
            return MaxSum;
         }
     }
+
+    // ⏱Time Complexity: O(n)
+    // 🧠Space Complexity: O(1)
+
+// MEDIUM
+    
+    // 8: STRING TO INTEGER(ATOI)
+// ATOI FORMAT(LIKE C,C++) (WITH LONG DATATYPE)
+    class Solution {
+        public int myAtoi(String s) {
+            String str = s.trim();
+            if (str.isEmpty())
+                return 0;
+            int sign = 1, i = 0;
+            long result = 0;
+
+            if (str.charAt(0) == '-') {
+                sign = -1;
+                i++;
+            } else if (str.charAt(0) == '+') {
+                i++;
+            }
+
+            while (i < str.length()) {
+                char w = str.charAt(i);
+                if (w < '0' || w > '9')
+                    break;
+
+                result = result * 10 + (w - '0');
+
+                if (sign * result > Integer.MAX_VALUE)
+                    return Integer.MAX_VALUE;
+                if (sign * result < Integer.MIN_VALUE)
+                    return Integer.MIN_VALUE;
+
+                i++;
+            }
+            return (int) (sign * result);
+        }
+    }
+
+    // ⏱ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1)
+
+ // ONE THAT DON'T USE LONG DATATYPE
+    class Solution {
+        public int myAtoi(String s) {
+            if (s == null || s.isEmpty()) return 0;
+
+            s = s.trim(); 
+            if (s.isEmpty()) return 0;
+
+            int i = 0, sign = 1, result = 0;
+            int n = s.length();
+
+            if (s.charAt(i) == '-') {
+                sign = -1;
+                i++;
+            } else if (s.charAt(i) == '+') {
+                i++;
+            }
+
+            while (i < n) {
+                char c = s.charAt(i);
+                if (c < '0' || c > '9') break;
+
+                int digit = c - '0';
+
+                if (result > (Integer.MAX_VALUE - digit) / 10) {
+                    return (sign == 1) ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+                }
+
+                result = result * 10 + digit;
+                i++;
+            }
+
+            return result * sign;
+        }
+    }
+    
+    // ⏱ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1)
