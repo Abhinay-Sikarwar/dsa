@@ -19,7 +19,7 @@
         }
     }
  
-    //⏱ time complexity: O(n^2)
+    //⏱️ time complexity: O(n^2)
     //🧠 space complexity: O(1)
 
     // ONE-PASS HASHTABLE
@@ -40,7 +40,7 @@
         }
     }
 
-    //⏱ time complexity: O(n)
+    //⏱️ time complexity: O(n)
     //🧠 space complexity: O(n)
 
     // 121: BEST TIME TO BUY AND SELL STOCKS
@@ -60,7 +60,7 @@
         }
     }
 
-    //⏱ Time Complexity: O(n)
+    //⏱️ Time Complexity: O(n)
     //🧠 Space Complexity: O(1)
 
     // 217: CONTAINS DUPLICATE
@@ -77,7 +77,7 @@
         }
     }
 
-    //⏱ Time Complexity: O(n)
+    //⏱️ Time Complexity: O(n)
     //🧠 Space Complexity: O(n)
 
     // 242: VALID ANAGRAM
@@ -94,7 +94,7 @@
         }
     }
     
-    // ⏱ Time Complexity: O(n log n)
+    // ⏱️ Time Complexity: O(n log n)
     // 🧠 Space Complexity: O(n)
     
  // hashmap
@@ -120,7 +120,7 @@
         }
     }
 
-    // ⏱ Time Complexity: O(n)
+    // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(n)
 
     //VALID PALINDROME
@@ -152,8 +152,8 @@
         }
     }
     
-    // ⏱Time Complexity: O(n)
-    // 🧠Space Complexity: O(1
+    // ⏱️ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1
 
     // 344: REVERSE STRING
 // TWO POINTERS
@@ -174,7 +174,7 @@
         }
     }
 
-    // ⏱ Time Complexity: O(n)
+    // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
 
     // 14: LONGEST COMMON PREFIX
@@ -195,8 +195,8 @@
         }
     }
 
-    // ⏱Time Complexity: O(n log n + m)       //Let m be the length of the shortest string among first and last.
-    // 🧠Space Complexity: O(m)               //prefix is a StringBuilder, which at most will store m characters.
+    // ⏱️ Time Complexity: O(n log n + m)       //Let m be the length of the shortest string among first and last.
+    // 🧠 Space Complexity: O(m)               //prefix is a StringBuilder, which at most will store m characters.
     
     // 53: MAXIMUM SUBARRAY
 // KADANE'S ALGORITHM
@@ -220,8 +220,8 @@
         }
     }
 
-    // ⏱Time Complexity: O(n)
-    // 🧠Space Complexity: O(1)
+    // ⏱️ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1)
 
 // MEDIUM
     
@@ -260,7 +260,7 @@
         }
     }
 
-    // ⏱ Time Complexity: O(n)
+    // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
 
  // ONE THAT DON'T USE LONG DATATYPE
@@ -299,5 +299,33 @@
         }
     }
     
-    // ⏱ Time Complexity: O(n)
+    // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
+
+    //LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS
+ // SLIDING WINDOW & HASHSET
+    class Solution {
+        public int lengthOfLongestSubstring(String s) {
+            int n = s.length();
+            int maxlength = 0;
+            Set<Character> WindowSet = new HashSet<>();
+            int left = 0;
+
+            for (int right = 0; right < n; right++) {
+                if (!WindowSet.contains(s.charAt(right))) {
+                    WindowSet.add(s.charAt(right));
+                    maxlength = Math.max(maxlength, right - left + 1);
+                } else {
+                    while (WindowSet.contains(s.charAt(right))) {
+                        WindowSet.remove(s.charAt(left));
+                        left++;
+                    }
+                    WindowSet.add(s.charAt(right));
+                }
+            }
+            return maxlength;
+        }
+    }
+
+    // ⏱️ Time Complexity: O(n)                  n = length of the string
+    // 🧠 Space Complexity: O(min(n, m))         m = size of character set
