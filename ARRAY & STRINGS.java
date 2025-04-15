@@ -329,3 +329,28 @@
 
     // ⏱️ Time Complexity: O(n)                  n = length of the string
     // 🧠 Space Complexity: O(min(n, m))         m = size of character set
+
+    // 49: GROUP ANAGRAMS
+//HASMAP & SORTING
+    class Solution {
+        public List<List<String>> groupAnagrams(String[] strs) {
+            Map<String, List<String>> AnaMap = new HashMap<>();
+
+            for (String word : strs) {
+                char[] chars = word.toCharArray();
+                Arrays.sort(chars);
+                String SortedKey = new String(chars);
+
+                if (!AnaMap.containsKey(SortedKey)) {
+                    AnaMap.put(SortedKey, new ArrayList<>());
+                }
+
+                AnaMap.get(SortedKey).add(word);
+            }
+
+            return new ArrayList<>(AnaMap.values());
+        }
+    }
+    
+    // ⏱️ Time Complexity: O(n * k log k)              n = number of strings in input
+    // 🧠 Space Complexity: O(n * k)                   k = average length of a string
