@@ -302,7 +302,7 @@
     // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
 
-    //LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS
+    // 3:LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS
  // SLIDING WINDOW & HASHSET
     class Solution {
         public int lengthOfLongestSubstring(String s) {
@@ -354,3 +354,29 @@
     
     // ⏱️ Time Complexity: O(n * k log k)              n = number of strings in input
     // 🧠 Space Complexity: O(n * k)                   k = average length of a string
+
+    // 11:CONTAINER WITH MOST WATER
+// TWO POINTERS
+    class Solution {
+        public int maxArea(int[] height) {
+            int left = 0;
+            int right = height.length - 1;
+            int maxarea = 0;
+
+            while (left < right) {
+            int currentarea = Math.min(height[left] , height[right]) * (right - left);
+                maxarea = Math.max(maxarea , currentarea);
+
+                if (height[left] < height[right]) {
+                    left++;
+                } else {
+                    right--;
+                }
+            }
+
+            return maxarea;
+        }
+    }
+
+    // ⏱️ Time Complexity: O(n)
+    // 🧠 Space Complexity: O(1)
