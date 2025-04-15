@@ -355,7 +355,7 @@
     // ⏱️ Time Complexity: O(n * k log k)              n = number of strings in input
     // 🧠 Space Complexity: O(n * k)                   k = average length of a string
 
-    // 11:CONTAINER WITH MOST WATER
+    // 11: CONTAINER WITH MOST WATER
 // TWO POINTERS
     class Solution {
         public int maxArea(int[] height) {
@@ -380,3 +380,50 @@
 
     // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
+
+    // 15: 3SUM
+// TWO POINTER, SORTING, SKIP DUPLICATES
+    class Solution {
+        public List<List<Integer>> threeSum(int[] nums) {
+            List<List<Integer>> solution = new ArrayList<>();
+            Arrays.sort(nums);
+
+            for (int i =0; i < nums.length - 2; i++) {
+                if (i>0 && nums[i] == nums[i - 1]) {
+                    continue;
+                }
+
+                int j = i + 1;
+                int k = nums.length - 1;
+
+                while (j < k) {
+                    int sum = nums[i] + nums[j] + nums[k];
+                    if (sum == 0) {
+                        solution.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                        while (j < k && nums[j] == nums[j + 1]) {
+                            j++;
+                        }
+
+                        while (j < k && nums[k] == nums[k - 1]) {
+                            k--;
+                        }
+
+                        j++;
+                        k--;
+                    } else if (sum < 0) {
+                    
+                        j++;
+                    } else {
+                    
+                        k--;
+                    }
+                }        
+            }
+
+            return solution;
+        }
+    } 
+    
+    // ⏱️ Time Complexity: O(n^2)
+    // 🧠 Space Complexity(auxiliary): O(1)
+    // 🧠 Space Complexity(with output): O(k), where k = number of triplets
