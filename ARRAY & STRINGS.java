@@ -427,3 +427,5 @@
     // ⏱️ Time Complexity: O(n^2)
     // 🧠 Space Complexity(auxiliary): O(1)
     // 🧠 Space Complexity(with output): O(k), where k = number of triplets
+
+    // 33: SEARCH IN ROTATED SORTED ARRAY
