@@ -429,3 +429,36 @@
     // 🧠 Space Complexity(with output): O(k), where k = number of triplets
 
     // 33: SEARCH IN ROTATED SORTED ARRAY
+// UPDATED BINARY SEARCH
+    class Solution {
+        public int search(int[] nums, int target) {
+            int close = 0, far = nums.length - 1;
+
+            while (close <= far) {
+                int mid = (close + far) / 2;
+
+                if (nums[mid] == target) {
+                    return mid;
+                }
+
+                if (nums[close] <= nums[mid]) {
+                    if (nums[close] <= target && target < nums[mid]) {
+                        far = mid - 1;
+                    } else {
+                        close = mid + 1;
+                    }
+                } else {
+                    if (nums[mid] < target && target <= nums[far]) {
+                        close = mid + 1;
+                    } else {
+                            far = mid - 1;
+                    }
+                }
+            }
+
+            return -1;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(log n)
+    // 🧠 Space Complexity:  O(1)
