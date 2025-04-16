@@ -489,3 +489,30 @@
     
     // ⏱️ Time Complexity:  O(log n)
     // 🧠 Space Complexity:  O(1)
+
+    // 238: PRODUCT OF ARRAY EXCEPT SELF
+// PREFIX,SUFFIX,TWO PASS
+    class Solution {
+        public int[] productExceptSelf(int[] nums) {
+            int n = nums.length;
+            int[] solution = new int[n];
+
+            solution[0] = 1;
+
+            for (int i = 1; i < n; i++) {
+                solution[i] = solution[i - 1] * nums[i - 1];
+            }
+
+            int prevSuffix = 1;
+
+            for (int i = n - 2; i >= 0; i--) {
+                prevSuffix *= nums[i + 1];
+                solution[i] *= prevSuffix;
+            }
+
+            return solution;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
