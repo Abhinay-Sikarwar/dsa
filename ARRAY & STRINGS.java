@@ -606,3 +606,55 @@
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)
 
+// MODIFIED MANACHER'S THEOREM, OPTIMIZED FOR FAST PROCESSING
+    public class Solution {
+        public String longestPalindrome(String s) {
+            if (s == null || s.length() <= 1) return s;
+
+            // Preprocess: insert '#' between characters, add boundaries
+            StringBuilder t = new StringBuilder(s.length() * 2 + 3);
+            t.append('^'); // left sentinel
+            for (int i = 0; i < s.length(); i++) {
+                t.append('#').append(s.charAt(i));
+            }
+            t.append("#$"); // right sentinel
+
+            String str = t.toString();
+            int n = str.length();
+            int[] p = new int[n];
+            int center = 0, right = 0;
+            int maxLen = 0, centerIndex = 0;
+
+            for (int i = 1; i < n - 1; i++) {
+                int mirror = 2 * center - i;
+
+                if (i < right) {
+                    p[i] = Math.min(right - i, p[mirror]);
+                }
+
+                // Expand around center i
+                while (str.charAt(i + (p[i] + 1)) == str.charAt(i - (p[i] + 1))) {
+                    p[i]++;
+                }
+
+                // Update center and right if palindrome at i expands past right
+                if (i + p[i] > right) {
+                    center = i;
+                    right = i + p[i];
+                }
+
+                // Track the max length and its center
+                if (p[i] > maxLen) {
+                    maxLen = p[i];
+                    centerIndex = i;
+                }
+            }
+
+            // Extract original string start index
+            int start = (centerIndex - maxLen) / 2;
+            return s.substring(start, start + maxLen);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)
