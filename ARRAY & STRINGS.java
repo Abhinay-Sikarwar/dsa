@@ -64,7 +64,7 @@
     //🧠 Space Complexity: O(1)
 
     // 217: CONTAINS DUPLICATE
-// created a hashset
+// CREATED A HASHSET
      class Solution {
         public boolean containsDuplicate(int[] nums) {
             HashSet<Integer> occur = new HashSet<>();
@@ -81,7 +81,7 @@
     //🧠 Space Complexity: O(n)
 
     // 242: VALID ANAGRAM
-// sort the string
+// SORT THE STRING
      class Solution {
         public boolean isAnagram(String s, String t) {
             char[] schars = s.toCharArray();
@@ -97,7 +97,7 @@
     // ⏱️ Time Complexity: O(n log n)
     // 🧠 Space Complexity: O(n)
     
-// hashmap
+// HASHMAP
      class Solution {
         public boolean isAnagram(String s, String t) {
         HashMap<Character, Integer> occurence = new HashMap<>();
@@ -561,3 +561,48 @@
 
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)
+
+    // 5: LONGEST PALINDROMIC SUBSTRING
+// MANACHER'S ALGORITHM    
+    class Solution {
+        public String longestPalindrome(String s) {
+            if (s.length() <= 1) {
+                return s;
+            }
+
+            int maxLength = 1;
+            String maxString = s.substring(0, 1);
+            s = "#" + s.replaceAll("", "#") + "#";
+            int[] maxradius = new int[s.length()];
+            int center = 0;
+            int right = 0;
+
+            for (int i = 0; i < s.length(); i++) {
+                if (i < right) {
+                    maxradius[i] = Math.min(right - i, maxradius[2 * center - i]);
+                }
+
+                while (i - maxradius[i] - 1 >= 0 &&
+                 i + maxradius[i] + 1 < s.length() &&
+                 s.charAt(i - maxradius[i] - 1) == s.charAt(i + maxradius[i] + 1)) {
+                    maxradius[i]++;
+                 }
+
+                 if (i + maxradius[i] > right) {
+                    center = i;
+                    right = i + maxradius[i];
+                 }
+
+                 if (maxradius[i] > maxLength) {
+                    maxLength = maxradius[i];
+                    maxString = s.substring(i - maxradius[i], i + maxradius[i] + 1).replaceAll("#","");
+                 }
+            }
+
+            return maxString;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)
+
