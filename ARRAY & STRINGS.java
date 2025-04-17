@@ -64,7 +64,7 @@
     //🧠 Space Complexity: O(1)
 
     // 217: CONTAINS DUPLICATE
- // created a hashset
+// created a hashset
      class Solution {
         public boolean containsDuplicate(int[] nums) {
             HashSet<Integer> occur = new HashSet<>();
@@ -81,7 +81,7 @@
     //🧠 Space Complexity: O(n)
 
     // 242: VALID ANAGRAM
- // sort the string
+// sort the string
      class Solution {
         public boolean isAnagram(String s, String t) {
             char[] schars = s.toCharArray();
@@ -97,7 +97,7 @@
     // ⏱️ Time Complexity: O(n log n)
     // 🧠 Space Complexity: O(n)
     
- // hashmap
+// hashmap
      class Solution {
         public boolean isAnagram(String s, String t) {
         HashMap<Character, Integer> occurence = new HashMap<>();
@@ -123,7 +123,7 @@
     // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(n)
 
-    //VALID PALINDROME
+    // 125: VALID PALINDROME
 // TWO POINTERS    
     class Solution {
         public boolean isPalindrome(String s) {
@@ -178,7 +178,7 @@
     // 🧠 Space Complexity: O(1)
 
     // 14: LONGEST COMMON PREFIX
- // SORTING AND PREFIX
+// SORTING AND PREFIX
     class Solution {
         public String longestCommonPrefix(String[] strs) {
            StringBuilder prefix = new StringBuilder();
@@ -263,7 +263,7 @@
     // ⏱️ Time Complexity: O(n)
     // 🧠 Space Complexity: O(1)
 
- // ONE THAT DON'T USE LONG DATATYPE
+// ONE THAT DON'T USE LONG DATATYPE
     class Solution {
         public int myAtoi(String s) {
             if (s == null || s.isEmpty()) return 0;
@@ -303,7 +303,7 @@
     // 🧠 Space Complexity: O(1)
 
     // 3:LONGEST SUBSTRING WITHOUT REPEATING CHARACTERS
- // SLIDING WINDOW & HASHSET
+// SLIDING WINDOW & HASHSET
     class Solution {
         public int lengthOfLongestSubstring(String s) {
             int n = s.length();
@@ -331,7 +331,7 @@
     // 🧠 Space Complexity: O(min(n, m))         m = size of character set
 
     // 49: GROUP ANAGRAMS
-//HASMAP & SORTING
+// HASMAP & SORTING
     class Solution {
         public List<List<String>> groupAnagrams(String[] strs) {
             Map<String, List<String>> AnaMap = new HashMap<>();
@@ -536,5 +536,28 @@
         }
     }   
 
-     // ⏱️ Time Complexity:  O(n)
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)
+
+// USIND DEQUE
+    public class Solution {
+        public int[] dailyTemperatures(int[] temperatures) {
+            int n = temperatures.length;
+            int[] daysToWait = new int[n];
+            Deque<Integer> indexStack = new ArrayDeque<>(); // stack to store indices
+
+            for (int currentDay = 0; currentDay < n; currentDay++) {
+                // Check for warmer temperature than the one at the top of the stack
+                while (!indexStack.isEmpty() && temperatures[currentDay] > temperatures[indexStack.peek()]) {
+                    int prevDay = indexStack.pop();
+                    daysToWait[prevDay] = currentDay - prevDay;
+                }
+                indexStack.push(currentDay);
+            }
+
+            return daysToWait;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)
