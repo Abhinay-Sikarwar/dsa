@@ -658,3 +658,6 @@
 
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)
+
+    // 56: MERGE INTERVALS
+//     
