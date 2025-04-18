@@ -22,7 +22,7 @@
     //⏱️ time complexity: O(n^2)
     //🧠 space complexity: O(1)
 
-    // ONE-PASS HASHTABLE
+// ONE-PASS HASHTABLE
     class Solution {
         public int[] twoSum(int[] nums, int target) {
             Map<Integer, Integer> numMap = new HashMap<>();
@@ -660,7 +660,7 @@
     // 🧠 Space Complexity:  O(n)
 
     // 56: MERGE INTERVALS
-// SORTING, COMPARISION AND MERGE(SPACE OPTIMIZED)
+// SORTING, COMPARISION AND MERGE(SPACE OPTIMIZED) - 10ms
     class Solution {
         public int[][] merge(int[][] intervals) {
             if (intervals.length <= 1) return intervals;
@@ -687,3 +687,41 @@
     
     // ⏱️ Time Complexity:  O(nlogn)
     // 🧠 Space Complexity:  O(n)
+
+// SORTING, COMPARISION AND MERGE(RUNTIME EFFICIENT) - 8ms
+    public class Solution {
+        public int[][] merge(int[][] intervals) {
+            int n = intervals.length;
+            if (n <= 1) return intervals;
+
+            Arrays.sort(intervals, new Comparator<int[]>() {
+                public int compare(int[] a, int[] b) {
+                    return a[0] - b[0]; 
+                }
+            });
+
+            int[][] result = new int[n][2];
+            int index = 0;
+
+            result[0] = intervals[0];
+
+            for (int i = 1; i < n; i++) {
+                int[] last = result[index];
+                int[] curr = intervals[i];
+
+                if (curr[0] <= last[1]) {
+                    last[1] = Math.max(last[1], curr[1]);
+                } else {
+                    index++;
+                    result[index] = curr;
+                }
+            }
+
+            return Arrays.copyOf(result, index + 1);
+        }
+    }    
+
+// HARD
+
+    // 76: MINIMUM WINDOW SUBSTRING
+//     
