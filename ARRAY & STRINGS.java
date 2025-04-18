@@ -660,4 +660,30 @@
     // 🧠 Space Complexity:  O(n)
 
     // 56: MERGE INTERVALS
-//     
+// SORTING, COMPARISION AND MERGE(SPACE OPTIMIZED)
+    class Solution {
+        public int[][] merge(int[][] intervals) {
+            if (intervals.length <= 1) return intervals;
+
+            Arrays.sort(intervals, Comparator.comparingInt(a -> a[0]));
+
+            int[][] result = new int[intervals.length][2];
+            int index = 0;
+
+            result[0] = intervals[0];
+
+            for (int i = 1; i < intervals.length; i++) {
+                if (intervals[i][0] <= result[index][1]) {
+                    result[index][1] = Math.max(result[index][1], intervals[i][1]);
+                } else {
+                    index++;
+                    result[index] = intervals[i];
+                }
+            }
+
+            return Arrays.copyOf(result, index + 1);
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(nlogn)
+    // 🧠 Space Complexity:  O(n)
