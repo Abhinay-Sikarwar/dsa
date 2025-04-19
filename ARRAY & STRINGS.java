@@ -719,9 +719,63 @@
 
             return Arrays.copyOf(result, index + 1);
         }
-    }    
+    } 
+    
+    // ⏱️ Time Complexity:  O(nlogn)
+    // 🧠 Space Complexity:  O(n)
 
 // HARD
 
     // 76: MINIMUM WINDOW SUBSTRING
-//     
+// SLIDING WINDOW, FREQUENCY TRACKING
+    class Solution {
+        public String minWindow(String s, String t) {
+            int m = s.length();
+            int n = t.length();
+
+            if (m < n) return "";
+
+            int[] targetFreq = new int[128];
+            for (char c : t.toCharArray()) {
+                targetFreq[c]++;
+            }
+
+            int[] windowFreq = new int[128];
+            int left = 0, right = 0;
+            int start = 0, minLen = Integer.MAX_VALUE;
+            int required = 0; // Total characters matched
+
+            while (right < m) {
+                char rChar = s.charAt(right);
+                windowFreq[rChar]++;
+
+                if (targetFreq[rChar] > 0 && windowFreq[rChar] <= targetFreq[rChar]) {
+                    required++;
+                }
+
+                while (required == n) {
+                    // Update minimum window
+                    if (right - left + 1 < minLen) {
+                        minLen = right - left + 1;
+                        start = left;
+                    }
+
+                    char lChar = s.charAt(left);
+                    windowFreq[lChar]--;
+
+                    if (targetFreq[lChar] > 0 && windowFreq[lChar] < targetFreq[lChar]) {
+                        required--;
+                    }
+
+                    left++;
+                }
+
+                right++;
+            }
+
+            return minLen == Integer.MAX_VALUE ? "" : s.substring(start, start + minLen);
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(m + n)      Where   m = length of s
+    // 🧠 Space Complexity:  O(1)                 n = length of t
