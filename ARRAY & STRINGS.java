@@ -805,3 +805,5 @@
     
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)     Where n is the number of intervals.
+
+    // 42: TRAPPING RAIN WATER    
