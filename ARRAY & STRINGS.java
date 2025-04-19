@@ -779,3 +779,29 @@
     
     // ⏱️ Time Complexity:  O(m + n)      Where   m = length of s
     // 🧠 Space Complexity:  O(1)                 n = length of t
+
+    // 57: INSERT INTERVAL
+// COMPARISION OF INTERVALS, MERGE THEM IF NEEDED
+    class Solution {
+        public int[][] insert(int[][] intervals, int[] newInterval) {
+            List<int[]> result = new ArrayList<>();
+
+            for (int[] interval : intervals) {
+                if (newInterval[1] < interval[0]) {
+                    result.add(newInterval);
+                    newInterval = interval;
+                } else if (newInterval[0] > interval[1]) {
+                    result.add(interval);
+                } else {
+                    newInterval[0] = Math.min(newInterval[0], interval[0]);
+                    newInterval[1] = Math.max(newInterval[1], interval[1]);
+                }
+            }
+
+            result.add(newInterval);
+            return result.toArray(new int[result.size()][]);
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)     Where n is the number of intervals.
