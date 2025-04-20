@@ -835,3 +835,49 @@
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
     
+    // 224: BASIC CALCULATOR
+// RCURSION
+    class Solution {
+        public int calculate(String s) {
+            return helper(s.toCharArray(), new int[]{0});
+        }
+
+        private int helper(char[] s, int[] index) {
+            int num = 0, result = 0, sign = 1;
+
+            while (index[0] < s.length) {
+                char ch = s[index[0]];
+
+                if (Character.isDigit(ch)) {
+                    num = 0;
+                    while (index[0] < s.length && Character.isDigit(s[index[0]])) {
+                        num = num * 10 + (s[index[0]] - '0');
+                        index[0]++;
+                    }
+                    result += sign * num;
+                } else if (ch == '+') {
+                    sign = 1;
+                    index[0]++;
+                } else if (ch == '-') {
+                    sign = -1;
+                    index[0]++;
+                } else if (ch == '(') {
+                    index[0]++;
+                    num = helper(s, index);
+                    result += sign * num;
+                } else if (ch == ')') {
+                    index[0]++;
+                    return result;
+                } else if (ch == ' ') {
+                    index[0]++;
+                } else {
+                    index[0]++;
+                }
+            }
+
+            return result;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n) 
