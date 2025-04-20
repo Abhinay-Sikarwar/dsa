@@ -806,4 +806,32 @@
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)     Where n is the number of intervals.
 
-    // 42: TRAPPING RAIN WATER    
+    // 42: TRAPPING RAIN WATER
+// OPTIMIZED TWO POINTER WITH CONSTANT SPACE
+    class Solution {
+        public int trap(int[] height) {
+            if (height == null || height.length < 3) return 0;
+
+            int left = 0, right = height.length - 1;
+            int leftMax = height[left], rightMax = height[right];
+            int waterTrapped = 0;
+
+            while (left < right) {
+                if (height[left] < height[right]) {
+                    left++;
+                    leftMax = Math.max(leftMax, height[left]);
+                    waterTrapped += leftMax - height[left];
+                } else {
+                    right--;
+                    rightMax = Math.max(rightMax, height[right]);
+                    waterTrapped += rightMax - height[right];
+                }
+            }
+
+            return waterTrapped;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
+    
