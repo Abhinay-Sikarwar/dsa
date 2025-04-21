@@ -836,7 +836,7 @@
     // 🧠 Space Complexity:  O(1)
     
     // 224: BASIC CALCULATOR
-// RCURSION
+// RECURSION
     class Solution {
         public int calculate(String s) {
             return helper(s.toCharArray(), new int[]{0});
