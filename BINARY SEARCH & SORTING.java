@@ -96,3 +96,5 @@
     
     // ⏱️ Time Complexity:  O(logn)
     // 🧠 Space Complexity:  O(1)
+
+    // 162: FIND PEAK ELEMENT 
