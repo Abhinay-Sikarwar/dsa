@@ -97,4 +97,29 @@
     // ⏱️ Time Complexity:  O(logn)
     // 🧠 Space Complexity:  O(1)
 
-    // 162: FIND PEAK ELEMENT 
+    // 162: FIND PEAK ELEMENT
+// BINARY SEARCH WITHOUT SORTING
+    class Solution {
+        public int findPeakElement(int[] nums) {
+            if (nums.length == 1) return 0;
+            int left = 0, right = nums.length - 1;
+
+            while (left <= right) {
+                int mid = left + (right - left) / 2;
+                boolean isLeftSmaller = (mid == 0 || nums[mid - 1] <= nums[mid]);
+                boolean isRightSmaller = (mid == nums.length - 1 || nums[mid + 1] <= nums[mid]);
+                if (isLeftSmaller && isRightSmaller) {
+                    return mid;
+                } else if (mid < nums.length && nums[mid + 1] > nums[mid]) {
+                    left = mid + 1;
+                } else {
+                    right = mid - 1;
+                }
+            }
+
+            return -1;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(logn)
+    // 🧠 Space Complexity:  O(1)
