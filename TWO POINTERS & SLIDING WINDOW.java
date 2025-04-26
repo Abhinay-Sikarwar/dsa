@@ -46,4 +46,31 @@
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
 
-    // 977: SQUARES OF A SORTED ARRAY     
+    // 977: SQUARES OF A SORTED ARRAY
+// TWO POINTERS
+    class Solution {
+        public int[] sortedSquares(int[] nums) {
+            int n = nums.length;
+            int[] result = new int[n];
+            int left = 0, right = n - 1;
+            int position = n - 1;
+
+            while (left <= right) {
+                int RgtSquare = nums[left] * nums[left];
+                int LftSquare = nums[right] * nums[right];
+
+                if (LftSquare > RgtSquare) {
+                    result[position--] = LftSquare;
+                    left++;
+                } else {
+                    result[position--] = RgtSquare;
+                    right--;
+                }
+            }
+
+            return result;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)
