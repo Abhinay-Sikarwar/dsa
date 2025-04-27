@@ -167,3 +167,52 @@
     // ⏱️ Time Complexity:  O(n^3)
     // 🧠 Space Complexity:  O(1)    EXCLUDING OUTPUT O(k)   WHERE K = NO VALID QUADRUPLETS
 
+    // 438: FIND ALL ANAGRAMS IN A STRING
+// SLIDING WINDOW, TWO POINTERS, FREQUENCY ARRAY
+    class Solution {
+        public List<Integer> findAnagrams(String s, String p) {
+            List<Integer> solution = new ArrayList<>();
+
+            int sLen = s.length(), pLen = p.length();
+            if (sLen == 0 || pLen == 0 || sLen < pLen) {
+                return solution;
+            }
+
+            int[] charCount = new int[26];
+            for (char c : p.toCharArray()) {
+                charCount[c - 'a']++;
+            }
+
+            int start = 0, end = 0, required = pLen;
+
+            for (end = 0; end < pLen; end++) {
+                int idx = s.charAt(end) - 'a';
+                charCount[idx]--;
+                if (charCount[idx] >= 0) required--;
+            }
+
+            if (required == 0) {
+                solution.add(0);
+            }
+
+            while (end < sLen) {
+                int outIdx = s.charAt(start++) - 'a';
+                if (charCount[outIdx] >= 0) required++;
+                charCount[outIdx]++;
+
+                int inIdx = s.charAt(end++) - 'a';
+                charCount[inIdx]--;
+                if (charCount[inIdx] >= 0) required--;
+
+                if (required == 0) {
+                    solution.add(start);
+                }
+            }
+
+            return solution;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)     WHERE n = s.lenght()
+    // 🧠 Space Complexity:  O(1)
+
