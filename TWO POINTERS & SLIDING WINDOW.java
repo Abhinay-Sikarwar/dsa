@@ -114,3 +114,56 @@
     // 🧠 Space Complexity:  O(1)
 
     // 18: 4SUM
+// TWO POINTERS, SORTING, SKIPPING DUPLICATES
+    class Solution {
+        public List<List<Integer>> fourSum(int[] nums, int target) {
+            List<List<Integer>> solution = new ArrayList<>();
+            Arrays.sort(nums);
+            int length = nums.length;
+
+            if (length < 4)
+                return solution;
+
+            for (int i = 0; i < length - 3; i++) {
+                if (i > 0 && nums[i - 1] == nums[i])
+                    continue;
+
+                if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
+                    break;
+                if ((long) nums[i] + nums[length - 1] + nums[length - 2] + nums[length - 3] < target)
+                    continue;
+
+                for (int j = i + 1; j < length - 2; j++) {
+                    if (j > i + 1 && nums[j - 1] == nums[j])
+                        continue;
+
+                    int k = j + 1, l = length - 1;
+
+                    while (k < l) {
+                        long sum = nums[i] + nums[j] + nums[k] + nums[l];
+
+                        if (sum == target) {
+                            solution.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
+                            k++;
+                            l--;
+
+                            while (k < l && nums[k - 1] == nums[k])
+                                k++;
+                            while (k < l && nums[l + 1] == nums[l])
+                                l--;
+                        } else if (sum < target)
+                            k++;
+                        else
+                            l--;
+
+                    }
+                }
+            }
+
+            return solution;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n^3)
+    // 🧠 Space Complexity:  O(1)    EXCLUDING OUTPUT O(k)   WHERE K = NO VALID QUADRUPLETS
+
