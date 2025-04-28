@@ -197,7 +197,7 @@
     }
 
     // ⏱️ Time Complexity:  O(n^3)
-    // 🧠 Space Complexity:  O(1)    EXCLUDING OUTPUT O(k)   WHERE K = NO VALID QUADRUPLETS
+    // 🧠 Space Complexity:  O(1)    EXCLUDING OUTPUT O(k)   Where K = NO VALID QUADRUPLETS
 
     // 438: FIND ALL ANAGRAMS IN A STRING
 // SLIDING WINDOW, TWO POINTERS, FREQUENCY ARRAY
@@ -252,7 +252,7 @@
         }
     }
 
-    // ⏱️ Time Complexity:  O(n)     WHERE n = s.lenght()
+    // ⏱️ Time Complexity:  O(n)     Where n = s.lenght()
     // 🧠 Space Complexity:  O(1)
 
     // 567: PERMUTATION IN STRING
@@ -313,4 +313,41 @@
     }
     
     // ⏱️ Time Complexity:  O(n)          where n = s2.length()
+    // 🧠 Space Complexity:  O(1)
+
+    // 424: LONGEST REPEATING CHARACTER REPLACEMENT
+// TWO POINTERS, SLIDING WINDOW, FREQUENCY ARRAY
+    class Solution {
+        public int characterReplacement(String s, int k) {
+            if (s.length() == 1) return 1;
+            
+            int[] count = new int[26]; // Frequency of characters A-Z
+            int maxFreq = 0; // Max frequency in the current window
+            int left = 0; // Left pointer of the window
+            int maxLength = 0; // Result
+    
+            for (int right = 0; right < s.length(); right++) {
+                // Update the frequency of the right character
+                count[s.charAt(right) - 'A']++;
+    
+                // Update max frequency character count in the current window
+                maxFreq = Math.max(maxFreq, count[s.charAt(right) - 'A']);
+    
+                // Check if we need to shrink the window
+                int windowSize = right - left + 1;
+                if (windowSize - maxFreq > k) {
+                    // Shrink from the left
+                    count[s.charAt(left) - 'A']--;
+                    left++;
+                }
+    
+                // Update max length if current window is valid
+                maxLength = Math.max(maxLength, right - left + 1);
+            }
+    
+            return maxLength;
+        } 
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)            Where n = s.length()
     // 🧠 Space Complexity:  O(1)
