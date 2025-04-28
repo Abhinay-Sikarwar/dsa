@@ -6,20 +6,26 @@
 // TWO POINTERS
     class Solution {
         public int removeDuplicates(int[] nums) {
+            // If the array is empty, there are no elements to process
             if (nums.length == 0) return 0;
 
-            int j = 0; 
+            // Pointer j will track the position of the last unique element
+            int j = 0;
+
+            // Start from the second element and iterate through the array
             for (int i = 1; i < nums.length; i++) {
+                // If the current element is different from the last unique element
                 if (nums[i] != nums[j]) {
-                    j++; 
-                    nums[j] = nums[i]; 
+                    j++; // Move j to the next position
+                    nums[j] = nums[i]; // Update the position with the new unique element
                 }
             }
 
+            // The number of unique elements is j + 1
             return j + 1;
         }
-    } 
-    
+    }
+ 
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
 
@@ -27,22 +33,28 @@
 // TWO POINTERS
     class Solution {
         public void moveZeroes(int[] nums) {
+            // Pointer 'left' marks the position where the next non-zero element should go
             int left = 0;
 
+            // Traverse the array with 'right' pointer
             for (int right = 0; right < nums.length; right++) {
+                // When a non-zero element is found
                 if (nums[right] != 0) {
+                    // Only swap if 'left' and 'right' are different to avoid unnecessary operations
                     if (left != right) {
+                        // Swap the elements at 'left' and 'right' positions
                         int temp = nums[right];
                         nums[right] = nums[left];
                         nums[left] = temp;
                     }
 
+                    // Move 'left' forward to the next position for non-zero
                     left++;
                 }
             }
         }
     }
-    
+
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
 
@@ -51,27 +63,31 @@
     class Solution {
         public int[] sortedSquares(int[] nums) {
             int n = nums.length;
-            int[] result = new int[n];
-            int left = 0, right = n - 1;
-            int position = n - 1;
+            int[] result = new int[n]; // Result array to store sorted squares
 
+            int left = 0, right = n - 1; // Pointers at the beginning and end of the array
+            int position = n - 1; // Position to fill in the result array, starting from the end
+
+            // Loop until the two pointers meet
             while (left <= right) {
-                int RgtSquare = nums[left] * nums[left];
-                int LftSquare = nums[right] * nums[right];
+                // Square of the left and right elements
+                int LftSquare = nums[left] * nums[left];
+                int RgtSquare = nums[right] * nums[right];
 
-                if (LftSquare > RgtSquare) {
-                    result[position--] = LftSquare;
-                    left++;
-                } else {
+                // Place the larger square at the current position in result
+                if (RgtSquare > LftSquare) {
                     result[position--] = RgtSquare;
-                    right--;
+                    right--; // Move right pointer inward
+                } else {
+                    result[position--] = LftSquare;
+                    left++; // Move left pointer inward
                 }
             }
 
             return result;
         }
     }
-    
+
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(n)
 
@@ -81,32 +97,39 @@
 // TWO POINTERS, SORTING
     class Solution {
         public int threeSumClosest(int[] nums, int target) {
-            Arrays.sort(nums);
-            int closestSum = nums[0] + nums[1] + nums[2];
+            Arrays.sort(nums); // Sort the array to enable two-pointer traversal
+            int closestSum = nums[0] + nums[1] + nums[2]; // Initialize with the first three elements
 
+            // Iterate through each number as the first element in the triplet
             for (int i = 0; i < nums.length - 2; i++) {
-                int j = i + 1;
-                int k = nums.length - 1;
+                int j = i + 1;                       // Second pointer
+                int k = nums.length - 1;             // Third pointer
+                
+                // Optional: skip duplicates for the first element
                 if (i > 0 && nums[i] == nums[i - 1]) continue;
 
+                // Two-pointer approach
                 while (j < k) {
                     int sum = nums[i] + nums[j] + nums[k];
 
+                    // If exact match found, return immediately
                     if (sum == target) return sum;
 
+                    // Update closestSum if the current one is closer to the target
                     if (Math.abs(target - sum) < Math.abs(target - closestSum)) {
                         closestSum = sum;
                     }
 
+                    // Move pointers based on comparison
                     if (sum < target) {
-                        j++;
+                        j++;         // Increase sum
                     } else {
-                        k--;
+                        k--;         // Decrease sum
                     }
                 }
             }
 
-            return closestSum;
+            return closestSum;       // Return the closest found sum
         }
     }
     
@@ -118,52 +141,61 @@
     class Solution {
         public List<List<Integer>> fourSum(int[] nums, int target) {
             List<List<Integer>> solution = new ArrayList<>();
-            Arrays.sort(nums);
+            Arrays.sort(nums); // Sort the array to simplify duplicate handling and enable two-pointer strategy
             int length = nums.length;
-
-            if (length < 4)
-                return solution;
-
+    
+            // Not enough numbers to form a quadruplet
+            if (length < 4) return solution;
+    
+            // First number (i)
             for (int i = 0; i < length - 3; i++) {
-                if (i > 0 && nums[i - 1] == nums[i])
-                    continue;
-
-                if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
-                    break;
-                if ((long) nums[i] + nums[length - 1] + nums[length - 2] + nums[length - 3] < target)
-                    continue;
-
+                // Skip duplicate values for the first number
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+    
+                // Early stopping: smallest possible sum is already greater than target
+                if ((long) nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) break;
+    
+                // Skip this i if the largest possible sum with nums[i] is still too small
+                if ((long) nums[i] + nums[length - 1] + nums[length - 2] + nums[length - 3] < target) continue;
+    
+                // Second number (j)
                 for (int j = i + 1; j < length - 2; j++) {
-                    if (j > i + 1 && nums[j - 1] == nums[j])
-                        continue;
-
-                    int k = j + 1, l = length - 1;
-
+                    // Skip duplicate values for the second number
+                    if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+    
+                    // Use two pointers to find the remaining two numbers (k and l)
+                    int k = j + 1;
+                    int l = length - 1;
+    
                     while (k < l) {
-                        long sum = nums[i] + nums[j] + nums[k] + nums[l];
-
+                        long sum = (long) nums[i] + nums[j] + nums[k] + nums[l];
+    
                         if (sum == target) {
+                            // Found a valid quadruplet
                             solution.add(Arrays.asList(nums[i], nums[j], nums[k], nums[l]));
                             k++;
                             l--;
-
-                            while (k < l && nums[k - 1] == nums[k])
-                                k++;
-                            while (k < l && nums[l + 1] == nums[l])
-                                l--;
-                        } else if (sum < target)
+    
+                            // Skip duplicate values for the third number
+                            while (k < l && nums[k] == nums[k - 1]) k++;
+    
+                            // Skip duplicate values for the fourth number
+                            while (k < l && nums[l] == nums[l + 1]) l--;
+                        } else if (sum < target) {
+                            // Need a larger sum, move k forward
                             k++;
-                        else
+                        } else {
+                            // Need a smaller sum, move l backward
                             l--;
-
+                        }
                     }
                 }
             }
-
+    
             return solution;
         }
     }
-    
+
     // ⏱️ Time Complexity:  O(n^3)
     // 🧠 Space Complexity:  O(1)    EXCLUDING OUTPUT O(k)   WHERE K = NO VALID QUADRUPLETS
 
@@ -172,43 +204,50 @@
     class Solution {
         public List<Integer> findAnagrams(String s, String p) {
             List<Integer> solution = new ArrayList<>();
-
+    
             int sLen = s.length(), pLen = p.length();
+            // Edge case: if pattern is longer than the string or either is empty
             if (sLen == 0 || pLen == 0 || sLen < pLen) {
                 return solution;
             }
-
-            int[] charCount = new int[26];
+    
+            int[] charCount = new int[26]; // Count of each character in pattern 'p'
             for (char c : p.toCharArray()) {
                 charCount[c - 'a']++;
             }
-
-            int start = 0, end = 0, required = pLen;
-
+    
+            int start = 0, end = 0, required = pLen; // 'required' tracks how many characters still need to match
+    
+            // Build the initial window of size 'pLen'
             for (end = 0; end < pLen; end++) {
                 int idx = s.charAt(end) - 'a';
                 charCount[idx]--;
-                if (charCount[idx] >= 0) required--;
+                if (charCount[idx] >= 0) required--; // Decrease required only if char was actually needed
             }
-
+    
+            // If the first window is an anagram, add index 0
             if (required == 0) {
                 solution.add(0);
             }
-
+    
+            // Slide the window one character at a time
             while (end < sLen) {
+                // Remove the character going out of the window
                 int outIdx = s.charAt(start++) - 'a';
-                if (charCount[outIdx] >= 0) required++;
+                if (charCount[outIdx] >= 0) required++; // If it was part of p, we now need it again
                 charCount[outIdx]++;
-
+    
+                // Add the character coming into the window
                 int inIdx = s.charAt(end++) - 'a';
                 charCount[inIdx]--;
-                if (charCount[inIdx] >= 0) required--;
-
+                if (charCount[inIdx] >= 0) required--; // If it was needed, we fulfilled one requirement
+    
+                // If all requirements met, it's an anagram
                 if (required == 0) {
-                    solution.add(start);
+                    solution.add(start); // 'start' is the index where the current window begins
                 }
             }
-
+    
             return solution;
         }
     }
