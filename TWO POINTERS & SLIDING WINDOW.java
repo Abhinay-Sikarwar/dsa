@@ -217,3 +217,61 @@
     // 🧠 Space Complexity:  O(1)
 
     // 567: PERMUTATION IN STRING
+// TWO POINTERS, SLIDING WINDOW, FREQUENCY ARRAY
+    class Solution {
+        public boolean checkInclusion(String s1, String s2) {
+             // Edge case checks
+            if (s1 == null || s2 == null) return false;
+        
+            int s1Len = s1.length(), s2Len = s2.length();
+            if (s1Len == 0 || s2Len == 0 || s2Len < s1Len) {
+                return false;
+            }
+
+            int[] charCount = new int[26];
+
+            // Count frequency of each character in s1
+            for (char c : s1.toCharArray()) {
+                charCount[c - 'a']++;
+            }
+
+            int start = 0, end = 0, required = s1Len;
+        
+            // Process the first window
+            for (end = 0; end < s1Len; end++) {
+                int idx = s2.charAt(end) - 'a';
+                charCount[idx]--;
+                if (charCount[idx] >= 0) required--;
+            }
+
+            // If all required characters matched in the first window 
+            if (required == 0) {
+                return true;
+            }
+
+            // Slide the window across s2
+            while (end < s2Len) {
+                // Character going out of the window
+                int outIdx = s2.charAt(start++) - 'a';
+                // First check if it becomes > 0, which means we now need one more of that character
+                if (charCount[outIdx] >= 0) required++;
+                // Then, increment the count
+                charCount[outIdx]++;
+
+                // Character coming into the window
+                int inIdx = s2.charAt(end++) - 'a';
+                charCount[inIdx]--;
+                if (charCount[inIdx] >= 0) required--;
+
+                // If all characters matched
+                if (required == 0) {
+                    return true;
+                }
+            }
+
+            return false; 
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)          where n = s2.length()
+    // 🧠 Space Complexity:  O(1)
