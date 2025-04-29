@@ -353,3 +353,40 @@
     // 🧠 Space Complexity:  O(1)
 
     // 209: MINIMUM SIZE SUBARRAY SUM
+// TWO POINTERS, SLIDING WINDOW, TERNARY OPERATOR
+    class Solution {
+        public int minSubArrayLen(int target, int[] nums) {
+            // Initialize resultlength with the maximum possible value.
+            // This will help us track the minimum length found.
+            int resultlength = Integer.MAX_VALUE, length = nums.length;
+    
+            // Left pointer of the sliding window
+            int left = 0;
+    
+            // Current sum of the elements in the window
+            int currentSum = 0;
+    
+            // Move the right pointer to expand the window
+            for (int right = 0; right < length; right++) {
+                // Add the current number to the window's sum
+                currentSum += nums[right];
+    
+                // Shrink the window from the left as long as the sum is >= target
+                while (currentSum >= target) {
+                    // Update resultlength if this window is smaller than previously recorded ones
+                    if (right - left + 1 < resultlength) {
+                        resultlength = right - left + 1;
+                    }
+    
+                    // Subtract the leftmost element from the window and move the left pointer forward
+                    currentSum -= nums[left++];
+                }
+            }
+    
+            // If no valid subarray was found, return 0. Otherwise, return the minimum length found.
+            return resultlength != Integer.MAX_VALUE ? resultlength : 0;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
