@@ -392,3 +392,38 @@
     // 🧠 Space Complexity:  O(1)
 
     // 1004: MAX CONSECUTIVE ONES III
+// TWO POINTERS, SLIDING WINDOW, MAX-FREQ FOR 1
+    class Solution {
+        public int longestOnes(int[] nums, int k) {
+            int left = 0; // Left pointer of the sliding window
+            int maxFreq = 0; // Number of 1s in the current window
+            int maxLength = 0; // Maximum length of valid window found so far
+    
+            for (int right = 0; right < nums.length; right++) {
+                // If the current number is 1, we count it in maxFreq
+                if (nums[right] == 1) {
+                    maxFreq++;
+                }
+    
+                int windowSize = right - left + 1;
+    
+                // If the number of 0s in the window (i.e., windowSize - maxFreq) exceeds k,
+                // shrink the window from the left to make it valid
+                if (windowSize - maxFreq > k) {
+                    // If we are removing a 1 from the window, adjust maxFreq
+                    if (nums[left] == 1) {
+                        maxFreq--;
+                    }
+                    left++; // Shrink the window from the left
+                }
+    
+                // Update the maximum length of a valid window
+                maxLength = Math.max(maxLength, right - left + 1);
+            }
+    
+            return maxLength;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
