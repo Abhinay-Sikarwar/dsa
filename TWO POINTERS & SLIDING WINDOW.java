@@ -429,3 +429,43 @@
     // 🧠 Space Complexity:  O(1)
 
     // 75: SORT COLORS
+// THREE POINTERS, DNF(DUTCH NATIONAL FLAG) ALGORITHM  
+    class Solution {
+        public void sortColors(int[] nums) {
+            // Initialize three pointers:
+            // low: boundary for 0s
+            // mid: current element under consideration
+            // high: boundary for 2s
+            int low = 0, mid = 0, high = nums.length - 1;
+    
+            // Process elements until mid passes high
+            while (mid <= high) {
+                if (nums[mid] == 0) {
+                    // If current element is 0:
+                    // Swap it to the "0s" region (beginning of array)
+                    // Then move both low and mid pointers forward
+                    int temp = nums[low];
+                    nums[low] = nums[mid];
+                    nums[mid] = temp;
+                    low++;
+                    mid++;
+                } else if (nums[mid] == 1) {
+                    // If it's 1, it's already in the correct "middle" region
+                    // Just move mid pointer forward
+                    mid++;
+                } else {
+                    // If current element is 2:
+                    // Swap it with the element at high (end of array)
+                    // Move high pointer backward
+                    // Do NOT move mid forward, because swapped-in element needs to be checked
+                    int temp = nums[mid];
+                    nums[mid] = nums[high];
+                    nums[high] = temp;
+                    high--;
+                }
+            }
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
