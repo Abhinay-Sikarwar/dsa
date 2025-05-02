@@ -473,3 +473,46 @@
 // HARD
 
     // 239: SLIDING WINDOW MAXIMUM
+// MONOTONIC DEQUE
+    public class Solution {
+        public int[] maxSlidingWindow(int[] nums, int k) {
+            // early exit in case of 
+            if (nums.length == 1) return nums;
+            int n = nums.length;
+    
+            // Result array to store the maximum of each window
+            int[] result = new int[n - k + 1];
+    
+            // Deque to store indices of useful elements in the current window
+            // It helps us keep track of potential maximums in decreasing order
+            Deque<Integer> deque = new ArrayDeque<>();
+    
+            for (int i = 0; i < n; i++) {
+    
+                // Step 1: Remove indices that are outside the current window (i - k + 1 is the window's left bound)
+                if (!deque.isEmpty() && deque.peekFirst() < i - k + 1) {
+                    deque.pollFirst();
+                }
+    
+                // Step 2: Remove indices from the back of the deque if their values are less than nums[i]
+                // They can't be maximum if nums[i] is greater
+                while (!deque.isEmpty() && nums[deque.peekLast()] < nums[i]) {
+                    deque.pollLast();
+                }
+    
+                // Step 3: Add the current index to the deque
+                deque.offerLast(i);
+    
+                // Step 4: If our window has hit size k, record the max (at the front of the deque)
+                // The first element of deque is always the largest in the current window
+                if (i >= k - 1) {
+                    result[i - k + 1] = nums[deque.peekFirst()];
+                }
+            }
+    
+            return result;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)              Where n = nums.length
+    // 🧠 Space Complexity:  O(k)             Where k = size of window
