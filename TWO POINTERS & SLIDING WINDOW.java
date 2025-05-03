@@ -518,3 +518,52 @@
     // 🧠 Space Complexity:  O(k)             Where k = size of window
 
     // 992: SUBARRAYS WITH K DIFFERENT INTEGERS
+// SLIDING WINDOW, FREQUENCY MAP
+    class Solution {
+    
+        // Returns the number of subarrays with exactly k distinct integers
+        public int subarraysWithKDistinct(int[] nums, int k) {
+            // Use the sliding window trick:
+            // Exactly k distinct = At most k distinct - At most (k - 1) distinct
+            return atMostKDistinct(nums, k) - atMostKDistinct(nums, k - 1);
+        }
+    
+        // Helper method: counts subarrays with at most k distinct integers
+        private int atMostKDistinct(int[] nums, int k) {
+            Map<Integer, Integer> freqMap = new HashMap<>(); // Tracks frequency of elements in window
+            int left = 0; // Start of the window
+            int totalSubarrays = 0; // Running total of valid subarrays
+    
+            // Expand the window to the right
+            for (int right = 0; right < nums.length; right++) {
+                int rightVal = nums[right];
+                freqMap.put(rightVal, freqMap.getOrDefault(rightVal, 0) + 1);
+    
+                // If this is a new distinct value, reduce the allowed distinct count
+                if (freqMap.get(rightVal) == 1) {
+                    k--;
+                }
+    
+                // If window has more than k distinct elements, shrink from the left
+                while (k < 0) {
+                    int leftVal = nums[left];
+                    freqMap.put(leftVal, freqMap.get(leftVal) - 1);
+    
+                    // If an element's count drops to 0, we removed a distinct value
+                    if (freqMap.get(leftVal) == 0) {
+                        k++;
+                    }
+    
+                    left++; // Shrink the window
+                }
+    
+                // All subarrays ending at 'right' and starting from 'left' are valid
+                totalSubarrays += right - left + 1;
+            }
+    
+            return totalSubarrays;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n)
