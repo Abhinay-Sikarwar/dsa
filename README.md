@@ -6,6 +6,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/repo-size/Abhinay-Sikarwar/dsa?color=blue" />
+  <img src="https://img.shields.io/github/commit-activity/y/Abhinay-Sikarwar/dsa?label=commits" />
   <img src="https://img.shields.io/github/languages/count/Abhinay-Sikarwar/dsa" />
   <img src="https://img.shields.io/github/last-commit/Abhinay-Sikarwar/dsa" />
   <img src="https://img.shields.io/github/stars/Abhinay-Sikarwar/dsa?style=social" />
