@@ -125,3 +125,70 @@
     // 🧠 Space Complexity:  O(1)
 
     // 232: IMPLEMENT QUEUE USING STACKS
+// TWO STACKS, HELPER FUNCTION FOR REVERSING
+
+// import java.util.Stack;
+    class MyQueue {
+        // Stack used for pushing new elements
+        private Stack<Integer> stackIn;
+        // Stack used for popping/peeking elements in correct FIFO order
+        private Stack<Integer> stackOut;
+    
+        // Constructor initializes both stacks
+        public MyQueue() {
+            stackIn = new Stack<>();
+            stackOut = new Stack<>();
+        }
+    
+        // Push element x to the back of the queue
+        public void push(int x) {
+            // Always push to stackIn
+            stackIn.push(x);
+        }
+    
+        // Removes the element from the front of the queue and returns it
+        public int pop() {
+            // Ensure stackOut has the current front at the top
+            transfer();
+            // Pop from stackOut, which represents the front of the queue
+            return stackOut.pop();
+        }
+    
+        // Returns the element at the front of the queue without removing it
+        public int peek() {
+            // Ensure stackOut has the current front at the top
+            transfer();
+            // Peek at the top of stackOut, which is the front of the queue
+            return stackOut.peek();
+        }
+    
+        // Returns true if the queue is empty
+        public boolean empty() {
+            // Queue is empty only when both stacks are empty
+            return stackIn.isEmpty() && stackOut.isEmpty();
+        }
+    
+        // Helper method to transfer elements from stackIn to stackOut
+        // This reverses the order so the oldest element is on top
+        private void transfer() {
+            // Only transfer if stackOut is empty (to preserve correct order)
+            if (stackOut.isEmpty()) {
+                while (!stackIn.isEmpty()) {
+                    // Pop from stackIn and push to stackOut to reverse order
+                    stackOut.push(stackIn.pop());
+                }
+            }
+        }
+    }
+    
+    /**
+     * Your MyQueue object will be instantiated and called as such:
+     * MyQueue obj = new MyQueue();
+     * obj.push(x);
+     * int param_2 = obj.pop();
+     * int param_3 = obj.peek();
+     * boolean param_4 = obj.empty();
+     */ 
+    
+    // ⏱️ Time Complexity:  O(1)
+    // 🧠 Space Complexity:  O(n)
