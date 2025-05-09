@@ -3,3 +3,55 @@
 // EASY
 
     // 21: MERGE TWO SORTED LISTS
+// USING DUMMY NODE WITH ITERATIVE SOLUTION
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+     
+    class Solution {
+        public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+            // Create a dummy node to act as the starting point of the merged list.
+            // This simplifies edge cases, such as empty input lists.
+            ListNode dummy = new ListNode(-1);
+    
+            // `current` will point to the last node in the merged list as we build it.
+            ListNode current = dummy;
+    
+            // Traverse both lists while neither is exhausted
+            while (list1 != null && list2 != null) {
+                // Compare the current nodes from each list
+                if (list1.val <= list2.val) {
+                    // If list1's value is smaller or equal, link it to the merged list
+                    current.next = list1;
+                    // Move list1 forward
+                    list1 = list1.next;
+                } else {
+                    // If list2's value is smaller, link it to the merged list
+                    current.next = list2;
+                    // Move list2 forward
+                    list2 = list2.next;
+                }
+                // Advance the current pointer to the last node added
+                current = current.next;
+            }
+    
+            // After the loop, at least one of the lists is null.
+            // Directly link the non-null list to the end of the merged list
+            // because it's already sorted.
+            current.next = (list1 != null) ? list1 : list2;
+    
+            // Return the merged list, starting from the node after the dummy
+            return dummy.next;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n + m)                   Where n & m are lengths of the both lists
+    // 🧠 Space Complexity:  O(1)
