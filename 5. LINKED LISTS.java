@@ -55,3 +55,43 @@
     
     // ⏱️ Time Complexity:  O(n + m)                   Where n & m are lengths of the both lists
     // 🧠 Space Complexity:  O(1)
+
+    // 141: LINKED LIST CYCLE
+// FLOYD'S TORTOISE AND HARE ALGORITHM 
+
+    /**
+     * Definition for singly-linked list.
+     * class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode(int x) {
+     *         val = x;
+     *         next = null;
+     *     }
+     * }
+     */
+    
+    public class Solution {
+        public boolean hasCycle(ListNode head) {
+            // Initialize two pointers at the head of the list
+            ListNode slow = head; // Moves one step at a time
+            ListNode fast = head; // Moves two steps at a time
+    
+            // Traverse the list as long as fast and fast.next are not null
+            while (fast != null && fast.next != null) {
+                slow = slow.next; // Move slow by 1 step
+                fast = fast.next.next; // Move fast by 2 steps
+    
+                // If slow and fast meet at the same node, a cycle exists
+                if (slow == fast) {
+                    return true;
+                }
+            }
+    
+            // If fast reaches the end, the list has no cycle
+            return false;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
