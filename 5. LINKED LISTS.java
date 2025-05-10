@@ -97,3 +97,44 @@
     // 🧠 Space Complexity:  O(1)
 
     // 83: REMOVE DUPLICATES FROM SORTED LIST
+// TRAVERSING THE LIST AND CHECK FOR CONSECUTIVE SAME VALUES
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode deleteDuplicates(ListNode head) {
+            // Edge case: if the list is empty or has only one node, return it as is
+            if (head == null || head.next == null)
+                return head;
+    
+            // Use a pointer to traverse the list
+            ListNode current = head;
+    
+            // Iterate through the list until the end is reached
+            while (current != null && current.next != null) {
+                // If the current node has the same value as the next node
+                if (current.val == current.next.val) {
+                    // Skip the next node (remove the duplicate)
+                    current.next = current.next.next;
+                } else {
+                    // Otherwise, move to the next node
+                    current = current.next;
+                }
+            }
+    
+            // Return the head of the modified list
+            return head;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
