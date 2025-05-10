@@ -138,3 +138,77 @@
 
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
+
+    // 234: PALINDROME LINKED LIST
+// FIND THE MIDDLE AND REVERSE THE SECOND HALF TO COMPARE
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public boolean isPalindrome(ListNode head) {
+            if (head == null || head.next == null)
+                return true;
+    
+            // Step 1: Find the end of the first half using slow and fast pointers
+            ListNode firstHalfEnd = endOfFirstHalf(head);
+    
+            // Step 2: Reverse the second half
+            ListNode secondHalfStart = reverseList(firstHalfEnd.next);
+    
+            // Step 3: Compare the two halves
+            ListNode firstPart = head;
+            ListNode secondPart = secondHalfStart;
+            boolean result = true;
+    
+            while (result && secondPart != null) {
+                if (firstPart.val != secondPart.val) {
+                    result = false;
+                }
+                firstPart = firstPart.next;
+                secondPart = secondPart.next;
+            }
+    
+            // step 4: Return the result
+            return result;
+        }
+    
+        // Helper method to find the end of the first half
+        private ListNode endOfFirstHalf(ListNode head) {
+            ListNode slow = head;
+            ListNode fast = head;
+    
+            // Move fast by 2 steps and slow by 1 step until fast reaches the end
+            while (fast.next != null && fast.next.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+        }
+    
+        // Helper method to reverse a linked list
+        private ListNode reverseList(ListNode head) {
+            ListNode prev = null;
+            ListNode current = head;
+    
+            while (current != null) {
+                ListNode nextNode = current.next;
+                current.next = prev;
+                prev = current;
+                current = nextNode;
+            }
+    
+            return prev;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
