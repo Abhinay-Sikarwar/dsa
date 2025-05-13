@@ -215,6 +215,7 @@
 
     // 876: MIDDLE OF THE LINKED LIST
 // FLOYD'S TORTOISE AND HARE ALGORITHM TECHNIQUE
+    
     /**
      * Definition for singly-linked list.
      * public class ListNode {
@@ -248,3 +249,42 @@
     // 🧠 Space Complexity:  O(1)
 
     // 160: INTERSECTION OF TWO LINKED LISTS
+// TWO POINTER TO TRAVERSE TOTAL LENGTH OF TWO LISTS
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode(int x) {
+     *         val = x;
+     *         next = null;
+     *     }
+     * }
+     */
+    
+    public class Solution {
+        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+            // If either list is empty, there's no intersection
+            if (headA == null || headB == null)
+                return null;
+    
+            ListNode A = headA;
+            ListNode B = headB;
+    
+            // Traverse both lists
+            while (A != B) {
+                // If A reaches the end, redirect it to headB
+                A = (A == null) ? headB : A.next;
+    
+                // If B reaches the end, redirect it to headA
+                B = (B == null) ? headA : B.next;
+            }
+    
+            // Either intersection node or null
+            return A;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(m + n)                    Where m & n are length of the lists respectively
+    // 🧠 Space Complexity:  O(1)
