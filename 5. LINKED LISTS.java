@@ -290,3 +290,38 @@
     // 🧠 Space Complexity:  O(1)
 
     // 206: REVERSE LINKED LIST
+// TWO POINTER WITH TEMPORARY NODE
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode reverseList(ListNode head) {
+            // early exit when list is null or unilength
+            if (head == null || head.next == null)
+                return head;
+            ListNode prev = null;
+            ListNode curr = head;
+    
+            while (curr != null) {
+                ListNode nextTemp = curr.next; // temporarily store next node
+                curr.next = prev; // reverse the current node's pointer
+                prev = curr; // move prev and curr one step forward
+                curr = nextTemp;
+            }
+    
+            return prev; // prev will be the new head
+    
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
