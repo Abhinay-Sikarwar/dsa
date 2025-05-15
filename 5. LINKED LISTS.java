@@ -369,3 +369,46 @@
     
     // ⏱️ Time Complexity:  O(n)                           Where n = max(l1, l2)
     // 🧠 Space Complexity:  O(n)
+
+    // 19: REMOVE NTH NODE FROM END OF LIST
+// TWO POINTERS FAST AND SLOW, MAINING GAP N + 1 FROM SLOW
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode removeNthFromEnd(ListNode head, int n) {
+            ListNode dummy = new ListNode(0); // Dummy node before head
+            dummy.next = head;
+    
+            ListNode fast = dummy;
+            ListNode slow = dummy;
+    
+            // Move fast pointer n+1 steps ahead to maintain gap
+            for (int i = 0; i <= n; i++) {
+                fast = fast.next;
+            }
+    
+            // Move both fast and slow until fast reaches the end
+            while (fast != null) {
+                fast = fast.next;
+                slow = slow.next;
+            }
+    
+            // Skip the nth node from the end
+            slow.next = slow.next.next;
+    
+            return dummy.next;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(l)                           Where l is length of the linked list
+    // 🧠 Space Complexity:  O(1)
