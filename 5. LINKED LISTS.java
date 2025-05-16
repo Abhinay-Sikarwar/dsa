@@ -414,3 +414,48 @@
     // 🧠 Space Complexity:  O(1)
 
     // 24: SWAP NODES IN PAIRS
+// TWO POINTERS, DUMMY NODE TO TRAVERSE 
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode swapPairs(ListNode head) {
+            // Base case: if there's 0 or 1 node left, return head
+            if (head == null || head.next == null) {
+                return head;
+            }
+    
+            // Create a dummy node to simplify swapping the head node
+            ListNode dummy = new ListNode(0);
+            dummy.next = head;
+            ListNode current = dummy;
+    
+            while (current.next != null && current.next.next != null) {
+                // Nodes to be swapped
+                ListNode first = current.next;
+                ListNode second = current.next.next;
+    
+                // Swapping
+                first.next = second.next;
+                second.next = first;
+                current.next = second;
+    
+                // Move to the next pair
+                current = first;
+            }
+    
+            return dummy.next;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
