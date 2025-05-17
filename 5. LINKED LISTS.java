@@ -512,3 +512,53 @@
     
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
+
+    // 82: REMOVE DUPLICATES FROM SORTED LIST II
+// KEEP TRACK, DUMMY FOR HEAD, PREV FOR UNIQUE ENTRY, CURRENT 
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode deleteDuplicates(ListNode head) {
+            // Early exit in case of null input or unilength list
+            if (head == null || head.next == null)
+                return head;
+            // Create a dummy node that points to head (to handle head deletions)
+            ListNode dummy = new ListNode(0, head);
+            ListNode prev = dummy; // Points to the last node that is confirmed to be unique
+            ListNode current = head;
+    
+            while (current != null) {
+                // Check if current node has duplicates
+                boolean isDuplicate = false;
+                while (current.next != null && current.val == current.next.val) {
+                    isDuplicate = true;
+                    current = current.next; // Skip duplicate nodes
+                }
+    
+                if (isDuplicate) {
+                    // Skip all duplicates
+                    prev.next = current.next;
+                } else {
+                    // No duplicate, move prev
+                    prev = prev.next;
+                }
+    
+                current = current.next;
+            }
+    
+            return dummy.next;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
