@@ -611,3 +611,65 @@
     
     // ⏱️ Time Complexity:  O(n)
     // 🧠 Space Complexity:  O(1)
+
+    // 138: COPY LIST WITH RANDOM POINTER
+    // THREE PASS TECHNIQUE, FIRST TO COPY, SECOND TO COPY RANDOM, THIRD TO RETRIEVE ORIGINAL AND DEEPCOPY
+    
+    /*
+    // Definition for a Node.
+    class Node {
+        int val;
+        Node next;
+        Node random;
+    
+        public Node(int val) {
+            this.val = val;
+            this.next = null;
+            this.random = null;
+        }
+    }
+    */
+    
+    class Solution {
+        public Node copyRandomList(Node head) {
+            // Early exit in case of null input
+            if (head == null)
+                return head;
+    
+            // 1st pass: Create new nodes and insert them after each original node
+            Node curr = head;
+            while (curr != null) {
+                Node copy = new Node(curr.val);
+                copy.next = curr.next;
+                curr.next = copy;
+                curr = copy.next;
+            }
+    
+            // 2nd pass: Set random pointers for the copy nodes
+            curr = head;
+            while (curr != null) {
+                if (curr.random != null)
+                    curr.next.random = curr.random.next;
+                curr = curr.next.next;
+            }
+    
+            // 3rd pass: Separate the original and copied lists
+            curr = head;
+            Node deepCopy = new Node(0);
+            Node copyCurr = deepCopy;
+    
+            while (curr != null) {
+                Node copy = curr.next; // Get A'
+                copyCurr.next = copy; // Append A' to the copied list
+                copyCurr = copy; // Move forward in the copied list 
+    
+                curr.next = copy.next; // Restore original: A.next = B
+                curr = curr.next; // Move to next original: curr = B
+            }
+    
+            return deepCopy.next;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(1)
