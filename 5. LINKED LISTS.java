@@ -781,3 +781,67 @@
     // 🧠 Space Complexity:  O(1)
 
     // 148: SORT LIST
+// SPLIT THE LIST, SORT SAPERATELY, RECURSION, MERGE THEM
+
+    /**
+     * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode sortList(ListNode head) {
+             // Base case: if 0 or 1 node, it's already sorted
+            if (head == null || head.next == null) return head;
+    
+            // Step 1: Split the list into two halves using slow & fast pointers
+            ListNode mid = getMid(head);
+            ListNode left = head;
+            ListNode right = mid.next;
+            mid.next = null;  // Split the list into two parts
+    
+            // Step 2: Recursively sort each half
+            left = sortList(left);
+            right = sortList(right);
+    
+            // Step 3: Merge sorted halves
+            return merge(left, right);
+        }
+    
+        // Helper to find middle node (end of first half)
+        private ListNode getMid(ListNode head) {
+            ListNode slow = head, fast = head.next; // start fast at head.next to get mid on left side
+            while (fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+            return slow;
+        }
+    
+        // Merge two sorted lists
+        private ListNode merge(ListNode l1, ListNode l2) {
+            ListNode dummy = new ListNode(0);
+            ListNode cur = dummy;
+    
+            while (l1 != null && l2 != null) {
+                if (l1.val < l2.val) {
+                    cur.next = l1;
+                    l1 = l1.next;
+                } else {
+                    cur.next = l2;
+                    l2 = l2.next;
+                }
+                cur = cur.next;
+            }
+            cur.next = (l1 != null) ? l1 : l2;
+            return dummy.next;
+        }
+    } 
+    
+    // ⏱️ Time Complexity:  O(n.logn)
+    // 🧠 Space Complexity:  O(logn)
