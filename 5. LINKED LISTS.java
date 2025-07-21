@@ -849,3 +849,52 @@
 // HARD
 
     // 25: REVERSE NODES IN K-GROUP
+// SPLIT K GROUP, REVERSE IT, RECURSION, THEN MERGE
+    
+    /**
+    * Definition for singly-linked list.
+     * public class ListNode {
+     *     int val;
+     *     ListNode next;
+     *     ListNode() {}
+     *     ListNode(int val) { this.val = val; }
+     *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+     * }
+     */
+    
+    class Solution {
+        public ListNode reverseKGroup(ListNode head, int k) {
+            if (head == null)
+                return null;
+    
+            // Check if there are at least k nodes left to reverse
+            ListNode tail = head;
+            for (int i = 0; i < k; i++) {
+                if (tail == null)
+                    return head; // Not enough nodes, return as it is
+                tail = tail.next;
+            }
+    
+            // Reverse current k-group: [head, tail)
+            ListNode newHead = reverse(head, tail);
+    
+            // Recur for remaining list and connect
+            head.next = reverseKGroup(tail, k);
+            return newHead;
+        }
+    
+        // Reverse nodes from 'cur' up to (but not including) 'end'
+        private ListNode reverse(ListNode cur, ListNode end) {
+            ListNode prev = null;
+            while (cur != end) {
+                ListNode next = cur.next; // Save next node
+                cur.next = prev; // Reverse pointer
+                prev = cur; // Move prev forward
+                cur = next; // Move cur forward
+            }
+            return prev; // New head of the reversed group
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)
+    // 🧠 Space Complexity:  O(n/k)
