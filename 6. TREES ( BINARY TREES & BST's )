@@ -39,4 +39,6 @@
     }
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in a smaller tree (or both, if same size)   
-    // 🧠 Space Complexity:  O(n)                
+    // 🧠 Space Complexity:  O(n)               
+    
+    // 101: SYMMETRIC TREE
