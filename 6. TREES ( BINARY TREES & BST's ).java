@@ -157,3 +157,43 @@
     
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 226: INVERT BINARY TREE
+// SWAP LEFT AND RIGHT SUBTREES RECURSIVELY
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public TreeNode invertTree(TreeNode root) {
+            if (root == null) // base case: if tree is empty, return null
+                return null;
+    
+            // swap left and right children
+            TreeNode temp = root.left;
+            root.left = root.right;
+            root.right = temp;
+    
+            // recursively invert left and right subtrees
+            invertTree(root.left);
+            invertTree(root.right);
+    
+            return root; // return root of inverted tree
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
