@@ -289,3 +289,58 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 102: BINARY TREE LEVEL ORDER TRAVERSAL
+// ITERATIVE APPROACH USING QUEUE
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            List<List<Integer>> result = new ArrayList<>(); // Stores the final level order traversal
+    
+            if (root == null) // Edge case: empty tree
+                return result;
+    
+            Queue<TreeNode> queue = new LinkedList<>(); // Queue for BFS
+            queue.offer(root);
+    
+            while (!queue.isEmpty()) {
+                int levelSize = queue.size(); // Number of nodes in the current level
+                List<Integer> currentLevel = new ArrayList<>(); // Stores values of this level
+    
+                // Process all nodes at the current level
+                for (int i = 0; i < levelSize; i++) {
+                    TreeNode current = queue.poll(); // Remove node from queue
+                    currentLevel.add(current.val);   // Add its value
+    
+                    // Add children to queue for the next level
+                    if (current.left != null)
+                        queue.offer(current.left);
+                    if (current.right != null)
+                        queue.offer(current.right);
+                }
+    
+                result.add(currentLevel); // Add this level's result
+            }
+    
+            return result; // Return full traversal
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
