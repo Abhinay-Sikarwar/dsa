@@ -346,3 +346,70 @@
     // 🧠 Space Complexity:  O(n)
 
     // 103: BINARY TREE ZIGZAG LEVEL ORDER TRAVERSAL
+// ITERATIVE APPROACH USING QUEUE
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+            List<List<Integer>> result = new ArrayList<>();
+    
+            // If tree is empty, return empty result
+            if (root == null)
+                return result;
+    
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.offer(root); 
+            boolean leftToRight = true; // flag to track traversal direction
+    
+            // Perform BFS (level-order traversal)
+            while (!queue.isEmpty()) {
+                int levelSize = queue.size(); // number of nodes at current level
+                List<Integer> currentLevel = new ArrayList<>(levelSize);
+    
+                // Process all nodes in the current level
+                for (int i = 0; i < levelSize; i++) {
+                    TreeNode current = queue.poll(); // remove front node from queue
+    
+                    // Insert node's value depending on traversal direction
+                    if (leftToRight) {
+                        currentLevel.add(current.val); // append to the end
+                    } else {
+                        currentLevel.add(0, current.val); // insert at the beginning
+                    }
+    
+                    // Add child nodes to queue for next level
+                    if (current.left != null)
+                        queue.offer(current.left);
+                    if (current.right != null)
+                        queue.offer(current.right);
+                }
+    
+                // Store the current level's values in result
+                result.add(currentLevel);
+    
+                // Switch traversal direction for the next level
+                leftToRight = !leftToRight;   
+            }
+    
+            return result; // final zigzag level order list
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
+   
