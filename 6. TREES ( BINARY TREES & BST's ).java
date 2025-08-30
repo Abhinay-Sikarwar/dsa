@@ -414,4 +414,73 @@
     // 🧠 Space Complexity:  O(n)
 
     // 105: CONSTRUCT BINARY TREE FROM PREORDER AND INORDER TRAVERSAL
-   
+// RECURSIVELY BUILD EACH SUBTREE, FINDING ROOT IN INORDER, THEN DIVIDING LEFT/RIGHT SUBTREES
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public TreeNode buildTree(int[] inorder, int[] postorder) {
+            if (inorder.length == 1)
+                return new TreeNode(inorder[0]);
+    
+            // Build the binary tree from inorder and postorder traversals
+            return buildSubtree(inorder, postorder,
+                    0, postorder.length - 1, 0,
+                    inorder.length - 1);
+        }
+    
+        private TreeNode buildSubtree(int[] inorder, int[] postorder,
+                int postStart, int postEnd,
+                int inStart, int inEnd) {
+            // Base case: no elements to build from
+            if (inStart > inEnd || postStart > postEnd) {
+                return null;
+            }
+    
+            // Root is always the last element in the current postorder segment
+            TreeNode root = new TreeNode(postorder[postEnd]);
+    
+            // Find root index in inorder traversal
+            int inorderRootIndex = findIndex(inorder, root.val, inStart, inEnd);
+            int leftSubtreeSize = inorderRootIndex - inStart; // size of left subtree
+    
+            // Recursively build left subtree
+            root.left = buildSubtree(inorder, postorder,
+                    postStart, postStart + leftSubtreeSize - 1,
+                    inStart, inorderRootIndex - 1);
+    
+            // Recursively build right subtree
+            root.right = buildSubtree(inorder, postorder,
+                    postStart + leftSubtreeSize, postEnd - 1,
+                    inorderRootIndex + 1, inEnd);
+    
+            return root;
+        }
+    
+        private int findIndex(int[] inorder, int value, int start, int end) {
+            // Linear search for value in inorder segment
+            for (int i = start; i <= end; i++) {
+                if (inorder[i] == value) {
+                    return i;
+                }
+            }
+            return -1; // should not happen if inputs are valid
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n^2)               where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
