@@ -486,3 +486,52 @@
     // 🧠 Space Complexity:  O(n)
 
     // 113: PATH SUM II
+// CHECK EACH PATH RECURSIVELY, BACKTRACKING TO EXPLORE ALL PATHS, STORING VALID PATHS
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+            List<List<Integer>> result = new ArrayList<>();
+            List<Integer> currentPath = new ArrayList<>();
+            findPaths(root, targetSum, currentPath, result);
+            return result;
+        }
+    
+        private void findPaths(TreeNode node, int remainingSum, List<Integer> currentPath, List<List<Integer>> result) {
+            if (node == null)
+                return; // base case: empty node
+    
+            // Add the current node's value to the path
+            currentPath.add(node.val);
+    
+            // Check if it's a leaf node and the path sum matches target
+            if (node.left == null && node.right == null && node.val == remainingSum) {
+                result.add(new ArrayList<>(currentPath)); // add a copy of current path to results
+            } else {
+                // Continue searching in left and right subtrees
+                findPaths(node.left, remainingSum - node.val, currentPath, result);
+                findPaths(node.right, remainingSum - node.val, currentPath, result);
+            }
+    
+            // Backtrack: remove the last added node value before returning to the caller
+            currentPath.remove(currentPath.size() - 1);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n^2)               where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
