@@ -537,3 +537,50 @@
     // 🧠 Space Complexity:  O(n)
 
     // 114: FLATTEN BINARY TREE TO LINKED LIST
+// RECURSIVELY FLATTEN RIGHT SUBTREE, THEN LEFT SUBTREE, THEN ATTACH LEFT TO RIGHT
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public void flatten(TreeNode root) {
+            if (root == null)
+                return; // base case: empty tree
+    
+            // Recursively flatten left and right subtrees
+            flatten(root.left);
+            flatten(root.right);
+    
+            // Store the flattened right subtree
+            TreeNode tempRight = root.right;
+    
+            // Move the flattened left subtree to the right
+            root.right = root.left;
+            root.left = null; // set left to null
+    
+            // Find the end of the new right subtree (which was the left subtree)
+            TreeNode current = root;
+            while (current.right != null) {
+                current = current.right;
+            }
+    
+            // Attach the originally flattened right subtree
+            current.right = tempRight;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
