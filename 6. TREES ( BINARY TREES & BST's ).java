@@ -671,3 +671,5 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 230: KTH SMALLEST ELEMENT IN A BST
