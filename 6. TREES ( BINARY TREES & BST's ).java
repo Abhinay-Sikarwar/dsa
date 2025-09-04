@@ -628,3 +628,46 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 199: BINARY TREE RIGHT SIDE VIEW
+// RECURSIVELY COLLECT RIGHTMOST NODE AT EACH DEPTH
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public List<Integer> rightSideView(TreeNode root) {
+            List<Integer> rightView = new ArrayList<>();
+            collectRightView(root, 0, rightView);
+            return rightView; // final list of right-side values
+        }
+    
+        private void collectRightView(TreeNode currNode, int currDepth, List<Integer> rightView) {
+            if (currNode == null) // base case: no node
+                return;
+    
+            // If this depth is being visited for the first time, record the node
+            if (currDepth == rightView.size())
+                rightView.add(currNode.val);
+    
+            // Prioritize right child to ensure rightmost nodes are captured first
+            collectRightView(currNode.right, currDepth + 1, rightView);
+            collectRightView(currNode.left, currDepth + 1, rightView);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
