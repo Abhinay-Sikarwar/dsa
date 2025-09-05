@@ -673,3 +673,50 @@
     // 🧠 Space Complexity:  O(n)
 
     // 230: KTH SMALLEST ELEMENT IN A BST
+// IN-ORDER TRAVERSAL RECURSIVELY
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private int count = 0; // to track number of nodes visited
+        private int result = -1; // to store the kth smallest value
+    
+        public int kthSmallest(TreeNode root, int k) {
+            inOrderTraversal(root, k);
+            return result; // return the kth smallest value found
+        }
+    
+        private void inOrderTraversal(TreeNode node, int k) {
+            if (node == null || result != -1) // base case: empty node or already found
+                return;
+    
+            // Traverse left subtree first (smaller values)
+            inOrderTraversal(node.left, k);
+    
+            count++; // visit current node
+            if (count == k) { // if this is the kth node visited
+                result = node.val; // store its value
+                return; // no need to continue
+            }
+    
+            // Traverse right subtree next (larger values)
+            inOrderTraversal(node.right, k);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
