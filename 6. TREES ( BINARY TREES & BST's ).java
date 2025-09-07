@@ -722,3 +722,37 @@
     // 🧠 Space Complexity:  O(n)
 
     // 235: LOWEST COMMON ANCESTOR OF A BINARY SEARCH TREE
+// ITERATIVELY TRAVERSE THE BST TO FIND SPLIT POINT
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode(int x) { val = x; }
+     * }
+     */
+    
+    class Solution {
+        public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+            // If root itself is p or q, it's the LCA
+            if (root == p || root == q)
+                return root;
+    
+            // Traverse the BST
+            while (root != null) {
+                if (p.val > root.val && q.val > root.val)  // Both nodes are in the right subtree
+                    root = root.right;
+                else if (p.val < root.val && q.val < root.val)  // Both nodes are in the left subtree
+                    root = root.left;
+                else  // Current root is the split point (LCA)
+                    return root;
+            }
+    
+            return null; // Shouldn't reach here if p and q exist in the tree
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(h)                 where h = height of the tree   
+    // 🧠 Space Complexity:  O(1)
