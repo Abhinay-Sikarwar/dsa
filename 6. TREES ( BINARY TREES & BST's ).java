@@ -758,3 +758,47 @@
     // 🧠 Space Complexity:  O(1)
 
     // 337: HOUSE ROBBER III
+// RECURSIVELY CALCULATE MAX ROBBERY AMOUNT, CHOOSING BETWEEN ROBBING OR NOT ROBBING CHILDREN
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public int rob(TreeNode root) {
+            int[] result = robSubtree(root);
+            return Math.max(result[0], result[1]); // max of robbing or not robbing root
+        }
+    
+        private int[] robSubtree(TreeNode node) {
+            if (node == null)
+                return new int[] {0, 0}; // base case: empty node
+    
+            // Recursively calculate for left and right subtrees
+            int[] left = robSubtree(node.left);
+            int[] right = robSubtree(node.right);
+    
+            // If we rob this node, we can't rob its children
+            int robThis = node.val + left[1] + right[1];
+    
+            // If we don't rob this node, we can choose to rob its children
+            int skipThis = Math.max(left[0], left[1]) + Math.max(right[0], right[1]);
+    
+            return new int[] {robThis, skipThis}; // return both options
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)    
