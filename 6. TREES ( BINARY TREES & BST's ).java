@@ -801,4 +801,57 @@
     }
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
-    // 🧠 Space Complexity:  O(n)    
+    // 🧠 Space Complexity:  O(n) 
+    
+    // 437: PATH SUM III
+// RECURSIVELY EXPLORE ALL PATHS FROM EACH NODE, COUNTING VALID PATHS
+    
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private int pathCount = 0; // to track number of valid paths found
+    
+        public int pathSum(TreeNode root, int targetSum) {
+            if (root == null)
+                return 0; // base case: empty tree
+    
+            // Start path sum calculation from current node
+            calculatePathSums(root, (long) targetSum);
+    
+            // Recursively check left and right subtrees as new starting points
+            pathSum(root.left, targetSum);
+            pathSum(root.right, targetSum);
+    
+            return pathCount; // return total count of valid paths
+        }
+    
+        private void calculatePathSums(TreeNode node, long remainingSum) {
+            if (node == null)
+                return; // base case: empty node
+    
+            // Check if current node completes a valid path
+            if (node.val == remainingSum)
+                pathCount++;
+    
+            // Continue searching in left and right subtrees with updated remaining sum
+            calculatePathSums(node.left, remainingSum - node.val);
+            calculatePathSums(node.right, remainingSum - node.val);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n^2)               where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
