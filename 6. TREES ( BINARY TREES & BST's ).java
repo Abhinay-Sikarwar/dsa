@@ -857,3 +857,47 @@
     // 🧠 Space Complexity:  O(n)
 
     // 538: CONVERT BST TO GREATER TREE
+// REVERSE IN-ORDER TRAVERSAL TO ACCUMULATE SUM OF GREATER NODES
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private int cumulativeSum = 0; // to track sum of greater nodes
+    
+        public TreeNode convertBST(TreeNode root) {
+            reverseInOrder(root);
+            return root; // return the modified tree
+        }
+    
+        private void reverseInOrder(TreeNode node) {
+            if (node == null)
+                return; // base case: empty node
+    
+            // Traverse right subtree first (greater values)
+            reverseInOrder(node.right);
+    
+            // Update current node's value with cumulative sum
+            cumulativeSum += node.val;
+            node.val = cumulativeSum;
+    
+            // Traverse left subtree next (smaller values)
+            reverseInOrder(node.left);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
