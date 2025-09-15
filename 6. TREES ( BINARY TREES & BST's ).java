@@ -903,3 +903,78 @@
     // 🧠 Space Complexity:  O(n)
 
     // 863: ALL NODES DISTANCE K IN BINARY TREE
+// BUILD PARENT MAP, THEN BFS FROM TARGET TO FIND NODES AT DISTANCE K
+
+    /**
+    * Definition for a binary tree node.
+    * public class TreeNode {
+    *     int val;
+    *     TreeNode left;
+    *     TreeNode right;
+    *     TreeNode(int x) { val = x; }
+    * }
+    */
+ 
+    class Solution {
+        public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+            Map<TreeNode, TreeNode> parentMap = new HashMap<>(); // map to store parent of each node
+            buildParentMap(root, parentMap);
+    
+            Queue<TreeNode> queue = new LinkedList<>(); // queue to store nodes at distance k
+            queue.offer(target);
+    
+            Set<TreeNode> visited = new HashSet<>(); // set to track visited nodes
+            visited.add(target);
+    
+            while (!queue.isEmpty()) {
+                if (k == 0) // if we've reached distance k, collect results
+                    break;
+    
+                int size = queue.size();
+                for (int i = 0; i < size; i++) {
+                    TreeNode current = queue.poll();
+    
+                    // Check left child
+                    if (current.left != null && !visited.contains(current.left)) {
+                        visited.add(current.left);
+                        queue.offer(current.left);
+                    }
+    
+                    // Check right child
+                    if (current.right != null && !visited.contains(current.right)) {
+                        visited.add(current.right);
+                        queue.offer(current.right);
+                    }
+    
+                    // Check parent
+                    TreeNode parent = parentMap.get(current);
+                    if (parent != null && !visited.contains(parent)) {
+                        visited.add(parent);
+                        queue.offer(parent);
+                    }
+                }
+                k--; // decrement distance after processing current level
+            }
+    
+            // Return nodes at distance k
+            List<Integer> result = new ArrayList<>();
+            while (!queue.isEmpty()) {
+                result.add(queue.poll().val);
+            }
+            return result;
+        }
+    
+        private void buildParentMap(TreeNode node, Map<TreeNode, TreeNode> parentMap) {
+            if (node == null)
+                return; // base case: empty node
+    
+            parentMap.put(node.left, node);
+            parentMap.put(node.right, node);
+    
+            buildParentMap(node.left, parentMap);
+            buildParentMap(node.right, parentMap);
+        }
+    }        
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
