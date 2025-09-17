@@ -980,3 +980,65 @@
     // 🧠 Space Complexity:  O(n)
 
     // 987: VERTICAL ORDER TRAVERSAL OF A BINARY TREE
+// COLLECT NODES WITH COORDINATES, SORT, THEN GROUP BY COLUMN
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+
+    class Solution {
+        public List<List<Integer>> verticalTraversal(TreeNode root) {
+            List<int[]> nodePositions = new ArrayList<>();
+            
+            // Step 1: Collect all nodes with their column, row, and value
+            collectNodePositions(root, 0, 0, nodePositions);
+    
+            // Step 2: Sort nodes by column, then row, then value
+            nodePositions.sort((nodeA, nodeB) -> {
+                if (nodeA[0] != nodeB[0]) return Integer.compare(nodeA[0], nodeB[0]); // Column
+                if (nodeA[1] != nodeB[1]) return Integer.compare(nodeA[1], nodeB[1]); // Row
+                return Integer.compare(nodeA[2], nodeB[2]);                           // Value
+            });
+    
+            List<List<Integer>> verticalOrder = new ArrayList<>();
+            int lastColumn = Integer.MIN_VALUE;
+    
+            // Step 3: Group nodes by column
+            for (int[] node : nodePositions) {
+                int column = node[0];
+                int value = node[2];
+    
+                if (column != lastColumn) {
+                    verticalOrder.add(new ArrayList<>());
+                    lastColumn = column;
+                }
+                verticalOrder.get(verticalOrder.size() - 1).add(value);
+            }
+    
+            return verticalOrder;
+        }
+    
+        // DFS helper to collect node positions
+        private void collectNodePositions(TreeNode currentNode, int row, int column, List<int[]> nodePositions) {
+            if (currentNode == null) return;
+    
+            nodePositions.add(new int[]{column, row, currentNode.val});
+            collectNodePositions(currentNode.left, row + 1, column - 1, nodePositions);  // Left subtree
+            collectNodePositions(currentNode.right, row + 1, column + 1, nodePositions); // Right subtree
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n log n)           where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
