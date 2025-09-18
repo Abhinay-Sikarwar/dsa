@@ -1044,3 +1044,65 @@
     // 🧠 Space Complexity:  O(n)
 
     // 662: MAXIMUM WIDTH OF BINARY TREE
+// LEVEL ORDER TRAVERSAL, TRACKING "VIRTUAL" INDICES TO CALCULATE WIDTH
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    class Solution {
+        public int widthOfBinaryTree(TreeNode root) {
+            if (root == null)
+                return 0;
+    
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.offer(root);
+            int maxWidth = 0;
+    
+            while (!queue.isEmpty()) {
+                int size = queue.size();
+    
+                // Track leftmost and rightmost indices for this level
+                int left = queue.peek().val;
+                int right = queue.peek().val;
+    
+                for (int i = 0; i < size; i++) {
+                    TreeNode node = queue.poll();
+    
+                    // Assign "virtual indices" as in a complete binary tree
+                    if (node.left != null) {
+                        node.left.val = 2 * node.val;       // left child index
+                        queue.offer(node.left);
+                    }
+                    if (node.right != null) {
+                        node.right.val = 2 * node.val + 1;  // right child index
+                        queue.offer(node.right);
+                    }
+    
+                    // Update min and max index for this level
+                    left = Math.min(left, node.val);
+                    right = Math.max(right, node.val);
+                }
+    
+                // Width = rightmost index - leftmost index + 1
+                maxWidth = Math.max(maxWidth, right - left + 1);
+            }
+    
+            return maxWidth;
+        }
+    }
+
+    
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
