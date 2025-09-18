@@ -1106,3 +1106,59 @@
     
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 1145: BINARY TREE PREORDER TRAVERSAL
+// CHECK IF ANY REGION AROUND X HAS MORE THAN HALF THE NODES.
+ 
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+            // Find node x
+            TreeNode xNode = findNode(root, x);
+    
+            // Count nodes in left and right subtrees of x
+            int leftCount = countNodes(xNode.left);
+            int rightCount = countNodes(xNode.right);
+    
+            // Remaining nodes (excluding x and its subtrees)
+            int rest = n - (leftCount + rightCount + 1);
+    
+            // If any region has more than half the nodes, player 2 can guarantee a win
+            return (leftCount > n / 2) || (rightCount > n / 2) || (rest > n / 2);
+        }
+    
+        // DFS to find node with value x
+        private TreeNode findNode(TreeNode root, int x) {
+            if (root == null)
+                return null;
+            if (root.val == x)
+                return root;
+            TreeNode left = findNode(root.left, x);
+            return (left != null) ? left : findNode(root.right, x);
+        }
+    
+        // DFS to count nodes in a subtree
+        private int countNodes(TreeNode node) {
+            if (node == null)
+                return 0;
+            return 1 + countNodes(node.left) + countNodes(node.right);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
