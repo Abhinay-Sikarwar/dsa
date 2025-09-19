@@ -1107,7 +1107,7 @@
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
 
-    // 1145: BINARY TREE PREORDER TRAVERSAL
+    // 1145: BINARY TREE COLORING GAME
 // CHECK IF ANY REGION AROUND X HAS MORE THAN HALF THE NODES.
  
     /**
@@ -1157,6 +1157,68 @@
             if (node == null)
                 return 0;
             return 1 + countNodes(node.left) + countNodes(node.right);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
+
+//------------------------------------------------------------- HARD -----------------------------------------------------------------   
+
+    // 99: RECOVER BINARY SEARCH TREE
+// IN-ORDER TRAVERSAL TO IDENTIFY THE TWO SWAPPED NODES, THEN SWAP THEM BACK
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private TreeNode firstElement = null; // first swapped node
+        private TreeNode secondElement = null; // second swapped node
+        private TreeNode prevElement = null; // previous node in in-order traversal
+    
+        public void recoverTree(TreeNode root) {
+            // Step 1: Perform in-order traversal to find the two swapped nodes
+            traverse(root);
+    
+            // Step 2: Swap the values of the two nodes to correct the BST
+            if (firstElement != null && secondElement != null) {
+                int temp = firstElement.val;
+                firstElement.val = secondElement.val;
+                secondElement.val = temp;
+            }
+        }
+    
+        private void traverse(TreeNode node) {
+            if (node == null)
+                return; // base case: empty node
+    
+            // Traverse left subtree
+            traverse(node.left);
+    
+            // Check for swapped nodes
+            if (firstElement == null && prevElement != null && prevElement.val >= node.val) {
+                firstElement = prevElement; // first violation found
+            }
+            if (firstElement != null && prevElement != null && prevElement.val >= node.val) {
+                secondElement = node; // second violation found
+            }
+            prevElement = node; // update previous node
+    
+            // Traverse right subtree
+            traverse(node.right);
         }
     }
 
