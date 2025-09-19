@@ -1224,3 +1224,52 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 124: BINARY TREE MAXIMUM PATH SUM
+// RECURSIVELY CALCULATE MAX PATH SUM INCLUDING EACH NODE, TRACKING GLOBAL MAX
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private int maxPathSum = Integer.MIN_VALUE; // to track the maximum path sum found
+    
+        public int maxPathSum(TreeNode root) {
+            calculateMaxPath(root);
+            return maxPathSum; // return the overall maximum path sum
+        }
+    
+        private int calculateMaxPath(TreeNode node) {
+            if (node == null)
+                return 0; // base case: empty node contributes 0
+    
+            // Recursively calculate max path sums for left and right subtrees
+            int leftMax = Math.max(0, calculateMaxPath(node.left));   // ignore negative paths
+            int rightMax = Math.max(0, calculateMaxPath(node.right)); // ignore negative paths
+    
+            // Calculate the path sum including this node and both children
+            int currentPathSum = node.val + leftMax + rightMax;
+    
+            // Update global maximum path sum if current is greater
+            maxPathSum = Math.max(maxPathSum, currentPathSum);
+    
+            // Return the maximum path sum including this node and one child
+            return node.val + Math.max(leftMax, rightMax);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
