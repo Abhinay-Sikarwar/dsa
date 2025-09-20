@@ -1273,3 +1273,85 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 297: SERIALIZE AND DESERIALIZE BINARY TREE
+// LEVEL ORDER TRAVERSAL FOR SERIALIZATION, RECONSTRUCTION FOR DESERIALIZATION
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode(int x) { val = x; }
+     * }
+     */
+    
+    public class Codec {
+    
+        // Encodes a tree to a single string.
+        public String serialize(TreeNode root) {
+            if (root == null)
+                return "null";
+    
+            StringBuilder sb = new StringBuilder();
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+    
+            while (!queue.isEmpty()) {
+                TreeNode node = queue.poll();
+    
+                if (node == null) {
+                    sb.append("null,"); // placeholder for null
+                    continue;
+                }
+    
+                sb.append(node.val).append(","); // append value
+                queue.add(node.left); // add left child
+                queue.add(node.right); // add right child
+            }
+    
+            return sb.toString();
+        }
+    
+        // Decodes your encoded data to tree.
+        public TreeNode deserialize(String data) {
+            if (data.equals("null"))
+                return null;
+    
+            String[] arr = data.split(",");
+            TreeNode root = new TreeNode(Integer.parseInt(arr[0]));
+            Queue<TreeNode> queue = new LinkedList<>();
+            queue.add(root);
+    
+            int i = 1; // index for traversing serialized array
+    
+            while (!queue.isEmpty() && i < arr.length) {
+                TreeNode node = queue.poll();
+    
+                // Process left child
+                if (!arr[i].equals("null")) {
+                    node.left = new TreeNode(Integer.parseInt(arr[i]));
+                    queue.add(node.left);
+                }
+                i++;
+    
+                // Process right child
+                if (i < arr.length && !arr[i].equals("null")) {
+                    node.right = new TreeNode(Integer.parseInt(arr[i]));
+                    queue.add(node.right);
+                }
+                i++;
+            }
+    
+            return root;
+        }
+    }
+    
+    // Your Codec object will be instantiated and called as such:
+    // Codec ser = new Codec();
+    // Codec deser = new Codec();
+    // TreeNode ans = deser.deserialize(ser.serialize(root));
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
