@@ -1355,3 +1355,60 @@
 
     // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
     // 🧠 Space Complexity:  O(n)
+
+    // 968: BINARY TREE CAMERAS
+// POST-ORDER DFS TO DETERMINE CAMERA PLACEMENT BASED ON CHILDREN'S STATES
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        private int cameras = 0;
+    
+        public int minCameraCover(TreeNode root) {
+            // If root is not covered, we need an extra camera
+            if (dfs(root) == 0) {
+                cameras++;
+            }
+            return cameras;
+        }
+    
+        private int dfs(TreeNode node) {
+            if (node == null) return 2; // null nodes are considered covered
+    
+            int left = dfs(node.left);
+            int right = dfs(node.right);
+    
+            if (left == 0 || right == 0) {
+                // If any child is not covered, put a camera here
+                cameras++;
+                return 1;
+            }
+    
+            if (left == 1 || right == 1) {
+                // If any child has a camera, current node is covered
+                return 2;
+            }
+    
+            // Both children are covered but don't have cameras,
+            // so current node is not covered
+            return 0;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n)                 where n = no of nodes in the tree   
+    // 🧠 Space Complexity:  O(n)
+
