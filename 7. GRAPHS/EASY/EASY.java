@@ -44,3 +44,35 @@
 
     //⏱️ time complexity: O(V + E) where V is the number of vertices and E is the number of edges
     //🧠 space complexity: O(V + E) for the adjacency list
+
+    // 997: FIND THE TOWN JUDGE
+// OPTIMAL APPROACH, USING TRUST SCORE
+
+    class Solution {
+        public int findJudge(int n, int[][] trust) {
+            // Array to track trust scores
+            int[] trustScore = new int[n + 1]; // 1-indexed
+    
+            for (int[] relation : trust) {
+                int a = relation[0];
+                int b = relation[1];
+    
+                // a trusts someone -> decrease score
+                trustScore[a]--;
+                // b is trusted -> increase score
+                trustScore[b]++;
+            }
+    
+            // Judge must have score == n-1
+            for (int i = 1; i <= n; i++) {
+                if (trustScore[i] == n - 1) {
+                    return i;
+                }
+            }
+    
+            return -1;
+        }
+    }
+
+    //⏱️ time complexity: O(T) where T is the number of trust relationships
+    //🧠 space complexity: O(N) for the trust score array
