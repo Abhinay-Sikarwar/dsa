@@ -45,4 +45,51 @@
     }
 
     // ⏱️ Time Complexity:  O(rows * columns)
-    // 🧠 Space Complexity:  O(rows * columns) in the worst case,
+    // 🧠 Space Complexity:  O(rows * columns) in the worst case.
+
+    // 130: SURROUNDED REGIONS
+// DFS TO MARK BORDER-CONNECTED 'O's AND FLIP THE REST
+
+    class Solution {
+        public void solve(char[][] board) {
+            int rows = board.length;
+            int cols = board[0].length;
+    
+            // Step 1: Mark border-connected 'O's as temporary ('T')
+            for (int i = 0; i < rows; i++) {
+                dfs(board, i, 0);           // left border
+                dfs(board, i, cols - 1);    // right border
+            }
+            for (int j = 0; j < cols; j++) {
+                dfs(board, 0, j);           // top border
+                dfs(board, rows - 1, j);    // bottom border
+            }
+    
+            // Step 2: Flip remaining 'O' -> 'X', restore 'T' -> 'O'
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
+                    if (board[i][j] == 'O') board[i][j] = 'X'; // capture region
+                    if (board[i][j] == 'T') board[i][j] = 'O'; // restore safe cell
+                }
+            }
+        }
+    
+        // DFS to mark safe 'O's connected to the border
+        private void dfs(char[][] board, int i, int j) {
+            int rows = board.length, cols = board[0].length;
+    
+            // Stop if out of bounds or not an 'O'
+            if (i < 0 || j < 0 || i >= rows || j >= cols || board[i][j] != 'O') return;
+    
+            board[i][j] = 'T'; // mark as safe
+    
+            // Explore 4 directions
+            dfs(board, i + 1, j);
+            dfs(board, i - 1, j);
+            dfs(board, i, j + 1);
+            dfs(board, i, j - 1);
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(rows * columns)
+    // 🧠 Space Complexity:  O(rows * columns) in the worst case.
