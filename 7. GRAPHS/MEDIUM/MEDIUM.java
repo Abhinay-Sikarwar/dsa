@@ -95,3 +95,54 @@
     // 🧠 Space Complexity:  O(rows * columns) in the worst case.
 
     // 133: CLONE GRAPH
+// DFS WITH A HASHMAP TO CLONE NODES AND MAINTAIN MAPPING    
+
+    /*
+    // Definition for a Node.
+    class Node {
+        public int val;
+        public List<Node> neighbors;
+        public Node() {
+            val = 0;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val) {
+            val = _val;
+            neighbors = new ArrayList<Node>();
+        }
+        public Node(int _val, ArrayList<Node> _neighbors) {
+            val = _val;
+            neighbors = _neighbors;
+        }
+    }
+    */
+    
+    class Solution {
+        public Node cloneGraph(Node node) {
+            if (node == null)
+                return null; // empty graph
+    
+            Map<Node, Node> map = new HashMap<>(); // original → cloned mapping
+            return clone(node, map);
+        }
+    
+        private Node clone(Node node, Map<Node, Node> map) {
+            // If node already cloned, return its copy
+            if (map.containsKey(node))
+                return map.get(node);
+    
+            // Create clone of current node
+            Node newNode = new Node(node.val);
+            map.put(node, newNode);
+    
+            // Recursively clone all neighbors
+            for (Node neighbor : node.neighbors) {
+                newNode.neighbors.add(clone(neighbor, map));
+            }
+    
+            return newNode;
+        }
+    }
+    
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of vertices and E is the number of edges.
+    // 🧠 Space Complexity:  O(V) for the hashmap and recursion stack.
