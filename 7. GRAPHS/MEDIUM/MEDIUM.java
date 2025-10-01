@@ -148,3 +148,48 @@
     // 🧠 Space Complexity:  O(V) for the hashmap and recursion stack.
 
     // 207: COURSE SCHEDULE
+// DFS TO DETECT CYCLES IN A DIRECTED GRAPH
+
+    class Solution {
+        public boolean canFinish(int numCourses, int[][] prerequisites) {
+            List<List<Integer>> graph = new ArrayList<>();
+            for (int i = 0; i < numCourses; i++) {
+                graph.add(new ArrayList<>());
+            }
+            for (int[] pre : prerequisites) {
+                graph.get(pre[1]).add(pre[0]); // edge from pre[1] to pre[0]
+            }
+    
+            boolean[] visited = new boolean[numCourses];
+            boolean[] onPath = new boolean[numCourses];
+    
+            for (int i = 0; i < numCourses; i++) {
+                if (!visited[i]) {
+                    if (hasCycle(graph, i, visited, onPath)) {
+                        return false; // cycle detected
+                    }
+                }
+            }
+            return true; // no cycles found
+        }
+    
+        private boolean hasCycle(List<List<Integer>> graph, int node, boolean[] visited, boolean[] onPath) {
+            if (onPath[node]) return true; // cycle detected
+            if (visited[node]) return false; // already processed
+    
+            visited[node] = true;
+            onPath[node] = true;
+    
+            for (int neighbor : graph.get(node)) {
+                if (hasCycle(graph, neighbor, visited, onPath)) {
+                    return true; // cycle detected in recursion
+                }
+            }
+    
+            onPath[node] = false; // backtrack
+            return false; // no cycle found
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of courses and E is the number of prerequisites.
+    // 🧠 Space Complexity:  O(V) for the graph, visited and onPath.
