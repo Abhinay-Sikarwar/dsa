@@ -195,3 +195,54 @@
     // 🧠 Space Complexity:  O(V) for the graph, visited and onPath.
 
     // 210: COURSE SCHEDULE II
+// TOPOLOGICAL SORT USING KAHN'S ALGORITHM (BFS)
+
+    class Solution {
+        public int[] findOrder(int numCourses, int[][] prerequisites) {
+            // Step 1: Build adjacency list and in-degree array
+            List<List<Integer>> graph = new ArrayList<>();
+            int[] inDegree = new int[numCourses];
+    
+            for (int i = 0; i < numCourses; i++) {
+                graph.add(new ArrayList<>());
+            }
+    
+            for (int[] pre : prerequisites) {
+                graph.get(pre[1]).add(pre[0]); // course pre[1] must be taken before pre[0]
+                inDegree[pre[0]]++;           // track number of prerequisites for each course
+            }
+    
+            // Step 2: Initialize queue with courses having no prerequisites
+            Queue<Integer> queue = new LinkedList<>();
+            for (int i = 0; i < numCourses; i++) {
+                if (inDegree[i] == 0) {
+                    queue.offer(i);
+                }
+            }
+    
+            int[] topoOrder = new int[numCourses];
+            int idx = 0;
+    
+            // Step 3: Process courses in topological order (BFS)
+            while (!queue.isEmpty()) {
+                int course = queue.poll();
+                topoOrder[idx++] = course;
+    
+                for (int neighbor : graph.get(course)) {
+                    inDegree[neighbor]--;       // one prerequisite completed
+                    if (inDegree[neighbor] == 0) {
+                        queue.offer(neighbor);  // course is now available
+                    }
+                }
+            }
+    
+            // Step 4: If not all courses are scheduled → cycle detected
+            if (idx != numCourses) {
+                return new int[0]; // no valid order
+            }
+            return topoOrder;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of courses and E is the number of prerequisites.
+    // 🧠 Space Complexity:  O(V + E) for the graph and inDegree Array.
