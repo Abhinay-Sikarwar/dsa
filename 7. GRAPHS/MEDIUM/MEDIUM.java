@@ -248,3 +248,54 @@
     // 🧠 Space Complexity:  O(V + E) for the graph and inDegree Array.
 
     // 261: GRAPH VALID TREE
+// DFS TO CHECK FOR CYCLES AND CONNECTIVITY IN AN UNDIRECTED GRAPH
+
+    class Solution {
+        public boolean validTree(int n, int[][] edges) {
+            // Step 1: Build adjacency list
+            List<List<Integer>> graph = new ArrayList<>();
+            for (int i = 0; i < n; i++) {
+                graph.add(new ArrayList<>());
+            }
+    
+            for (int[] edge : edges) {
+                int u = edge[0];
+                int v = edge[1];
+                graph.get(u).add(v);
+                graph.get(v).add(u);
+            }
+    
+            // Step 2: DFS to check for cycles and connectivity
+            boolean[] visited = new boolean[n];
+            if (hasCycle(graph, 0, -1, visited)) {
+                return false; // cycle detected
+            }
+    
+            // Step 3: Check if all nodes are connected
+            for (boolean v : visited) {
+                if (!v) return false; // disconnected node found
+            }
+    
+            return true; // valid tree
+        }
+    
+        // Helper function to detect cycle using DFS
+        private boolean hasCycle(List<List<Integer>> graph, int node, int parent, boolean[] visited) {
+            visited[node] = true;
+    
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    if (hasCycle(graph, neighbor, node, visited)) {
+                        return true; // cycle found in recursion
+                    }
+                } else if (neighbor != parent) {
+                    return true; // back-edge found → cycle
+                }
+            }
+    
+            return false; // no cycle
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of nodes and E is the number of edges.
+    // 🧠 Space Complexity:  O(V + E) for the graph and recursion
