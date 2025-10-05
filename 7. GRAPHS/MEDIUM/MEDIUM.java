@@ -364,3 +364,67 @@
 
     // ⏱️ Time Complexity:  O(E) per query in the worst case, where E is the number of edges.
     // 🧠 Space Complexity:  O(V + E) for the graph and recursion.
+
+    // 417: PACIFIC ATLANTIC WATER FLOW
+// DFS FROM OCEAN BORDERS TO FIND CELLS REACHABLE BY BOTH OCEANS
+
+    class Solution {
+        private int rows, columns;
+        private int[][] directions = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } }; // 4 possible movement directions
+    
+        public List<List<Integer>> pacificAtlantic(int[][] heights) {
+            rows = heights.length;
+            columns = heights[0].length;
+            boolean[][] pacific = new boolean[rows][columns]; // Cells reachable from Pacific Ocean
+            boolean[][] atlantic = new boolean[rows][columns]; // Cells reachable from Atlantic Ocean
+    
+            // Run DFS from all Pacific-border cells (top row + left column)
+            for (int j = 0; j < columns; j++)
+                dfs(0, j, heights, pacific);
+            for (int i = 0; i < rows; i++)
+                dfs(i, 0, heights, pacific);
+    
+            // Run DFS from all Atlantic-border cells (bottom row + right column)
+            for (int j = 0; j < columns; j++)
+                dfs(rows - 1, j, heights, atlantic);
+            for (int i = 0; i < rows; i++)
+                dfs(i, columns - 1, heights, atlantic);
+    
+            List<List<Integer>> result = new ArrayList<>();
+            // Collect cells reachable by both oceans
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < columns; j++) {
+                    if (pacific[i][j] && atlantic[i][j]) {
+                        result.add(Arrays.asList(i, j));
+                    }
+                }
+            }
+            return result;
+        }
+    
+        // DFS to explore all cells reachable from a given ocean border
+        private void dfs(int i, int j, int[][] heights, boolean[][] visited) {
+            if (visited[i][j]) // already visited -> skip
+                return;
+            visited[i][j] = true; // mark current cell as reachable
+    
+            // Explore all 4 directions (up, down, left, right)
+            for (int[] direction : directions) {
+                int x = i + direction[0], y = j + direction[1];
+    
+                // Skip out-of-bounds coordinates
+                if (x < 0 || x >= rows || y < 0 || y >= columns)
+                    continue;
+    
+                // Only move to neighbor if its height is >= current cell (reverse flow)
+                if (heights[x][y] < heights[i][j])
+                    continue;
+    
+                // Continue DFS from the neighbor
+                dfs(x, y, heights, visited);
+            }
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(rows * columns)
+    // 🧠 Space Complexity:  O(rows * columns) for the visited arrays and recursion.
