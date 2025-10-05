@@ -298,6 +298,69 @@
     }
 
     // ⏱️ Time Complexity:  O(V + E) where V is the number of nodes and E is the number of edges.
-    // 🧠 Space Complexity:  O(V + E) for the graph and recursion
+    // 🧠 Space Complexity:  O(V + E) for the graph and recursion.
 
     // 399: EVALUATE DIVISION
+// DFS TO FIND PATH PRODUCTS IN A WEIGHTED DIRECTED GRAPH
+
+    class Solution {
+        public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+            // Build graph: variable -> (neighbor -> ratio)
+            Map<String, Map<String, Double>> graph = new HashMap<>();
+    
+            for (int i = 0; i < equations.size(); i++) {
+                String A = equations.get(i).get(0);
+                String B = equations.get(i).get(1);
+                double val = values[i];
+    
+                graph.putIfAbsent(A, new HashMap<>());
+                graph.putIfAbsent(B, new HashMap<>());
+    
+                graph.get(A).put(B, val); // A / B = val
+                graph.get(B).put(A, 1.0 / val); // B / A = 1/val
+            }
+    
+            double[] results = new double[queries.size()];
+    
+            // Evaluate each query using DFS
+            for (int i = 0; i < queries.size(); i++) {
+                String start = queries.get(i).get(0);
+                String end = queries.get(i).get(1);
+    
+                if (!graph.containsKey(start) || !graph.containsKey(end)) {
+                    results[i] = -1.0; // Undefined variable
+                } else if (start.equals(end)) {
+                    results[i] = 1.0; // Same variable
+                } else {
+                    results[i] = dfs(graph, start, end, 1.0, new HashSet<>());
+                }
+            }
+    
+            return results;
+        }
+    
+        // DFS to find path product from curr -> target
+        private double dfs(Map<String, Map<String, Double>> graph, String curr, String target,
+                double accProduct, Set<String> visited) {
+            if (curr.equals(target))
+                return accProduct; // Found target
+    
+            visited.add(curr);
+    
+            for (Map.Entry<String, Double> neighbor : graph.get(curr).entrySet()) {
+                String next = neighbor.getKey();
+                double weight = neighbor.getValue();
+    
+                if (!visited.contains(next)) {
+                    double result = dfs(graph, next, target, accProduct * weight, visited);
+                    if (result != -1.0)
+                        return result; // Valid path found
+                }
+            }
+    
+            return -1.0; // No path exists
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(E) per query in the worst case, where E is the number of edges.
+    // 🧠 Space Complexity:  O(V + E) for the graph and recursion.
