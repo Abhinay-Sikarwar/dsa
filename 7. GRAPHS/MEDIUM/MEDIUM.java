@@ -492,3 +492,5 @@
 
     // ⏱️ Time Complexity:  O((V + E) log V) where V is the number of nodes and E is the number of edges.
     // 🧠 Space Complexity:  O(V + E) for the graph and distance Array.
+
+    // 785: IS GRAPH BIPARTITE?
