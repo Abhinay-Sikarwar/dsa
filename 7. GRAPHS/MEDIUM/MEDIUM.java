@@ -430,3 +430,65 @@
     // 🧠 Space Complexity:  O(rows * columns) for the visited arrays and recursion.
 
     // 743: NETWORK DELAY TIME
+// DIJKSTRA'S ALGORITHM USING A MIN-HEAP TO FIND SHORTEST PATHS IN A WEIGHTED DIRECTED GRAPH
+
+    class Solution {
+        public int networkDelayTime(int[][] times, int n, int k) {
+            // Step 1: Build adjacency list representation of the graph
+            Map<Integer, List<int[]>> graph = new HashMap<>();
+            for (int[] edge : times) {
+                graph.computeIfAbsent(edge[0], x -> new ArrayList<>())
+                     .add(new int[]{edge[1], edge[2]}); // edge: (targetNode, travelTime)
+            }
+    
+            // Step 2: Initialize distance array with infinity
+            int[] dist = new int[n + 1];
+            Arrays.fill(dist, Integer.MAX_VALUE);
+            dist[k] = 0; // distance to source node is 0
+    
+            // Min-heap / priority queue: stores pairs (currentTime, node)
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+            pq.offer(new int[]{0, k}); // start from node k at time 0
+    
+            // Step 3: Dijkstra’s algorithm
+            while (!pq.isEmpty()) {
+                // Get the node with the smallest current known time
+                int[] cur = pq.poll();
+                int time = cur[0]; // time taken to reach this node so far
+                int node = cur[1];
+    
+                // If we’ve already found a shorter way before, skip this one
+                if (time > dist[node]) continue;
+    
+                // Explore all outgoing edges from this node
+                // For each neighbor, calculate the total time to reach it
+                if (graph.containsKey(node)) {
+                    for (int[] neighbour : graph.get(node)) {
+                        int next = neighbour[0];
+                        int weight = neighbour[1];
+    
+                        // Total time to reach neighbor = current node time + edge weight
+                        int newTime = time + weight;
+    
+                        // If this path is faster than what we knew before, update it
+                        if (newTime < dist[next]) {
+                            dist[next] = newTime;
+                            pq.offer(new int[]{newTime, next}); // push updated path into heap
+                        }
+                    }
+                }
+            }
+    
+            // Step 4: Find the maximum time among all reachable nodes
+            int maxTime = 0;
+            for (int i = 1; i <= n; i++) {
+                if (dist[i] == Integer.MAX_VALUE) return -1; // some node unreachable
+                maxTime = Math.max(maxTime, dist[i]);
+            }
+    
+            return maxTime;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O((V + E) log V) where V is the number of nodes and E is the number of edges.
+    // 🧠 Space Complexity:  O(V + E) for the graph and distance Array.
