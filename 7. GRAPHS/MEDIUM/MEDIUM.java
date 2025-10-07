@@ -494,3 +494,41 @@
     // 🧠 Space Complexity:  O(V + E) for the graph and distance Array.
 
     // 785: IS GRAPH BIPARTITE?
+// DFS TO COLOR THE GRAPH AND CHECK FOR CONFLICTS
+
+    class Solution {
+        public boolean isBipartite(int[][] graph) {
+            int n = graph.length;
+            int[] color = new int[n];
+            Arrays.fill(color, -1); // Initialize all nodes as uncolored (-1)
+    
+            // Check each component of the graph
+            for (int i = 0; i < n; i++) {
+                // If node is uncolored, start DFS with color 0
+                if (color[i] == -1 && !coloring(i, 0, color, graph)) {
+                    return false; // Not bipartite if coloring fails
+                }
+            }
+            return true; // All components are bipartite
+        }
+    
+        private boolean coloring(int node, int colour, int[] color, int[][] graph) {
+            color[node] = colour; // Assign color to current node
+    
+            for (int neighbor : graph[node]) {
+                if (color[neighbor] == -1) {
+                    // Color unvisited neighbor with alternate color
+                    if (!coloring(neighbor, 1 - colour, color, graph))
+                        return false;
+                }
+                // If neighbor has same color, not bipartite
+                else if (color[neighbor] == color[node]) {
+                    return false;
+                }
+            }
+            return true; // Valid coloring for this path
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of vertices and E is the number of edges.
+    // 🧠 Space Complexity:  O(V) for the color array and recursion stack.
