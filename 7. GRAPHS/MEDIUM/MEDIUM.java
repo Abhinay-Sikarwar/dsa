@@ -534,3 +534,37 @@
     // 🧠 Space Complexity:  O(V) for the color array and recursion stack.
 
     // 841: KEYS AND ROOMS
+// DFS TO CHECK IF ALL ROOMS ARE ACCESSIBLE
+
+    class Solution {
+        public boolean canVisitAllRooms(List<List<Integer>> rooms) {
+            int n = rooms.size();
+            boolean[] visited = new boolean[n];
+    
+            // Start DFS from room 0
+            dfs(0, rooms, visited);
+    
+            // Check if all rooms are visited
+            for (boolean v : visited) {
+                if (!v)
+                    return false;
+            }
+            return true;
+        }
+    
+        private void dfs(int room, List<List<Integer>> rooms, boolean[] visited) {
+            // Mark current room as visited
+            visited[room] = true;
+    
+            // Visit all rooms for which we have keys
+            for (int key : rooms.get(room)) {
+                if (!visited[key]) {
+                    dfs(key, rooms, visited);
+                }
+            }
+    
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of rooms and E is the total number of keys.
+    // 🧠 Space Complexity:  O(V) for the visited array and recursion stack.
