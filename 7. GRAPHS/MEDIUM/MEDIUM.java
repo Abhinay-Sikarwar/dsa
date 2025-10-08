@@ -568,3 +568,50 @@
 
     // ⏱️ Time Complexity:  O(V + E) where V is the number of rooms and E is the total number of keys.
     // 🧠 Space Complexity:  O(V) for the visited array and recursion stack.
+
+    // 886: POSSIBLE BIPARTITION
+// DFS TO COLOR THE GRAPH AND CHECK FOR CONFLICTS    
+    
+    class Solution {
+        public boolean possibleBipartition(int n, int[][] dislikes) {
+            // Build adjacency list (1-based indexing)
+            List<List<Integer>> graph = new ArrayList<>();
+            for (int i = 0; i <= n; i++)
+                graph.add(new ArrayList<>());
+    
+            // Add edges (dislike relationships are mutual)
+            for (int[] d : dislikes) {
+                graph.get(d[0]).add(d[1]);
+                graph.get(d[1]).add(d[0]);
+            }
+    
+            // grouping[i] = 0/1 → group ID, -1 → unassigned
+            int[] grouping = new int[n + 1];
+            Arrays.fill(grouping, -1);
+    
+            // Try to color each disconnected component
+            for (int i = 1; i <= n; i++) {
+                if (grouping[i] == -1 && !partitioning(i, 0, grouping, graph))
+                    return false;
+            }
+            return true;
+        }
+    
+        // DFS to assign groups alternately
+        private boolean partitioning(int node, int group, int[] grouping, List<List<Integer>> graph) {
+            grouping[node] = group;
+    
+            for (int neighbor : graph.get(node)) {
+                if (grouping[neighbor] == -1) {
+                    if (!partitioning(neighbor, 1 - group, grouping, graph))
+                        return false;
+                } else if (grouping[neighbor] == grouping[node]) {
+                    return false; // conflict: same group as disliked person
+                }
+            }
+            return true;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(V + E) where V is the number of people and E is the number of dislike pairs.
+    // 🧠 Space Complexity:  O(V + E) for the graph and grouping.
