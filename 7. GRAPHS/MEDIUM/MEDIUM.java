@@ -617,3 +617,55 @@
     // 🧠 Space Complexity:  O(V + E) for the graph and grouping.
 
     // 994: ROTTING ORANGES
+// BFS TO SPREAD ROT FROM ROTTEN ORANGES AND COUNT MINUTES
+
+    class Solution {
+        public int orangesRotting(int[][] grid) {
+            int rows = grid.length, cols = grid[0].length;
+            Queue<int[]> queue = new LinkedList<>();
+            int fresh = 0;
+    
+            // Initialize: add rotten oranges to queue, count fresh oranges
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < cols; c++) {
+                    if (grid[r][c] == 2)
+                        queue.offer(new int[] { r, c });
+                    else if (grid[r][c] == 1)
+                        fresh++;
+                }
+            }
+    
+            // No fresh oranges to rot
+            if (fresh == 0)
+                return 0;
+    
+            int minutes = 0;
+            int[][] dirs = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } }; // 4-directional movement
+    
+            while (!queue.isEmpty()) {
+                int size = queue.size();
+                // Process current level (all rotten oranges at this minute)
+                for (int i = 0; i < size; i++) {
+                    int[] cell = queue.poll();
+                    for (int[] d : dirs) {
+                        int nrow = cell[0] + d[0], ncol = cell[1] + d[1];
+                        // Infect fresh neighbor
+                        if (nrow >= 0 && nrow < rows && ncol >= 0 && ncol < cols && grid[nrow][ncol] == 1) {
+                            grid[nrow][ncol] = 2;
+                            queue.offer(new int[] { nrow, ncol });
+                            fresh--;
+                        }
+                    }
+                }
+                // Increment minutes only if new oranges were infected
+                if (!queue.isEmpty())
+                    minutes++;
+            }
+    
+            // Return -1 if some fresh oranges can't rot
+            return fresh == 0 ? minutes : -1;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(rows * columns)
+    // 🧠 Space Complexity:  O(rows * columns) in the worst case
