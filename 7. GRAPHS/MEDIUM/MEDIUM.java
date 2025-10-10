@@ -671,3 +671,40 @@
     // 🧠 Space Complexity:  O(rows * columns) in the worst case
 
     // 787: CHEAPEST FLIGHTS WITHIN K STOPS
+// BELLMAN-FORD ALGORITHM TO FIND SHORTEST PATH WITH AT MOST K EDGES
+
+    class Solution {
+        public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+            // Step 1: Initialize distances to all cities as "infinity"
+            int[] dist = new int[n];
+            Arrays.fill(dist, Integer.MAX_VALUE);
+            dist[src] = 0; // source city cost is 0
+    
+            // Step 2: Relax all edges up to (k + 1) times
+            for (int i = 0; i <= k; i++) {
+                // Copy of the current distance array
+                int[] newDist = Arrays.copyOf(dist, n);
+    
+                // Step 3: Relax each edge (u -> v with price)
+                for (int[] flight : flights) {
+                    int u = flight[0]; // from
+                    int v = flight[1]; // to
+                    int price = flight[2];
+    
+                    // Only relax if u is reachable
+                    if (dist[u] != Integer.MAX_VALUE && dist[u] + price < newDist[v]) {
+                        newDist[v] = dist[u] + price;
+                    }
+                }
+    
+                // Step 4: Update distances for next round
+                dist = newDist;
+            }
+    
+            // Step 5: Return the cheapest cost to reach dst, or -1 if unreachable
+            return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(k * E) where E is the number of flights.
+    // 🧠 Space Complexity:  O(V) for the distance array.
