@@ -708,3 +708,56 @@
 
     // ⏱️ Time Complexity:  O(k * E) where E is the number of flights.
     // 🧠 Space Complexity:  O(V) for the distance array.
+
+    // 684: REDUNDANT CONNECTION
+// DFS TO DETECT CYCLES IN A DIRECTED GRAPH
+
+    class Solution {
+        public int[] findRedundantConnection(int[][] edges) {
+            int n = edges.length;
+            int[] parent = new int[n + 1];
+            int[] rank = new int[n + 1];
+    
+            // Initialize parent and rank arrays
+            for (int i = 1; i <= n; i++)
+                parent[i] = i;
+    
+            // Process each edge
+            for (int[] edge : edges) {
+                int u = edge[0], v = edge[1];
+                if (!union(u, v, parent, rank))
+                    return edge; // cycle found
+            }
+            return new int[0];
+        }
+    
+        // Union-Find helper methods
+        private int find(int x, int[] parent) {
+            return parent[x] == x ? x : (parent[x] = find(parent[x], parent)); // path compression
+        }
+    
+        // Union two sets
+        private boolean union(int x, int y, int[] parent, int[] rank) {
+            int px = find(x, parent); // find root of x
+            int py = find(y, parent); // find root of y
+    
+            // If both nodes share the same root, they are already connected
+            if (px == py)
+                return false;
+    
+            // Otherwise, merge the two sets based on rank (tree height)
+            if (rank[px] < rank[py]) {
+                parent[px] = py; // attach smaller tree (px) under larger one (py)
+            } else if (rank[px] > rank[py]) {
+                parent[py] = px; // attach smaller tree (py) under larger one (px)
+            } else {
+                parent[py] = px; // ranks are equal → choose one as root
+                rank[px]++; // increment rank since its height increases
+            }
+    
+            return true;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(E * α(V)) where E is the number of edges, V is the number of vertices, and α is the inverse Ackermann function.
+    // 🧠 Space Complexity:  O(V) for the parent and rank arrays.
