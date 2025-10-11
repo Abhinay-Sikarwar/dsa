@@ -763,3 +763,58 @@
     // 🧠 Space Complexity:  O(V) for the parent and rank arrays.
 
     // 947: MOST STONES REMOVED WITH SAME ROW OR COLUMN
+// UNION-FIND TO GROUP STONES BY ROW/COLUMN AND COUNT CONNECTED COMPONENTS
+
+    class Solution {
+        // Disjoint Set Union (Union-Find)
+        public class DSU {
+            private Map<Integer, Integer> parent = new HashMap<>();
+    
+            // find with path compression
+            int find(int x) {
+                parent.putIfAbsent(x, x);
+                if (parent.get(x) != x) {
+                    parent.put(x, find(parent.get(x)));
+                }
+                return parent.get(x);
+            }
+    
+            // union two nodes
+            void union(int x, int y) {
+                int rootX = find(x);
+                int rootY = find(y);
+                if (rootX != rootY) {
+                    parent.put(rootX, rootY);
+                }
+            }
+    
+            // count distinct roots
+            int countRoots() {
+                Set<Integer> roots = new HashSet<>();
+                for (int key : parent.keySet()) {
+                    roots.add(find(key));
+                }
+                return roots.size();
+            }
+        }
+    
+        public int removeStones(int[][] stones) {
+            final int OFFSET = 10001; // ensures unique separation of rows/columns
+            DSU dsu = new DSU();
+    
+            for (int[] stone : stones) {
+                int x = stone[0];
+                int y = stone[1] + OFFSET;
+                dsu.union(x, y);
+            }
+    
+            // number of connected components
+            int components = dsu.countRoots();
+    
+            // removable stones = total - components
+            return stones.length - components;
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(N * α(N)) where N is the number of stones and α is the inverse Ackermann function.
+    // 🧠 Space Complexity:  O(N) for the DSU structure.
