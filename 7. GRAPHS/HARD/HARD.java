@@ -60,3 +60,67 @@
     // 🧠 Space Complexity: O(N) for word sets used in BFS.
 
     // 269: ALIEN DICTIONARY
+// TOPOLOGICAL SORT USING BFS TO DETERMINE CHARACTER ORDER
+
+    class Solution {
+        public String foreignDictionary(String[] words) {
+            Map<Character, Set<Character>> graph = new HashMap<>(); // Graph: char -> set of chars that come after it
+            Map<Character, Integer> indegree = new HashMap<>();   // In-degree of each char
+    
+            // Initialize graph nodes and indegrees
+            for (String word : words) {
+                for (char c : word.toCharArray()) {
+                    graph.putIfAbsent(c, new HashSet<>());
+                    indegree.putIfAbsent(c, 0);
+                }
+            }
+    
+            // Build graph by comparing adjacent words
+            for (int i = 0; i < words.length - 1; i++) {
+                String w1 = words[i];
+                String w2 = words[i + 1];
+                int minLen = Math.min(w1.length(), w2.length());
+    
+                // Check invalid case: prefix longer than next word
+                if (w1.length() > w2.length() &&
+                    w1.substring(0, minLen).equals(w2.substring(0, minLen))) {
+                    return "";
+                }
+    
+                // Find first differing character and create edge
+                for (int j = 0; j < minLen; j++) {
+                    if (w1.charAt(j) != w2.charAt(j)) {
+                        if (!graph.get(w1.charAt(j)).contains(w2.charAt(j))) {
+                            graph.get(w1.charAt(j)).add(w2.charAt(j));
+                            indegree.put(w2.charAt(j), indegree.get(w2.charAt(j)) + 1);
+                        }
+                        break; // Only the first difference matters
+                    }
+                }
+            }
+    
+            // Topological sort using BFS
+            Queue<Character> q = new LinkedList<>();
+            for (char c : indegree.keySet()) {
+                if (indegree.get(c) == 0) q.offer(c);
+            }
+    
+            StringBuilder res = new StringBuilder();
+            while (!q.isEmpty()) {
+                char char_ = q.poll();
+                res.append(char_);
+                for (char neighbor : graph.get(char_)) {
+                    indegree.put(neighbor, indegree.get(neighbor) - 1);
+                    if (indegree.get(neighbor) == 0) q.offer(neighbor);
+                }
+            }
+    
+            // Check for cycle
+            if (res.length() != indegree.size()) return "";
+    
+            return res.toString();
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(C) where C is the total number of characters in all words.
+    // 🧠 Space Complexity: O(1) since the character set is fixed 
