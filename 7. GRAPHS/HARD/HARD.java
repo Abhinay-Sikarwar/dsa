@@ -191,3 +191,5 @@
     // ⏱️ Time Complexity: O(M * 4 * 3^(L - 1))  where M = total cells in the board, L = max word length.
     //     Each DFS explores at most 4 * 3^(L-1) paths, but Trie pruning helps cut down unnecessary searches.
     // 🧠 Space Complexity: O(N + L)  N = total characters in all words (for Trie), L = recursion depth (path length on board).
+
+    // 1192: CRITICAL CONNECTIONS IN A NETWORK
