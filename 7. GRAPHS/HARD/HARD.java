@@ -124,3 +124,70 @@
 
     // ⏱️ Time Complexity:  O(C) where C is the total number of characters in all words.
     // 🧠 Space Complexity: O(1) since the character set is fixed 
+
+    // 212: WORD SEARCH II
+// TRIE + DFS TO FIND ALL WORDS IN BOARD
+
+    class Solution {
+        // Trie node representing each prefix in dictionary
+        private class TrieNode {
+            TrieNode[] children = new TrieNode[26];
+            String word; // non-null when a complete word ends here
+        }
+    
+        public List<String> findWords(char[][] board, String[] words) {
+            TrieNode root = buildTrie(words);  // build trie of all words
+            Set<String> res = new HashSet<>();
+            int m = board.length, n = board[0].length;
+    
+            // Start DFS from every cell on the board
+            for (int i = 0; i < m; i++)
+                for (int j = 0; j < n; j++)
+                    dfs(board, i, j, root, res);
+    
+            return new ArrayList<>(res);
+        }
+    
+        private void dfs(char[][] b, int i, int j, TrieNode node, Set<String> res) {
+            // Stop if out of bounds or already visited
+            if (i < 0 || j < 0 || i >= b.length || j >= b[0].length) return;
+            char c = b[i][j];
+            if (c == '#' || node.children[c - 'a'] == null) return; // invalid path
+    
+            node = node.children[c - 'a'];
+            if (node.word != null) {           // found a complete word
+                res.add(node.word);
+                node.word = null;              // avoid duplicates
+            }
+    
+            b[i][j] = '#';                     // mark current cell as visited
+    
+            // Explore all 4 directions (up, down, left, right)
+            dfs(b, i + 1, j, node, res);
+            dfs(b, i - 1, j, node, res);
+            dfs(b, i, j + 1, node, res);
+            dfs(b, i, j - 1, node, res);
+    
+            b[i][j] = c;                       // backtrack: restore cell
+        }
+    
+        // Builds a Trie for fast prefix and word lookup
+        private TrieNode buildTrie(String[] words) {
+            TrieNode root = new TrieNode();
+            for (String w : words) {
+                TrieNode node = root;
+                for (char c : w.toCharArray()) {
+                    int idx = c - 'a';
+                    if (node.children[idx] == null)
+                        node.children[idx] = new TrieNode();
+                    node = node.children[idx];
+                }
+                node.word = w;                 // mark end of the word
+            }
+            return root;
+        }
+    }
+
+    // ⏱️ Time Complexity: O(M * 4 * 3^(L - 1))  where M = total cells in the board, L = max word length.
+    //     Each DFS explores at most 4 * 3^(L-1) paths, but Trie pruning helps cut down unnecessary searches.
+    // 🧠 Space Complexity: O(N + L)  N = total characters in all words (for Trie), L = recursion depth (path length on board).
