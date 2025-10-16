@@ -246,3 +246,5 @@
 
     // ⏱️ Time Complexity: O(V + E) where V is the number of vertices and E is the number of edges.
     // 🧠 Space Complexity: O(V + E) for the adjacency list and recursion.
+
+    // 721: ACCOUNTS MERGE
