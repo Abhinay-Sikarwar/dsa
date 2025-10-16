@@ -193,3 +193,56 @@
     // 🧠 Space Complexity: O(N + L)  N = total characters in all words (for Trie), L = recursion depth (path length on board).
 
     // 1192: CRITICAL CONNECTIONS IN A NETWORK
+// TARJAN'S ALGORITHM TO FIND ALL BRIDGES IN AN UNDIRECTED GRAPH
+
+    class Solution {
+        private int time = 0;
+        private List<List<Integer>> adj;
+        private List<List<Integer>> bridges;
+    
+        public List<List<Integer>> criticalConnections(int n, List<List<Integer>> connections) {
+            adj = new ArrayList<>();
+            bridges = new ArrayList<>();
+    
+            // Build adjacency list
+            for (int i = 0; i < n; i++)
+                adj.add(new ArrayList<>());
+            for (List<Integer> edge : connections) {
+                int u = edge.get(0), v = edge.get(1);
+                adj.get(u).add(v);
+                adj.get(v).add(u);
+            }
+    
+            int[] disc = new int[n];
+            int[] low = new int[n];
+            Arrays.fill(disc, -1); // mark all nodes unvisited
+    
+            // Run DFS from node 0 (graph is connected as per problem)
+            dfs(0, -1, disc, low);
+    
+            return bridges;
+        }
+    
+        private void dfs(int u, int parent, int[] disc, int[] low) {
+            disc[u] = low[u] = time++;
+    
+            for (int v : adj.get(u)) {
+                if (v == parent)
+                    continue; // skip parent edge
+    
+                if (disc[v] == -1) { // unvisited
+                    dfs(v, u, disc, low);
+                    low[u] = Math.min(low[u], low[v]);
+    
+                    if (low[v] > disc[u]) // bridge condition
+                        bridges.add(Arrays.asList(u, v));
+                } else {
+                    // back edge
+                    low[u] = Math.min(low[u], disc[v]);
+                }
+            }
+        }
+    }
+
+    // ⏱️ Time Complexity: O(V + E) where V is the number of vertices and E is the number of edges.
+    // 🧠 Space Complexity: O(V + E) for the adjacency list and recursion.
