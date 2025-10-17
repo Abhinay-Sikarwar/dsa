@@ -248,3 +248,65 @@
     // 🧠 Space Complexity: O(V + E) for the adjacency list and recursion.
 
     // 721: ACCOUNTS MERGE
+// UNION-FIND TO MERGE ACCOUNTS BASED ON COMMON EMAILS
+
+    class Solution {
+        public List<List<String>> accountsMerge(List<List<String>> accounts) {
+            Map<String, String> emailToName = new HashMap<>();  // Map email -> owner name
+            Map<String, String> parent = new HashMap<>();       // Union-Find parent map
+    
+            // Step 1: Initialize parent for union-find and map emails to names
+            for (List<String> account : accounts) {
+                String name = account.get(0);
+                for (int i = 1; i < account.size(); i++) {
+                    String email = account.get(i);
+                    parent.putIfAbsent(email, email);
+                    emailToName.put(email, name);
+                }
+            }
+    
+            // Step 2: Union emails in the same account
+            for (List<String> account : accounts) {
+                String firstEmail = account.get(1);
+                for (int i = 2; i < account.size(); i++) {
+                    union(parent, firstEmail, account.get(i));
+                }
+            }
+    
+            // Step 3: Group emails by root parent
+            Map<String, TreeSet<String>> groups = new HashMap<>();
+            for (String email : parent.keySet()) {
+                String root = find(parent, email);
+                groups.computeIfAbsent(root, x -> new TreeSet<>()).add(email); // TreeSet sorts emails
+            }
+    
+            // Step 4: Build result
+            List<List<String>> result = new ArrayList<>();
+            for (String root : groups.keySet()) {
+                List<String> mergedAccount = new ArrayList<>();
+                mergedAccount.add(emailToName.get(root));  // Add account owner
+                mergedAccount.addAll(groups.get(root));    // Add sorted emails
+                result.add(mergedAccount);
+            }
+    
+            return result;
+        }
+    
+        private String find(Map<String, String> parent, String email) {
+            if (!parent.get(email).equals(email)) {
+                parent.put(email, find(parent, parent.get(email))); // Path compression
+            }
+            return parent.get(email);
+        }
+    
+        private void union(Map<String, String> parent, String email1, String email2) {
+            String root1 = find(parent, email1);
+            String root2 = find(parent, email2);
+            if (!root1.equals(root2)) {
+                parent.put(root1, root2);
+            }
+        }
+    }
+
+    // ⏱️ Time Complexity: O(A * log A) where A is the total number of emails across all accounts.
+    // 🧠 Space Complexity: O(A) for the union-find structure and email mappings.
