@@ -70,3 +70,33 @@
 
     //⏱️ time complexity: O(k log n) where n is matrix.length.
     //🧠 space complexity: O(n) for the heap.
+
+    // 973: K-CLOSEST POINTS TO ORIGIN
+// MAX-HEAP TO TRACK K CLOSEST POINTS
+
+    class Solution {
+        public int[][] kClosest(int[][] points, int k) {
+            // Max-heap storing points by descending distance from origin
+            PriorityQueue<int[]> pq = new PriorityQueue<>(
+                (a, b) -> (b[0] * b[0] + b[1] * b[1]) - (a[0] * a[0] + a[1] * a[1])
+            );
+    
+            // Add each point to the heap
+            for (int[] p : points) {
+                pq.offer(p);
+                // Keep only k closest points in the heap
+                if (pq.size() > k) pq.poll();
+            }
+    
+            // Extract k closest points from the heap
+            int[][] res = new int[k][2];
+            for (int i = 0; i < k; i++) {
+                res[i] = pq.poll();
+            }
+    
+            return res;
+        }
+    }
+
+    //⏱️ time complexity: O(N log k) where N is points.length.
+    //🧠 space complexity: O(k) for the heap.
