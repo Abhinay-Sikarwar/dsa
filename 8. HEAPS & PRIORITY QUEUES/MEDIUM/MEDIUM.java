@@ -36,3 +36,37 @@
     
     //⏱️ time complexity: O(N log k) where N is nums.length, K elements in heap.
     //🧠 space complexity: O(N) for freqMap.
+
+    // 378: KTH SMALLEST ELEMENT IN A SORTED MATRIX
+// MIN-HEAP TO TRACK NEXT SMALLEST ELEMENT
+
+    class Solution {
+        public int kthSmallest(int[][] matrix, int k) {
+            int n = matrix.length;
+    
+            // Min-heap: each element is [value, row, col]
+            PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[0] - b[0]);
+    
+            // Add first element of each row to the heap
+            for (int i = 0; i < n; i++) {
+                pq.offer(new int[] { matrix[i][0], i, 0 });
+            }
+    
+            // Extract-min k times
+            int val = 0;
+            for (int count = 0; count < k; count++) {
+                int[] cur = pq.poll();
+                val = cur[0];
+                int row = cur[1], col = cur[2];
+    
+                // Push next element in the same row
+                if (col + 1 < n) {
+                    pq.offer(new int[] { matrix[row][col + 1], row, col + 1 });
+                }
+            }
+            return val;
+        }
+    }
+
+    //⏱️ time complexity: O(k log n) where n is matrix.length.
+    //🧠 space complexity: O(n) for the heap.
