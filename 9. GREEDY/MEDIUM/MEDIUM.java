@@ -60,3 +60,27 @@
 
     //⏱️ TIME COMPLEXITY: O(N) single pass through the array.
     //🧠 SPACE COMPLEXITY: O(1) constant extra variables.
+
+    // 406. QUEUE RECONSTRUCTION BY HEIGHT
+// SORT BY HEIGHT DESC, THEN INSERT EACH PERSON AT INDEX = K.
+
+    class Solution {
+        public int[][] reconstructQueue(int[][] people) {
+            // Sort by height desc, and if equal height, by k asc
+            PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[0] == b[0] ? a[1] - b[1] : b[0] - a[0]);
+            for(int[] p : people) queue.offer(p);
+    
+            // Insert each person into the list at index = k
+            List<int[]> reOrdList = new LinkedList<>();
+            while(!queue.isEmpty()){
+                int[] person = queue.poll();
+                reOrdList.add(person[1], person);  // insert at index k
+            }
+    
+            // Convert list to array
+            return reOrdList.toArray(new int[people.length][2]);
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(N log N) for sorting and O(N^2) for insertions in the worst case.
+    //🧠 SPACE COMPLEXITY: O(N) for the priority queue and list.
