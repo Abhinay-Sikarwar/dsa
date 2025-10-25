@@ -86,3 +86,28 @@
     //🧠 SPACE COMPLEXITY: O(N) for the priority queue and list.
 
     // 452. MINIMUM NUMBER OF ARROWS TO BURST BALLOONS
+// SORT BY END COORDINATE, GREEDILY SHOOT ARROWS AT THE END OF BALLOONS.
+
+    class Solution {
+        public int findMinArrowShots(int[][] points) {
+            // Sort balloons by their ending x-coordinate
+            Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
+    
+            int arrows = 1;          // At least one arrow is needed
+            int currentEnd = points[0][1]; // Shoot arrow at the end of first balloon
+    
+            for (int i = 1; i < points.length; i++) {
+                // If the current balloon starts after the last arrow's end, we need a new arrow
+                if (points[i][0] > currentEnd) {
+                    arrows++;
+                    currentEnd = points[i][1]; // Shoot at the end of this balloon
+                }
+                // Otherwise, the current balloon is already burst by the last arrow
+            }
+    
+            return arrows;
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(N log N) for sorting the balloons.
+    //🧠 SPACE COMPLEXITY: O(1) constant extra space.
