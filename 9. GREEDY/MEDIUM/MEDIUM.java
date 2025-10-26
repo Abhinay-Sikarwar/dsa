@@ -113,3 +113,33 @@
     //🧠 SPACE COMPLEXITY: O(1) constant extra space.
 
     // 621. TASK SCHEDULER
+// CALCULATE BASE SLOTS USING MAX FREQUENCY TASKS AND FILL IN OTHERS.
+
+    class Solution {
+        public int leastInterval(char[] tasks, int n) {
+            int[] freq = new int[26];
+            for (char task : tasks)
+                freq[task - 'A']++;
+            
+            // Find max frequency
+            int maxFreq = 0;
+            for (int f : freq)
+                maxFreq = Math.max(maxFreq, f);
+            
+            // Count how many tasks have that frequency
+            int countMaxFreq = 0;
+            for (int f : freq)
+                if (f == maxFreq) countMaxFreq++;
+            
+            // Apply the formula
+            int partCount = maxFreq - 1;
+            int partLength = n + 1;
+            int emptySlots = partCount * partLength + countMaxFreq;
+            
+            // The answer is the maximum between total tasks and computed formula
+            return Math.max(tasks.length, emptySlots);
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(N) where N is the number of tasks.
+    //🧠 SPACE COMPLEXITY: O(1) since the frequency array size is constant.
