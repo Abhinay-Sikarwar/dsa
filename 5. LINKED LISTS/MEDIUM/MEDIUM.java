@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 5. LINKED LISTS
+//  5. LINKED LISTS
 //------------------------------------------------------------ MEDIUM ----------------------------------------------------------------
 
     // 2: ADD TWO NUMBER

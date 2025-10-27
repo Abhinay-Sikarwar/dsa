@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 2. BINARY SEARCH & SORTING
+//  2. BINARY SEARCH & SORTING
 //------------------------------------------------------------- HARD -----------------------------------------------------------------
 
     // 4: MEDIAN OF TWO SORTED ARRAYS

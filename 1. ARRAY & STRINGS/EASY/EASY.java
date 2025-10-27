@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 1. ARRAYS & STRINGS
+//  1. ARRAYS & STRINGS
 //------------------------------------------------------------- EASY ----------------------------------------------------------------
      
     // 1: TWO SUM

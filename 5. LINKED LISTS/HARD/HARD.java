@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 5. LINKED LISTS
+//  5. LINKED LISTS
 //------------------------------------------------------------- HARD -----------------------------------------------------------------
 
     // 25: REVERSE NODES IN K-GROUP

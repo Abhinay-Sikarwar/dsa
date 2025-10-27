@@ -5,6 +5,8 @@
     // 135: CANDY
 // TWO PASSES TO ENSURE RATING ORDER, THEN SUM.
 
+    import java.util.Arrays;
+
     class Solution {
         public int candy(int[] ratings) {
             int n = ratings.length;
@@ -37,4 +39,3 @@
 
     //⏱️ TIME COMPLEXITY: O(n) — each array is traversed twice (left→right and right→left).
     //🧠 SPACE COMPLEXITY: O(n) — extra array used to store candies for each child.
- 

@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 5. LINKED LISTS
+//  5. LINKED LISTS
 //--------------------------------------------------------- BONUS QUESTION----------------------------------------------------------
     
     // 2296: DESIGN A TEXT EDITOR

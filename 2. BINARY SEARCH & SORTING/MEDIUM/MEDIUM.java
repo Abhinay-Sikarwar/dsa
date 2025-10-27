@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 2. BINARY SEARCH & SORTING
+//  2. BINARY SEARCH & SORTING
 //------------------------------------------------------------ MEDIUM ----------------------------------------------------------------
 
     // 34: FIND FIRST AND LAST POSITION OF ELEMENT IN SORTED ARRAY

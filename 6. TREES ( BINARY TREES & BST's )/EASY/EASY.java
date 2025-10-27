@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 6. TREES (BINARY TREES & BST's)
+//  6. TREES (BINARY TREES & BST's)
 //------------------------------------------------------------- EASY ----------------------------------------------------------------
     
     // 100: SAME TREE

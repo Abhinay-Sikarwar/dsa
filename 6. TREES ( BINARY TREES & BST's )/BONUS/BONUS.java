@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 6. TREES (BINARY TREES & BST's)
+//  6. TREES (BINARY TREES & BST's)
 //--------------------------------------------------------- BONUS QUESTION----------------------------------------------------------
 
     // 1373: MAXIMUM SUM BST IN BINARY TREE

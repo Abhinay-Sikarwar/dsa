@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 7. GRAPHS
+//  7. GRAPHS
 //------------------------------------------------------------- EASY ----------------------------------------------------------------
 
     // 323: NUMBER OF CONNECTED COMPONENTS IN AN UNDIRECTED GRAPH

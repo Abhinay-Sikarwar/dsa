@@ -1,5 +1,5 @@
 //  NOTE: QUESTION NUMBERS ARE REFERED TO LEETCODE
-// 3. TWO POINTERS & SLIDING WINDOW
+//  3. TWO POINTERS & SLIDING WINDOW
 //------------------------------------------------------------- EASY ----------------------------------------------------------------
 
     // 26: REMOVE DUPLICATES FROM SORTED ARRAY
