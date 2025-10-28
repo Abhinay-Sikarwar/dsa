@@ -5,8 +5,7 @@
     // 135: CANDY
 // TWO PASSES TO ENSURE RATING ORDER, THEN SUM.
 
-    import java.util.Arrays;
-
+    import java.util.*;
     class Solution {
         public int candy(int[] ratings) {
             int n = ratings.length;

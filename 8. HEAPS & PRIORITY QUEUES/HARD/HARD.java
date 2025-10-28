@@ -13,7 +13,6 @@
      */
     
     import java.util.*;
-
     class MedianFinder {
         // Max-heap for the smaller half of numbers
         private PriorityQueue<Integer> lower;
