@@ -37,3 +37,26 @@
     //🧠 SPACE COMPLEXITY: O(N) — dp array stores results for all indices.
 
     // 62: UNIQUE PATHS
+// USE 1D DP ARRAY TO COUNT UNIQUE PATHS IN GRID
+
+    class Solution {
+        public int uniquePaths(int m, int n) {
+            int[] dp = new int[n];
+            // First row: only one way to move (right)
+            Arrays.fill(dp, 1);
+    
+            // Build paths row by row
+            for (int i = 1; i < m; i++) {
+                for (int j = 1; j < n; j++) {
+                    // Paths = from top (dp[j]) + from left (dp[j-1])
+                    dp[j] += dp[j - 1];
+                }
+            }
+    
+            // Bottom-right cell
+            return dp[n - 1];
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(M*N) — we fill an MxN grid.
+    //🧠 SPACE COMPLEXITY: O(N) — we use a single array.
