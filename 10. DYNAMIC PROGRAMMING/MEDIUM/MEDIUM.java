@@ -62,3 +62,21 @@
     //🧠 SPACE COMPLEXITY: O(N) — we use a single array.
 
     // 55: JUMP GAME
+// CHECK IF END OF ARRAY IS REACHABLE
+
+    class Solution {
+        public boolean canJump(int[] nums) {
+            // farthest index we can reach so far
+            int maxReach = 0;
+            for (int i = 0; i < nums.length; i++) {
+                // can't reach this index
+                if (i > maxReach) return false;
+                // update farthest reachable index
+                maxReach = Math.max(maxReach, i + nums[i]);
+            }
+            return true;
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(N) — single pass through the array.
+    //🧠 SPACE COMPLEXITY: O(1) — only a few variables.
