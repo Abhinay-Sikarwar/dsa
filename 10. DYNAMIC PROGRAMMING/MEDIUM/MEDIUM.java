@@ -117,3 +117,30 @@
 
     //⏱️ TIME COMPLEXITY: O(N) — single pass through the array.
     //🧠 SPACE COMPLEXITY: O(1) — only a few variables.
+
+    // 198: HOUSE ROBBER
+// OPTIMIZED DP WITH CONSTANT SPACE
+
+    class Solution {
+        public int rob(int[] nums) {
+            int n = nums.length;
+            if (n == 1) return nums[0];
+    
+            int[] dp = new int[3]; // dp[0] = prev2, dp[1] = prev, dp[2] = curr
+    
+            dp[0] = nums[0];
+            dp[1] = Math.max(nums[0], nums[1]);
+    
+            for (int i = 2; i < n; i++) {
+                // either skip current (prev) or rob current (prev2 + nums[i])
+                dp[2] = Math.max(dp[1], dp[0] + nums[i]);
+                dp[0] = dp[1]; // shift prev2
+                dp[1] = dp[2]; // shift prev
+            }
+    
+            return dp[1]; // dp[1] always holds the latest result
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N) — single pass through the array.
+    // 🧠 SPACE COMPLEXITY: O(1) — only constant extra space (3 variables used).
