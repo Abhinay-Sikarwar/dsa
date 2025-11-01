@@ -82,3 +82,38 @@
     //🧠 SPACE COMPLEXITY: O(1) — only a few variables.
 
     // 152: MAXIMUM PRODUCT SUBARRAY
+// TRACK MAX AND MIN PRODUCTS DUE TO NEGATIVES(FLIP SIGNS)
+
+    class Solution {
+        public int maxProduct(int[] nums) {
+            // Base case: at least one element exists
+            int maxSoFar = nums[0];  // max product ending here
+            int minSoFar = nums[0];  // min product ending here
+            int result = nums[0];    // global max product
+    
+            // Traverse the array from the second element
+            for (int i = 1; i < nums.length; i++) {
+                int cur = nums[i];
+    
+                // If current number is negative, swap max and min
+                // because multiplying by a negative flips signs
+                if (cur < 0) {
+                    int temp = maxSoFar;
+                    maxSoFar = minSoFar;
+                    minSoFar = temp;
+                }
+    
+                // Update max and min products ending at current index
+                maxSoFar = Math.max(cur, cur * maxSoFar);
+                minSoFar = Math.min(cur, cur * minSoFar);
+    
+                // Update the global maximum
+                result = Math.max(result, maxSoFar);
+            }
+    
+            return result;
+        }
+    }
+
+    //⏱️ TIME COMPLEXITY: O(N) — single pass through the array.
+    //🧠 SPACE COMPLEXITY: O(1) — only a few variables.
