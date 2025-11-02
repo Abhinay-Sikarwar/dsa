@@ -146,3 +146,33 @@
     // 🧠 SPACE COMPLEXITY: O(1) — only constant extra space (3 variables used).
 
     // 213: HOUSE ROBBER II
+// CIRCULAR ARRAY HANDLED BY TWO PASSES, EXCLUDING FIRST OR LAST HOUSE
+
+    class Solution {
+        public int rob(int[] nums) {
+            int n = nums.length;
+            if (n == 1) return nums[0]; // only one house
+    
+            // Run twice: excluding first or excluding last
+            return Math.max(robRange(nums, 0, n - 2), robRange(nums, 1, n - 1));
+        }
+    
+        // Rob linearly within nums[l..r] using rolling dp[3]
+        private int robRange(int[] nums, int l, int r) {
+            int[] dp = new int[3]; // dp[0]=prev2, dp[1]=prev, dp[2]=curr
+    
+            dp[0] = 0;
+            dp[1] = nums[l];
+    
+            for (int i = l + 1; i <= r; i++) {
+                dp[2] = Math.max(dp[1], dp[0] + nums[i]); // skip or take
+                dp[0] = dp[1]; // shift
+                dp[1] = dp[2];
+            }
+    
+            return dp[1]; // final result
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N) — two passes through the array.
+    // 🧠 SPACE COMPLEXITY: O(1) — only constant extra space.
