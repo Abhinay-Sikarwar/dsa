@@ -178,3 +178,27 @@
     // 🧠 SPACE COMPLEXITY: O(1) — only constant extra space.
 
     // 300: LONGEST INCREASING SUBSEQUENCE
+// DP TO TRACK LIS ENDING AT EACH INDEX
+
+    class Solution {
+        public int lengthOfLIS(int[] nums) {
+            int n = nums.length;
+            int[] dp = new int[n];
+            Arrays.fill(dp, 1);             // Each element is an LIS of length 1
+            
+            int maxLen = 1;
+            
+            for (int i = 1; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    if (nums[j] < nums[i])  // Can extend the subsequence
+                        dp[i] = Math.max(dp[i], dp[j] + 1);
+                }
+                maxLen = Math.max(maxLen, dp[i]);  // Track global maximum
+            }
+            
+            return maxLen;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops over the array.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp array to store LIS.
