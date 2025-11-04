@@ -204,3 +204,27 @@
     // 🧠 SPACE COMPLEXITY: O(N) — dp array to store LIS.
 
     // 139: WORD BREAK
+// DP TO CHECK IF STRING CAN BE SEGMENTED INTO DICTIONARY WORDS
+
+    class Solution {
+        public boolean wordBreak(String s, List<String> wordDict) {
+            Set<String> wordSet = new HashSet<>(wordDict); // fast lookups
+            boolean[] dp = new boolean[s.length() + 1];
+            dp[0] = true; // base case
+    
+            // dp[i] = can s[0..i-1] be segmented?
+            for (int i = 1; i <= s.length(); i++) {
+                for (int j = 0; j < i; j++) {
+                    if (dp[j] && wordSet.contains(s.substring(j, i))) {
+                        dp[i] = true;
+                        break; // no need to check further splits
+                    }
+                }
+            }
+    
+            return dp[s.length()];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops over the string.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp array to store segmentation.
