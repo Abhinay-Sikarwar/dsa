@@ -276,3 +276,37 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*amount) — nested loops over coins and amount.
     // 🧠 SPACE COMPLEXITY: O(amount) — dp array to store minimum.
+
+    // 647: PALINDROMIC SUBSTRINGS
+// DP TO COUNT PALINDROMIC SUBSTRINGS USING 1D ARRAY
+
+    class Solution {
+        public int countSubstrings(String s) {
+            int n = s.length();
+            boolean[] dp = new boolean[n];
+            int count = 0;
+    
+            // Traverse from bottom to top (i decreasing)
+            for (int i = n - 1; i >= 0; i--) {
+                // Traverse rightwards for j >= i
+                for (int j = n - 1; j >= i; j--) {
+                    if (s.charAt(i) == s.charAt(j)) {
+                        // If length < 3 or inner substring is palindrome
+                        if (j - i < 3 || dp[j - 1]) {
+                            dp[j] = true;
+                            count++;
+                        } else {
+                            dp[j] = false;
+                        }
+                    } else {
+                        dp[j] = false;
+                    }
+                }
+            }
+    
+            return count;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops over the string.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp array to store palindrome.
