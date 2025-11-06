@@ -254,3 +254,25 @@
     // 🧠 SPACE COMPLEXITY: O(target) — dp array to store combinations.
 
     // 322: COIN CHANGE
+// DP TO FIND MINIMUM COINS TO MAKE AMOUNT, USING BOTTOM-UP APPROACH
+
+    class Solution {
+        public int coinChange(int[] coins, int amount) {
+            // dp[i] = min coins to make amount i
+            int[] dp = new int[amount + 1];
+            Arrays.fill(dp, amount + 1); // initialize with a large number
+            dp[0] = 0; // base case
+    
+            for (int coin : coins) {
+                for (int i = coin; i <= amount; i++) {
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+    
+            // if dp[amount] wasn't updated, return -1
+            return dp[amount] > amount ? -1 : dp[amount];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*amount) — nested loops over coins and amount.
+    // 🧠 SPACE COMPLEXITY: O(amount) — dp array to store minimum.
