@@ -312,3 +312,28 @@
     // 🧠 SPACE COMPLEXITY: O(N) — dp array to store palindrome.
 
     // 516: LONGEST PALINDROMIC SUBSEQUENCE
+// DP TO FIND LENGTH OF LONGEST PALINDROMIC SUBSEQUENCE USING 1D ARRAY
+
+    class Solution {
+        public int longestPalindromeSubseq(String s) {
+            int n = s.length();
+            int[] dp = new int[n];
+    
+            for (int i = n - 1; i >= 0; i--) {
+                dp[i] = 1;     // single char palindrome
+                int prev = 0;  // stores dp[j-1] from previous row
+                for (int j = i + 1; j < n; j++) {
+                    int temp = dp[j];
+                    if (s.charAt(i) == s.charAt(j))
+                        dp[j] = prev + 2; // match ends
+                    else
+                        dp[j] = Math.max(dp[j], dp[j - 1]); // skip one end
+                    prev = temp;
+                }
+            }
+            return dp[n - 1];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops over the string.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp array to store substring lengths.
