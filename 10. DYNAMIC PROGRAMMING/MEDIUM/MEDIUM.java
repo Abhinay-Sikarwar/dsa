@@ -339,3 +339,29 @@
     // 🧠 SPACE COMPLEXITY: O(N) — dp array to store substring lengths.
 
     // 64: MINIMUM PATH SUM
+// DP TO FIND MINIMUM PATH SUM IN GRID, UPDATING GRID IN PLACE
+
+    class Solution {
+        public int minPathSum(int[][] grid) {
+            int row = grid.length;
+            int col = grid[0].length;
+    
+            // Update grid in place to store the minimum path sums
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    if (i == 0 && j == 0) continue; // Start cell
+                    else if (i == 0)
+                        grid[i][j] += grid[i][j - 1]; // Only from left
+                    else if (j == 0)
+                        grid[i][j] += grid[i - 1][j]; // Only from top
+                    else
+                        grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]); // Min of top/left
+                }
+            }
+    
+            return grid[row - 1][col - 1]; // Bottom-right cell
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(M*N) — we fill an MxN grid.
+    // 🧠 SPACE COMPLEXITY: O(1) — we modify the input.
