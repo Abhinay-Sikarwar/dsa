@@ -367,3 +367,35 @@
     // 🧠 SPACE COMPLEXITY: O(1) — we modify the input.
 
     // 740: DELETE AND EARN
+// TRANSFORM TO HOUSE ROBBER PROBLEM USING DP
+
+    class Solution {
+        public int deleteAndEarn(int[] nums) {
+            // Find the maximum number to size our DP arrays
+            int max = 0;
+            for (int num : nums) {
+                max = Math.max(max, num);
+            }
+    
+            // earn[i] = total points we can earn from all occurrences of number i
+            int[] earn = new int[max + 1];
+            for (int num : nums) {
+                earn[num] += num;
+            }
+    
+            // dp[i] = max points we can earn considering numbers up to i
+            int[] dp = new int[max + 1];
+            dp[0] = 0;
+            dp[1] = earn[1];
+    
+            // Standard "house robber" transition
+            for (int i = 2; i <= max; i++) {
+                dp[i] = Math.max(dp[i - 1], dp[i - 2] + earn[i]);
+            }
+    
+            return dp[max];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N + M) — N is length of nums, M is max number.
+    // 🧠 SPACE COMPLEXITY: O(M) — for dp and earn arrays.
