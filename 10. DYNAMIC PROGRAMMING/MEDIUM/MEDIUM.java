@@ -428,3 +428,32 @@
     // 🧠 SPACE COMPLEXITY: O(M*N) — dp array to store lengths.
 
     // 309: BEST TIME TO BUY AND SELL STOCK WITH COOLDOWN
+// DP WITH 3 STATES: HOLD, SOLD, REST
+
+    class Solution {
+        public int maxProfit(int[] prices) {
+            if (prices.length == 1) return 0;
+    
+            int[] dp = new int[3]; // 0: hold, 1: sold, 2: rest
+            dp[0] = -prices[0];    // holding a stock
+            dp[1] = 0;             // just sold (in cooldown)
+            dp[2] = 0;             // not holding, can buy
+    
+            for (int i = 1; i < prices.length; i++) {
+                int prevSold = dp[1];
+                
+                // If sold today -> must have been holding yesterday
+                dp[1] = dp[0] + prices[i];
+                // If hold today -> either continue holding or buy today
+                dp[0] = Math.max(dp[0], dp[2] - prices[i]);
+                // If rest today -> either stay resting or come from cooldown
+                dp[2] = Math.max(prevSold, dp[2]);
+            }
+    
+            // Max profit when not holding any stock
+            return Math.max(dp[1], dp[2]);
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N) — single pass through prices.
+    // 🧠 SPACE COMPLEXITY: O(1) — only a few variables.
