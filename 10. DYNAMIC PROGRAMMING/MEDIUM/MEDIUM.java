@@ -459,3 +459,30 @@
     // 🧠 SPACE COMPLEXITY: O(1) — only a few variables.
 
     // 494: TARGET SUM
+// TRANSFORM TO SUBSET SUM PROBLEM USING DP, COUNT SUBSETS WITH SUM = (target + totalSum) / 2
+
+    class Solution {
+        public int findTargetSumWays(int[] nums, int target) {
+            int totalSum = 0;
+            for (int num : nums) totalSum += num;
+            
+            // If (target + totalSum) is odd or target is out of range → no solution
+            if ((target + totalSum) % 2 != 0 || totalSum < Math.abs(target)) return 0;
+            
+            int newTarget = (target + totalSum) / 2;
+            int[] dp = new int[newTarget + 1];
+            dp[0] = 1; // one way to form sum 0 (choose nothing)
+            
+            // Count subsets with sum = newTarget
+            for (int num : nums) {
+                for (int j = newTarget; j >= num; j--) {
+                    dp[j] += dp[j - num];
+                }
+            }
+            
+            return dp[newTarget];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*sum) — N is length of nums, sum is newTarget.
+    // 🧠 SPACE COMPLEXITY: O(sum) — dp array to store subsets.
