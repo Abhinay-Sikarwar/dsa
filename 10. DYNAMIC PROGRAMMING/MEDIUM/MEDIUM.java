@@ -507,6 +507,8 @@
                 for (int j = target; j >= num; j--) {
                     dp[j] |= dp[j - num];
                 }
+                // 🚀 Early stop: if target sum already achievable
+                if (dp[target]) return true;
             }
     
             return dp[target];
@@ -515,3 +517,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*sum) — N is length of nums, sum is target.
     // 🧠 SPACE COMPLEXITY: O(sum) — dp array to store achievable.
+
+    // 
