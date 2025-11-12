@@ -486,3 +486,32 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*sum) — N is length of nums, sum is newTarget.
     // 🧠 SPACE COMPLEXITY: O(sum) — dp array to store subsets.
+
+    // 416: PARTITION EQUAL SUBSET SUM
+// DP TO CHECK IF ARRAY CAN BE PARTITIONED INTO TWO SUBSETS WITH EQUAL SUM
+
+    class Solution {
+        public boolean canPartition(int[] nums) {
+            int sum = 0;
+            for (int x : nums) sum += x;
+    
+            // If total sum is odd, can't divide equally
+            if (sum % 2 != 0) return false;
+            int target = sum / 2;
+    
+            boolean[] dp = new boolean[target + 1];
+            dp[0] = true; // base: sum 0 is always achievable
+    
+            // For each number, update achievable sums
+            for (int num : nums) {
+                for (int j = target; j >= num; j--) {
+                    dp[j] |= dp[j - num];
+                }
+            }
+    
+            return dp[target];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*sum) — N is length of nums, sum is target.
+    // 🧠 SPACE COMPLEXITY: O(sum) — dp array to store achievable.
