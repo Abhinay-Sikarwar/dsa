@@ -519,3 +519,26 @@
     // 🧠 SPACE COMPLEXITY: O(sum) — dp array to store achievable.
 
     // 279: PERFECT SQUARES
+// DP TO FIND MINIMUM NUMBER OF PERFECT SQUARES SUMMING TO N
+
+    class Solution {
+        public int numSquares(int n) {
+            int[] dp = new int[n + 1];
+            Arrays.fill(dp, Integer.MAX_VALUE);  // initialize with large value
+            dp[0] = 0;                           // 0 can be formed with 0 squares
+            
+            // compute dp[i] for all i from 1 to n
+            for (int i = 1; i <= n; i++) {
+                // try every perfect square <= i
+                for (int j = 1; j * j <= i; j++) {
+                    int square = j * j;
+                    // choose the minimum amoung all possible squares
+                    dp[i] = Math.min(dp[i], dp[i - square] + 1);
+                }
+            }
+            return dp[n];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*sqrt(N)) — nested loops over n and perfect squares.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp array to store minimum.
