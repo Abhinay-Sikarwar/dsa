@@ -542,3 +542,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*sqrt(N)) — nested loops over n and perfect squares.
     // 🧠 SPACE COMPLEXITY: O(N) — dp array to store minimum.
+
+    // 1143: LONGEST COMMON SUBSEQUENCE
