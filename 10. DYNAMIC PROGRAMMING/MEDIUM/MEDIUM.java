@@ -544,3 +544,32 @@
     // 🧠 SPACE COMPLEXITY: O(N) — dp array to store minimum.
 
     // 1143: LONGEST COMMON SUBSEQUENCE
+// DP TO FIND LENGTH OF LONGEST COMMON SUBSEQUENCE BETWEEN TWO STRINGS
+
+    class Solution {
+        public int longestCommonSubsequence(String text1, String text2) {
+            int n = text1.length(), m = text2.length();
+    
+            int[][] dp = new int[n + 1][m + 1]; // dp table with extra row & column
+    
+            // fill dp bottom-up
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= m; j++) {
+    
+                    // if characters match, extend LCS
+                    if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                        dp[i][j] = 1 + dp[i - 1][j - 1];
+                    } 
+                    // else take best from left or top
+                    else {
+                        dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                    }
+                }
+            }
+    
+            return dp[n][m];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*M) — nested loops over both strings.
+    // 🧠 SPACE COMPLEXITY: O(N*M) — dp table to store LCS length.
