@@ -573,3 +573,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*M) — nested loops over both strings.
     // 🧠 SPACE COMPLEXITY: O(N*M) — dp table to store LCS length.
+
+    // 1048: LONGEST STRING CHAIN
