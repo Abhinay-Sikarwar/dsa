@@ -575,3 +575,37 @@
     // 🧠 SPACE COMPLEXITY: O(N*M) — dp table to store LCS length.
 
     // 1048: LONGEST STRING CHAIN
+// DP TO FIND LONGEST STRING CHAIN BY REMOVING ONE CHAR AT A TIME
+
+    class Solution {
+        public int longestStrChain(String[] words) {
+            // Sort words by length (shortest to longest)
+            Arrays.sort(words, (a, b) -> a.length() - b.length());
+    
+            // dp[word] = longest chain ending at this word
+            Map<String, Integer> dp = new HashMap<>();
+    
+            int longest = 1;
+    
+            for (String word : words) {
+                int best = 1; // at least the word itself
+    
+                // Try removing each character to form predecessor
+                for (int i = 0; i < word.length(); i++) {
+                    String pred = word.substring(0, i) + word.substring(i + 1);
+    
+                    if (dp.containsKey(pred)) {
+                        best = Math.max(best, dp.get(pred) + 1);
+                    }
+                }
+    
+                dp.put(word, best);
+                longest = Math.max(longest, best);
+            }
+    
+            return longest;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*L^2) — N is number of words, L is max word length.
+    // 🧠 SPACE COMPLEXITY: O(N) — dp map to store chain.
