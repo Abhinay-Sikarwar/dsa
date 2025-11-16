@@ -611,3 +611,38 @@
     // 🧠 SPACE COMPLEXITY: O(N) — dp map to store chain.
 
     // 877: STONE GAME
+// NOTE💡: FIRST PLAYER ALWAYS WINS 
+// DP TO DETERMINE IF FIRST PLAYER CAN WIN WITH OPTIMAL PLAY
+
+    class Solution {
+        public boolean stoneGame(int[] piles) {
+            int n = piles.length;
+            // dp[i][j] = best score difference from piles[i..j]
+            int[][] dp = new int[n][n];
+    
+            // Base case: when i == j, only one pile to take
+            for (int i = 0; i < n; i++) {
+                dp[i][i] = piles[i];
+            }
+    
+            // len = current subarray length
+            for (int len = 2; len <= n; len++) {
+                for (int i = 0; i + len - 1 < n; i++) {
+                    int j = i + len - 1;
+    
+                    // Take left pile or right pile:
+                    // net gain = pile taken - opponent's best response
+                    dp[i][j] = Math.max(
+                        piles[i] - dp[i + 1][j],
+                        piles[j] - dp[i][j - 1]
+                    );
+                }
+            }
+    
+            // Positive score difference means Alice wins
+            return dp[0][n - 1] > 0;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops over piles.
+    // 🧠 SPACE COMPLEXITY: O(N^2) — dp table to store differences.
