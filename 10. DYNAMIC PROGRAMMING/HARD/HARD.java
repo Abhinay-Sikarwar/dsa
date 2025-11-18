@@ -45,3 +45,40 @@
     // 🧠 SPACE COMPLEXITY: O(M*N) — DP table to store prefix differences.
 
     // 10: REGULAR EXPRESSION MATCHING
+// DP WHERE `dp[i][j]` = WHETHER `s[0..i-1]` MATCHES `p[0..j-1]`.
+
+    class Solution {
+        public boolean isMatch(String s, String p) {
+            int n = s.length(), m = p.length();
+            boolean[][] dp = new boolean[n + 1][m + 1];
+    
+            dp[0][0] = true;                         // EMPTY STRING MATCHES EMPTY PATTERN
+    
+            for (int j = 2; j <= m; j++)             // INITIALIZE DP FOR PATTERNS LIKE a*, a*b*
+                if (p.charAt(j - 1) == '*')
+                    dp[0][j] = dp[0][j - 2];         // '*' MATCHES ZERO OF PREV CHAR
+    
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= m; j++) {
+    
+                    char pc = p.charAt(j - 1);
+    
+                    if (pc != '*') {                 // NORMAL CHAR OR '.'
+                        if (pc == '.' || pc == s.charAt(i - 1))
+                            dp[i][j] = dp[i - 1][j - 1]; // MATCH DEPENDS ON DIAGONAL
+                    } 
+                    else {                            // '*' CASE
+                        dp[i][j] = dp[i][j - 2];      // ZERO OCCURRENCES OF PREV CHAR
+    
+                        char prev = p.charAt(j - 2);  // PRECEDING CHAR FOR '*'
+                        if (prev == '.' || prev == s.charAt(i - 1))
+                            dp[i][j] |= dp[i - 1][j]; // ONE OR MORE OCCURRENCES
+                    }
+                }
+            }
+            return dp[n][m];  // FULL STRING/PATTERN MATCH?
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*M) — two nested loops over string and pattern lengths.
+    // 🧠 SPACE COMPLEXITY: O(N*M) — DP table to store possible matches.
