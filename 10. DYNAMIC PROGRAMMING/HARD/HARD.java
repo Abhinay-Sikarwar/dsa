@@ -84,3 +84,45 @@
     // 🧠 SPACE COMPLEXITY: O(N*M) — DP table to store possible matches.
 
     // 44: WILDCARD MATCHING
+// DP WHERE `dp[i][j]` = WHETHER `s[0..i-1]` MATCHES `p[0..j-1]`.
+
+    class Solution {
+        public boolean isMatch(String s, String p) {
+            int n = s.length(), m = p.length();
+            // dp[i][j] = true if s[0..i-1] matches p[0..j-1]
+            boolean[][] dp = new boolean[n + 1][m + 1];
+    
+            // Base case: empty string & empty pattern
+            dp[0][0] = true;
+    
+            // Handle patterns like "*", "**", "***"
+            for (int j = 1; j <= m; j++) {
+                if (p.charAt(j - 1) == '*') {
+                    dp[0][j] = dp[0][j - 1];
+                }
+            }
+    
+            // Fill DP table
+            for (int i = 1; i <= n; i++) {
+                for (int j = 1; j <= m; j++) {
+    
+                    char pc = p.charAt(j - 1);  // pattern char
+                    char sc = s.charAt(i - 1);  // string char
+    
+                    // Exact match or '?' → take diagonal (shrink both)
+                    if (pc == sc || pc == '?') {
+                        dp[i][j] = dp[i - 1][j - 1];
+                    }
+                    // '*' → zero chars (dp[i][j-1]) OR one/more chars (dp[i-1][j])
+                    else if (pc == '*') {
+                        dp[i][j] = dp[i][j - 1] || dp[i - 1][j];
+                    }
+                }
+            }
+    
+            return dp[n][m];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*M) — two nested loops over string and pattern lengths.
+    // 🧠 SPACE COMPLEXITY: O(N*M) — DP table to store possible matches.
