@@ -128,3 +128,44 @@
     // 🧠 SPACE COMPLEXITY: O(N*M) — DP table to store possible matches.
 
     // 312: BURST BALLOONS
+// DP WHERE `dp[left][right]` = MAX COINS FROM BURSTING BALLOONS IN (left, right).
+
+    class Solution {
+        public int maxCoins(int[] nums) {
+            int n = nums.length;
+            int[] arr = new int[n + 2];
+    
+            // Add virtual balloons with value 1 at both ends
+            arr[0] = 1;
+            arr[n + 1] = 1;
+            for (int i = 1; i <= n; i++) {
+                arr[i] = nums[i - 1];
+            }
+    
+            // dp[left][right] = max coins from bursting balloons between (left, right)
+            int[][] dp = new int[n + 2][n + 2];
+    
+            // Iterate over interval lengths
+            for (int len = 2; len <= n + 1; len++) {
+                for (int left = 0; left + len <= n + 1; left++) {
+                    int right = left + len;
+    
+                    // Try each balloon i as the last to burst in (left, right)
+                    for (int i = left + 1; i < right; i++) {
+                        dp[left][right] = Math.max(
+                            dp[left][right],
+                            dp[left][i] +                 // coins from left interval
+                            dp[i][right] +                // coins from right interval
+                            arr[left] * arr[i] * arr[right] // coins from bursting i last
+                        );
+                    }
+                }
+            }
+    
+            // Full interval (0, n+1)
+            return dp[0][n + 1];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^3) — three nested loops for interval lengths and positions.
+    // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to store max coins in the interval.
