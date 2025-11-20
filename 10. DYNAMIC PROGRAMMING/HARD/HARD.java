@@ -169,3 +169,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N^3) — three nested loops for interval lengths and positions.
     // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to store max coins in the interval.
+
+    // 85: MAXIMAL RECTANGLE
