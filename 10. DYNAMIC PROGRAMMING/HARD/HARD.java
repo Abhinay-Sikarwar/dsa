@@ -171,3 +171,49 @@
     // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to store max coins in the interval.
 
     // 85: MAXIMAL RECTANGLE
+// TRANSFORM EACH ROW TO HISTOGRAM AND USE STACK-BASED LARGEST RECTANGLE ALGO.
+
+    class Solution {
+        public int maximalRectangle(char[][] matrix) {
+            int columns = matrix[0].length;
+            int rows = matrix.length;
+    
+            int[] heights = new int[columns + 1];  // Histogram heights for each column (+ sentinel 0)
+            heights[columns] = 0;                  // Ensures final stack cleanup
+            int max = 0;
+    
+            for (int row = 0; row < rows; row++) {
+                Stack<Integer> stack = new Stack<Integer>();  // Monotonic increasing stack of indices
+    
+                for (int i = 0; i < columns + 1; i++) {
+    
+                    // Update histogram height based on current row
+                    if (i < columns)
+                        if (matrix[row][i] == '1')
+                            heights[i] += 1;       // Extend upward if '1'
+                        else
+                            heights[i] = 0;        // Reset height if '0'
+    
+                    // Push while non-decreasing; otherwise compute areas
+                    if (stack.isEmpty() || heights[stack.peek()] <= heights[i]) {
+                        stack.push(i);
+                    } else {
+                        // Pop all taller bars and compute maximal rectangles for them
+                        while (!stack.isEmpty() && heights[i] < heights[stack.peek()]) {
+                            int top = stack.pop();
+                            int area = heights[top] * (stack.isEmpty() ? i : (i - stack.peek() - 1));
+                            if (area > max)
+                                max = area;
+                        }
+
+                        stack.push(i);
+                    }
+                }
+            }
+    
+            return max;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(R*C) — Build heights for each row,leverage stack for largest area.
+    // 🧠 SPACE COMPLEXITY: O(C) — heights array and a monotonic stack for indices.
