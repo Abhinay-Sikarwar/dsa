@@ -249,3 +249,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N*M) — nested loops over lengths of s and t.
     // 🧠 SPACE COMPLEXITY: O(M) — DP array to store counts.
+
+    // 87: SCRAMBLE STRING
