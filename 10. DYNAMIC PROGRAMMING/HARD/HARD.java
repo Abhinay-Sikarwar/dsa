@@ -219,3 +219,33 @@
     // 🧠 SPACE COMPLEXITY: O(C) — heights array and a monotonic stack for indices.
 
     // 115: DISTINCT SUBSEQUENCES
+// DP WHERE `dp[j]` = NUMBER OF WAYS TO FORM `t[0..j-1]` USING PROCESSED PREFIX OF `s`.
+
+    class Solution {
+        public int numDistinct(String s, String t) {
+            int n = s.length(), m = t.length();
+            
+            // dp[j] = number of ways to form t[0..j-1] using processed prefix of s
+            int[] dp = new int[m + 1];
+    
+            dp[0] = 1; // Empty t can always be formed
+    
+            for (int i = 1; i <= n; i++) {
+                // Traverse backwards to avoid overwriting dp[j-1]
+                for (int j = m; j >= 1; j--) {
+    
+                    // If characters match, add ways:
+                    // - skip s[i-1]  (already in dp[j])
+                    // - use s[i-1]   (dp[j-1])
+                    if (s.charAt(i - 1) == t.charAt(j - 1)) {
+                        dp[j] += dp[j - 1];
+                    }
+                }
+            }
+    
+            return dp[m];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*M) — nested loops over lengths of s and t.
+    // 🧠 SPACE COMPLEXITY: O(M) — DP array to store counts.
