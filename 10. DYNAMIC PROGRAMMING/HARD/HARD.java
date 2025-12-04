@@ -356,3 +356,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops for all substrings.
     // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to count unique palindrome.
+
+    // 1000: MINIMUM COST TO MERGE STONES
