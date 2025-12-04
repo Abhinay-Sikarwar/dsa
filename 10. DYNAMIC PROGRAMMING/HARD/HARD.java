@@ -304,3 +304,55 @@
     // 🧠 SPACE COMPLEXITY: O(N^3) — memoization storage.
 
     // 730: COUNT DIFFERENT PALINDROMIC SUBSEQUENCES
+// DP WHERE `dp[i][j]` = COUNT OF UNIQUE PALINDROMIC SUBSEQUENCES IN `s[i..j]`.
+
+    class Solution {
+        static final int MOD = 1_000_000_007;
+
+        public int countPalindromicSubsequences(String s) {
+            int n = s.length();
+            int[][] dp = new int[n][n];
+            char[] arr = s.toCharArray();
+    
+            // Base case: single characters are palindromes
+            for (int i = 0; i < n; i++) dp[i][i] = 1;
+    
+            // Fill dp for intervals of increasing length
+            for (int len = 2; len <= n; len++) {
+                for (int i = 0; i + len - 1 < n; i++) {
+                    int j = i + len - 1;
+    
+                    if (arr[i] != arr[j]) { 
+                        dp[i][j] = dp[i + 1][j] + dp[i][j - 1] - dp[i + 1][j - 1];
+                    } else {
+                        int left = i + 1;
+                        int right = j - 1;
+    
+                        // find first match from left
+                        while (left <= right && arr[left] != arr[i]) left++;
+                        // find first match from right
+                        while (left <= right && arr[right] != arr[i]) right--;
+    
+                        if (left > right) {
+                            // no match inside
+                            dp[i][j] = dp[i + 1][j - 1] * 2 + 2;
+                        } else if (left == right) {
+                            // one match inside
+                            dp[i][j] = dp[i + 1][j - 1] * 2 + 1;
+                        } else {
+                            // more than one match inside
+                            dp[i][j] = dp[i + 1][j - 1] * 2 - dp[left + 1][right - 1];
+                        }
+                    }
+    
+                    dp[i][j] %= MOD;
+                    if (dp[i][j] < 0) dp[i][j] += MOD;
+                }
+            }
+    
+            return dp[0][n - 1];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^2) — nested loops for all substrings.
+    // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to count unique palindrome.
