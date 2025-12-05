@@ -358,3 +358,47 @@
     // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to count unique palindrome.
 
     // 1000: MINIMUM COST TO MERGE STONES
+// DP WHERE `dp[i][j]` = MIN COST TO MERGE STONES FROM INDEX `i` TO `j`.
+
+    class Solution {
+        private static int INF = 1_000_000_000;
+        
+        public int mergeStones(int[] stones, int K) {
+            int n = stones.length;
+    
+            // If merging cannot end in exactly 1 pile -> impossible
+            if ((n - 1) % (K - 1) != 0) return -1;
+    
+            // Build prefix sum for fast range sum
+            int[] prefix = new int[n + 1];
+            for (int i = 0; i < n; i++) prefix[i + 1] = prefix[i] + stones[i];
+    
+            int[][] dp = new int[n][n];
+    
+            // Process intervals of increasing length
+            for (int len = K; len <= n; len++) {
+                for (int i = 0; i + len <= n; i++) {
+                    int j = i + len - 1;
+                    dp[i][j] = INF;
+    
+                    // Try forming K piles first
+                    // Valid splits are spaced by (K-1)
+                    for (int mid = i; mid < j; mid += K - 1) {
+                        dp[i][j] = Math.min(dp[i][j],
+                                dp[i][mid] + dp[mid + 1][j]);
+                    }
+    
+                    // If interval can be reduced to 1 pile, pay merging cost
+                    if ((len - 1) % (K - 1) == 0) {
+                        dp[i][j] += prefix[j + 1] - prefix[i];
+                    }
+                }
+            }
+    
+            // Minimum cost to merge entire array into 1 pile
+            return dp[0][n - 1];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N^3/K) — three nested loops with step K-1 for splits.
+    // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to store min cost to merge.
