@@ -404,3 +404,42 @@
     // 🧠 SPACE COMPLEXITY: O(N^2) — DP table to store min cost to merge.
 
     // 920: NUMBER OF MUSIC PLAYLISTS
+// DP WHERE `dp[len][used]` = NUMBER OF PLAYLISTS OF LENGTH `len` USING `used` DISTINCT SONGS.
+
+    class Solution {
+        private final long MOD = 1_000_000_007L;
+    
+        public int numMusicPlaylists(int n, int goal, int k) {
+            // dp[len][used] = number of playlists of length `len`
+            //                 using exactly `used` distinct songs
+            long[][] dp = new long[goal + 1][n + 1];
+            // Base case: empty playlist, no songs used
+            dp[0][0] = 1;
+    
+            for (int len = 0; len < goal; len++) {
+                for (int used = 0; used <= n; used++) {
+    
+                    if (dp[len][used] == 0) continue;
+    
+                    // Option 1: Add new song
+                    // Remaining unused = n - used
+                    if (used < n) {
+                        dp[len + 1][used + 1] =
+                            (dp[len + 1][used + 1] + dp[len][used] * (n - used)) % MOD;
+                    }
+    
+                    // Option 2: Add old song (only if > k songs used)
+                    // Eligible = used - k
+                    if (used > k) {
+                        dp[len + 1][used] =
+                            (dp[len + 1][used] + dp[len][used] * (used - k)) % MOD;
+                    }
+                }
+            }
+    
+            return (int) dp[goal][n];
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N*GOAL) — nested loops over playlist length and distinct songs used.
+    // 🧠 SPACE COMPLEXITY: O(N*GOAL) — DP table storing all state combinations.
