@@ -445,3 +445,60 @@
     // 🧠 SPACE COMPLEXITY: O(N*GOAL) — DP table storing all state combinations.
 
     // 689: MAXIMUM SUM OF 3 NON-OVERLAPPING SUBARRAYS
+// DP WITH PRECOMPUTED LEFT AND RIGHT BEST INDICES.
+
+    class Solution {
+        public int[] maxSumOfThreeSubarrays(int[] nums, int k) {
+    
+            int n = nums.length;
+            int[] window = new int[n]; // sum of each window of size k
+    
+            // 1) Compute sliding window sums
+            int sum = 0;
+            for (int i = 0; i < n; i++) {
+                sum += nums[i];
+                if (i >= k) sum -= nums[i - k];           // remove left element
+                if (i >= k - 1) window[i - k + 1] = sum;  // store sum when window full
+            }
+    
+            // 2) left[i] = best index from [0..i]
+            int[] left = new int[n];
+            int best = 0;
+            for (int i = 0; i < n; i++) {
+                if (window[i] > window[best]) best = i; // strictly greater → lexicographically smallest
+                left[i] = best;
+            }
+    
+            // 3) right[i] = best index from [i..end]
+            int[] right = new int[n];
+            best = n - 1;
+            for (int i = n - 1; i >= 0; i--) {
+                if (window[i] >= window[best]) best = i; // >= keeps earlier index on tie
+                right[i] = best;
+            }
+    
+            // 4) Try all middle windows and track max total
+            int[] ans = new int[3];
+            int maxSum = 0;
+    
+            for (int mid = k; mid <= n - 2 * k; mid++) {
+    
+                int leftIdx = left[mid - k];    // best window before mid
+                int rightIdx = right[mid + k];  // best window after mid
+    
+                int total = window[leftIdx] + window[mid] + window[rightIdx];
+    
+                if (total > maxSum) {          // update answer if better
+                    maxSum = total;
+                    ans[0] = leftIdx;
+                    ans[1] = mid;
+                    ans[2] = rightIdx;
+                }
+            }
+    
+            return ans;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N) — single pass to compute windows and best indices.
+    // 🧠 SPACE COMPLEXITY: O(N) — arrays to store window sums.
