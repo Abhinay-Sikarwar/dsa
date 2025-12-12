@@ -49,3 +49,39 @@
     // 🧠 SPACE COMPLEXITY: O(N)          // recursion depth + path storage.
 
     // 39: COMBINATION SUM
+// BACKTRACK TO FIND ALL UNIQUE COMBINATIONS THAT SUM TO TARGET.
+
+    class Solution {
+        public List<List<Integer>> combinationSum(int[] candidates, int target) {
+            List<List<Integer>> result = new ArrayList<>();
+            backtrack(0, candidates, target, new ArrayList<>(), result);
+            return result;
+        }
+    
+        // index: current position in candidates
+        // target: remaining sum to fulfill
+        private void backtrack(int index, int[] candidates, int target,
+                List<Integer> path, List<List<Integer>> result) {
+    
+            // Found valid combination
+            if (target == 0) {
+                result.add(new ArrayList<>(path));
+                return;
+            }
+    
+            // Out of range or sum exceeded
+            if (index == candidates.length || target < 0) return;
+    
+            // OPTION 1: pick current number (unlimited reuse)
+            path.add(candidates[index]);
+            backtrack(index, candidates, target - candidates[index], path, result);
+    
+            path.remove(path.size() - 1); // backtrack
+    
+            // OPTION 2: skip current number
+            backtrack(index + 1, candidates, target, path, result);
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(2^T)       // T is target value.
+    // 🧠 SPACE COMPLEXITY: O(T)        // recursion depth + path.
