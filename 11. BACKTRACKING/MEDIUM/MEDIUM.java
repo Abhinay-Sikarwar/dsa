@@ -87,3 +87,40 @@
     // 🧠 SPACE COMPLEXITY: O(T)        // recursion depth + path.
 
     // 40: COMBINATION SUM II
+// BACKTRACK TO FIND ALL UNIQUE COMBINATIONS (NO REUSE) THAT SUM TO TARGET.
+
+    class Solution {
+        public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+            List<List<Integer>> result = new ArrayList<>();
+            Arrays.sort(candidates); // Step 1: sort
+            backtrack(candidates, target, 0, new ArrayList<>(), result);
+            return result;
+        }
+    
+        private void backtrack(int[] candidates, int remaining, int start,
+                List<Integer> path, List<List<Integer>> result) {
+    
+            if (remaining == 0) {
+                result.add(new ArrayList<>(path)); // valid combination
+                return;
+            }
+    
+            for (int i = start; i < candidates.length; i++) {
+    
+                // Skip duplicates
+                if (i > start && candidates[i] == candidates[i - 1])
+                    continue;
+    
+                // Prune search
+                if (candidates[i] > remaining)
+                    break;
+    
+                path.add(candidates[i]);
+                backtrack(candidates, remaining - candidates[i], i + 1, path, result);
+                path.remove(path.size() - 1); // backtrack
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(2^T)       // T is target value.
+    // 🧠 SPACE COMPLEXITY: O(T)        // recursion depth + path.
