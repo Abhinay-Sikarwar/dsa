@@ -164,3 +164,48 @@
     // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + path.
 
     // 47: PERMUTATIONS II
+// BACKTRACK TO GENERATE ALL UNIQUE PERMUTATIONS (HANDLE DUPLICATES).
+
+    class Solution {
+        public List<List<Integer>> permuteUnique(int[] nums) {
+            List<List<Integer>> result = new ArrayList<>();
+            Arrays.sort(nums);    // To handle duplicate condition
+            backtrack(nums, new boolean [nums.length], new ArrayList<>(), result);
+            return result;
+        }
+    
+        private void backtrack(int[] nums, boolean[] used,
+                List<Integer> current, List<List<Integer>> result) {
+    
+            // Base case: permutation complete
+            if (current.size() == nums.length) {
+                result.add(new ArrayList<>(current));
+                return;
+            }
+    
+            for (int i = 0; i < nums.length; i++) {
+    
+                // If already used in this permutation
+                if (used[i]) continue;
+    
+                // Skip duplicates
+                // Only allow nums[i] if its previous duplicate is already used
+                if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1])
+                    continue;
+    
+                // Choose
+                used[i] = true;
+                current.add(nums[i]);
+    
+                // Explore
+                backtrack(nums, used, current, result);
+    
+                // Unchoose (backtrack)
+                used[i] = false;
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N * N!)    // N! permutations, each of length N.
+    // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
