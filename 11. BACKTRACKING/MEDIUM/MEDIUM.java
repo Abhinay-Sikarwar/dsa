@@ -211,3 +211,32 @@
     // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
 
     // 78: SUBSETS
+// BACKTRACK TO GENERATE ALL POSSIBLE SUBSETS.
+
+    class Solution {
+        public List<List<Integer>> subsets(int[] nums) {
+            List<List<Integer>> result = new ArrayList<>();
+            backtrack(0, nums, new ArrayList<>(), result);
+            return result;
+        }
+    
+        private void backtrack(int start, int[] nums, List<Integer> current, List<List<Integer>> result) {
+            // Add current subset to result (make a copy)
+            result.add(new ArrayList<>(current));
+    
+            // Try including each remaining element
+            for (int i = start; i < nums.length; i++) {
+                // Choose element nums[i]
+                current.add(nums[i]);
+    
+                // Recurse to build further subsets
+                backtrack(i + 1, nums, current, result);
+    
+                // Backtrack: remove last chosen element
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N * 2^N)   // 2^N subsets, each of length up to N.
+    // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
