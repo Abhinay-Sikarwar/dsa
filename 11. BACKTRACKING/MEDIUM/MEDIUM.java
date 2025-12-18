@@ -242,3 +242,38 @@
     // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
 
     // 90: SUBSETS II
+// BACKTRACK TO GENERATE ALL UNIQUE SUBSETS (HANDLE DUPLICATES).
+
+    class Solution {
+        public List<List<Integer>> subsetsWithDup(int[] nums) {
+            List<List<Integer>> result = new ArrayList<>();
+            // Sort to bring duplicates together
+            Arrays.sort(nums);
+    
+            backtrack(0, nums, new ArrayList<>(), result);
+            return result;
+        }
+    
+        private void backtrack(int start, int[] nums, List<Integer> current, List<List<Integer>> result) {
+            // Add current subset to result (make a copy)
+            result.add(new ArrayList<>(current));
+    
+            // Try including each element starting from 'start'
+            for (int i = start; i < nums.length; i++) {
+                // Skip duplicates at the same recursion level
+                if (i > start && nums[i] == nums[i - 1]) continue;
+    
+                // Choose element nums[i]
+                current.add(nums[i]);
+    
+                // Recurse to build further subsets
+                backtrack(i + 1, nums, current, result);
+    
+                // Backtrack: remove last chosen element
+                current.remove(current.size() - 1);
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N * 2^N)   // 2^N subsets, each of length up to N.
+    // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
