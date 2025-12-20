@@ -279,3 +279,32 @@
     // 🧠 SPACE COMPLEXITY: O(N)        // recursion depth + current.
 
     // 77: COMBINATIONS
+// BACKTRACK TO GENERATE ALL COMBINATIONS OF K NUMBERS FROM 1 TO N.
+
+    class Solution {
+        public List<List<Integer>> combine(int n, int k) {
+            List<List<Integer>> result = new ArrayList<>();
+            backtrack(1, n, k, new ArrayList<>(), result);
+            return result;
+        }
+    
+        private void backtrack(int start, int n, int k,
+                List<Integer> current, List<List<Integer>> result) {
+    
+            // If k numbers are chosen, add to result
+            if (current.size() == k) {
+                result.add(new ArrayList<>(current));
+                return;
+            }
+    
+            // Try all possible next numbers
+            for (int i = start; i <= n; i++) {
+                current.add(i);                          // choose
+                backtrack(i + 1, n, k, current, result); // explore
+                current.remove(current.size() - 1);      // un-choose
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(C(N, K) * K) // C(N, K) combinations, each of length K.
+    // 🧠 SPACE COMPLEXITY: O(K)          // recursion depth + current.
