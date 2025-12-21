@@ -310,3 +310,46 @@
     // 🧠 SPACE COMPLEXITY: O(K)          // recursion depth + current.
 
     // 131: PALINDROME PARTITIONING
+// BACKTRACK TO PARTITION STRING INTO ALL POSSIBLE PALINDROMIC SUBSTRINGS, USING DP TO PRECOMPUTE PALINDROMES.
+
+    class Solution {
+        public List<List<String>> partition(String s) {
+            int n = s.length();
+            // isPal[i][j] = true if substring s[i..j] is a palindrome
+            boolean[][] isPal = new boolean[n][n];
+            List<List<String>> res = new ArrayList<>();
+    
+            // Precompute palindrome substrings
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = i; j < n; j++) {
+                    isPal[i][j] = s.charAt(i) == s.charAt(j) &&
+                            (j - i < 2 || isPal[i + 1][j - 1]);
+                }
+            }
+    
+            backtrack(0, s, isPal, new ArrayList<>(), res);
+            return res;
+        }
+    
+        private void backtrack(int start, String s, boolean[][] isPal,
+                List<String> path, List<List<String>> res) {
+    
+            // Reached end → valid partition
+            if (start == s.length()) {
+                res.add(new ArrayList<>(path));
+                return;
+            }
+    
+            // Try all possible palindromic substrings
+            for (int end = start; end < s.length(); end++) {
+                if (isPal[start][end]) {
+                    path.add(s.substring(start, end + 1));
+                    backtrack(end + 1, s, isPal, path, res);
+                    path.remove(path.size() - 1); // backtrack
+                }
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N * 2^N)   // 2^N partitions, each up to length N.
+    // 🧠 SPACE COMPLEXITY: O(N)        // DP table + recursion depth + current path.
