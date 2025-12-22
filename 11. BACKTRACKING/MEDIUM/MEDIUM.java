@@ -355,3 +355,62 @@
     // 🧠 SPACE COMPLEXITY: O(N)        // DP table + recursion depth + current path.
 
     // 93: RESTORE IP ADDRESSES
+// BACKTRACK TO SPLIT STRING INTO VALID IP ADDRESSES, WITH PRUNING BASED ON REMAINING CHARACTERS.
+
+    class Solution {
+        private List<String> result = new ArrayList<>();
+    
+        public List<String> restoreIpAddresses(String s) {
+            backtrack(s, 0, 0, new StringBuilder());
+            return result;
+        }
+    
+        private void backtrack(String s, int index, int segments, StringBuilder path) {
+            // Valid IP
+            if (segments == 4 && index == s.length()) {
+                result.add(path.toString());
+                return;
+            }
+    
+            // Invalid state
+            if (segments == 4 || index == s.length()) {
+                return;
+            }
+    
+            // Pruning: remaining chars check
+            int remainingChars = s.length() - index;
+            int remainingSegments = 4 - segments;
+            if (remainingChars < remainingSegments || remainingChars > remainingSegments * 3) {
+                return;
+            }
+    
+            int originalLength = path.length();
+    
+            // Try segment lengths 1 to 3
+            for (int len = 1; len <= 3 && index + len <= s.length(); len++) {
+    
+                String part = s.substring(index, index + len);
+    
+                // Leading zero check
+                if (part.length() > 1 && part.charAt(0) == '0')
+                    break;
+    
+                int value = Integer.parseInt(part);
+                if (value > 255)
+                    break;
+    
+                // Add dot if needed
+                if (segments > 0)
+                    path.append('.');
+                path.append(part);
+    
+                backtrack(s, index + len, segments + 1, path);
+    
+                // Backtrack
+                path.setLength(originalLength);
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(1)   // Fixed 4 segments, each with at most 3 choices (3⁴ = 81).
+    // 🧠 SPACE COMPLEXITY: O(1)  // Max recursion depth = 4; path length is constant.
