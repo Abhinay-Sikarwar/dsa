@@ -414,3 +414,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(1)   // Fixed 4 segments, each with at most 3 choices (3⁴ = 81).
     // 🧠 SPACE COMPLEXITY: O(1)  // Max recursion depth = 4; path length is constant.
+
+    // 526: BEAUTIFUL ARRANGEMENT
