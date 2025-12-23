@@ -416,3 +416,36 @@
     // 🧠 SPACE COMPLEXITY: O(1)  // Max recursion depth = 4; path length is constant.
 
     // 526: BEAUTIFUL ARRANGEMENT
+// BACKTRACK TO COUNT BEAUTIFUL ARRANGEMENTS USING BITMASKING.
+
+    class Solution {
+        private int count = 0;
+    
+        public int countArrangement(int n) {
+            backtrack(n, 1, 0);
+            return count;
+        }
+    
+        private void backtrack(int n, int pos, int usedMask) {
+            // All positions filled
+            if (pos > n) {
+                count++;
+                return;
+            }
+    
+            // Try placing each number at current position
+            for (int num = 1; num <= n; num++) {
+                // Skip if number already used
+                if ((usedMask & (1 << num)) == 0) {
+                    // Check beautiful arrangement condition
+                    if (num % pos == 0 || pos % num == 0) {
+                        // Mark num as used and move to next position
+                        backtrack(n, pos + 1, usedMask | (1 << num));
+                    }
+                }
+            }
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N!)   // Permutation backtracking with strong pruning.
+    // 🧠 SPACE COMPLEXITY: O(N)   // Recursion depth + bitmask.
