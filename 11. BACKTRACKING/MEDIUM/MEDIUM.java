@@ -451,3 +451,61 @@
     // 🧠 SPACE COMPLEXITY: O(N)   // Recursion depth + bitmask.
 
     // 95: UNIQUE BINARY SEARCH TREES II
+// BACKTRACK TO GENERATE ALL UNIQUE BSTs FOR VALUES 1 TO N.
+
+    /**
+     * Definition for a binary tree node.
+     * public class TreeNode {
+     *     int val;
+     *     TreeNode left;
+     *     TreeNode right;
+     *     TreeNode() {}
+     *     TreeNode(int val) { this.val = val; }
+     *     TreeNode(int val, TreeNode left, TreeNode right) {
+     *         this.val = val;
+     *         this.left = left;
+     *         this.right = right;
+     *     }
+     * }
+     */
+    
+    class Solution {
+        public List<TreeNode> generateTrees(int n) {
+            return build(1, n);
+        }
+    
+        private List<TreeNode> build(int start, int end) {
+            List<TreeNode> result = new ArrayList<>();
+    
+            // Base case: empty tree
+            if (start > end) {
+                result.add(null);
+                return result;
+            }
+    
+            // Try every value as root
+            for (int rootVal = start; rootVal <= end; rootVal++) {
+    
+                List<TreeNode> leftTrees = build(start, rootVal - 1);
+                List<TreeNode> rightTrees = build(rootVal + 1, end);
+    
+                // Combine left and right subtrees
+                for (TreeNode left : leftTrees) {
+                    for (TreeNode right : rightTrees) {
+                        TreeNode root = new TreeNode(rootVal);
+                        root.left = left;
+                        root.right = right;
+                        result.add(root);
+                    }
+                }
+            }
+    
+            return result;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(n · Cn)
+    //    where Cn = (1 / (n + 1)) * binomial(2n, n)  ≈ 4^n / n^(3/2).
+    //
+    // 🧠 SPACE COMPLEXITY: O(n · Cn)
+    //    Stores all unique BSTs (output-dominated) + O(n) recursion stack.
