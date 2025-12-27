@@ -70,3 +70,77 @@
     // 🧠 SPACE COMPLEXITY: O(N)   // Recursion depth + board + constraint arrays.
 
     // 37: SUDOKU SOLVER
+// BACKTRACK TO FILL EMPTY CELLS, USING BITMASKS FOR CONFLICT CHECKING.
+
+    class Solution {
+        // Bitmasks to track used numbers in rows, cols, and 3x3 boxes
+        int[] rows = new int[9];
+        int[] cols = new int[9];
+        int[] boxes = new int[9];
+        
+        // List to store positions of empty cells
+        List<int[]> emptyCells = new ArrayList<>();
+    
+        public void solveSudoku(char[][] board) {
+            // Initialize bitmasks and record empty cells
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (board[i][j] != '.') {
+                        int num = board[i][j] - '1'; // convert char to 0–8
+                        setBit(i, j, num);           // mark number as used
+                    } else {
+                        emptyCells.add(new int[] { i, j });
+                    }
+                }
+            }
+            backtrack(board, 0); // start solving
+        }
+    
+        boolean backtrack(char[][] board, int idx) {
+            // All cells filled → solved
+            if (idx == emptyCells.size()) return true;
+    
+            int[] cell = emptyCells.get(idx);
+            int i = cell[0], j = cell[1];
+            int boxIdx = (i / 3) * 3 + j / 3;
+    
+            // Mask of available numbers (1 bits = possible candidates)
+            int mask = ~(rows[i] | cols[j] | boxes[boxIdx]) & 0x1FF;
+    
+            // Try each available number
+            while (mask != 0) {
+                int bit = mask & -mask;              // extract lowest set bit
+                int num = Integer.numberOfTrailingZeros(bit); // get number index
+    
+                setBit(i, j, num);                   // mark as used
+                board[i][j] = (char) (num + '1');    // place digit
+    
+                if (backtrack(board, idx + 1)) return true; // recurse
+    
+                // Backtrack: undo placement
+                unsetBit(i, j, num);
+                board[i][j] = '.';
+                mask &= (mask - 1);                  // remove tried bit
+            }
+            return false; // no valid number found
+        }
+    
+        // Mark number as used in row, col, and box
+        void setBit(int i, int j, int num) {
+            int box = (i / 3) * 3 + j / 3;
+            rows[i] |= 1 << num;
+            cols[j] |= 1 << num;
+            boxes[box] |= 1 << num;
+        }
+    
+        // Unmark number (for backtracking)
+        void unsetBit(int i, int j, int num) {
+            int box = (i / 3) * 3 + j / 3;
+            rows[i] &= ~(1 << num);
+            cols[j] &= ~(1 << num);
+            boxes[box] &= ~(1 << num);
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(9 ^ m)   // m = number of empty cells, each can try up to 9 digits.
+    // 🧠 SPACE COMPLEXITY: O(m)      // 9×9 empty board + 3×9 bitmask arrays + recursion stack.      
