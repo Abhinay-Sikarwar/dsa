@@ -146,3 +146,72 @@
     // 🧠 SPACE COMPLEXITY: O(m)      // 9×9 empty board + 3×9 bitmask arrays + recursion stack.
 
     // 301: REMOVE INVALID PARENTHESES
+// BACKTRACK TO EXPLORE DELETION/KEPT OPTIONS, TRACKING COUNTS TO ENSURE VALIDITY.
+
+    class Solution {
+        private Set<String> result = new HashSet<>();
+    
+        public List<String> removeInvalidParentheses(String s) {
+            int leftRem = 0, rightRem = 0;
+    
+            // First determine how many parentheses must be removed
+            for (char ch : s.toCharArray()) {
+                if (ch == '(') {
+                    leftRem++;
+                } else if (ch == ')') {
+                    if (leftRem > 0)
+                        leftRem--;
+                    else
+                        rightRem++;
+                }
+            }
+    
+            backtrack(s, 0, new StringBuilder(), 0, leftRem, rightRem);
+    
+            return new ArrayList<>(result);
+        }
+    
+        private void backtrack(String s, int idx, StringBuilder path,
+                int open, int leftRem, int rightRem) {
+    
+            // reached end
+            if (idx == s.length()) {
+                if (open == 0 && leftRem == 0 && rightRem == 0) {
+                    result.add(path.toString());
+                }
+                return;
+            }
+    
+            char ch = s.charAt(idx);
+            int len = path.length();
+    
+            // Option 1: delete current parenthesis if possible
+            if (ch == '(' && leftRem > 0) {
+                backtrack(s, idx + 1, path, open, leftRem - 1, rightRem);
+            } else if (ch == ')' && rightRem > 0) {
+                backtrack(s, idx + 1, path, open, leftRem, rightRem - 1);
+            }
+    
+            // Option 2: keep character
+            path.append(ch);
+    
+            if (ch != '(' && ch != ')') {
+                // always keep letters
+                backtrack(s, idx + 1, path, open, leftRem, rightRem);
+    
+            } else if (ch == '(') {
+                // keeping '(' increases open balance
+                backtrack(s, idx + 1, path, open + 1, leftRem, rightRem);
+    
+            } else if (open > 0) {
+                // keeping ')' only allowed if matching '(' exists
+                backtrack(s, idx + 1, path, open - 1, leftRem, rightRem);
+            }
+    
+            // undo choice
+            path.setLength(len);
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(2^n)   // Each parenthesis can be either deleted or kept.
+    // 🧠 SPACE COMPLEXITY: O(n)    // Recursion depth + path buffer.
