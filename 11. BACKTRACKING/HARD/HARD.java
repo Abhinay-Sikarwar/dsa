@@ -217,3 +217,76 @@
     // 🧠 SPACE COMPLEXITY: O(n)    // Recursion depth + path buffer.
 
     // 282: EXPRESSION ADD OPERATORS
+// BACKTRACK TO INSERT OPERATORS BETWEEN DIGITS, EVALUATING EXPRESSION ON THE FLY.
+
+    class Solution {
+        private List<String> result = new ArrayList<>();
+        private char[] chars;
+        private int n;
+    
+        public List<String> addOperators(String num, int target) {
+            chars = num.toCharArray();
+            n = chars.length;
+            backtrack(target, 0, 0, 0, new StringBuilder());
+            return result;
+        }
+    
+        /**
+         * pos   -> current index in num
+         * val   -> evaluated expression value so far
+         * prev  -> last operand value (needed for *)
+         * path  -> expression built so far
+         */
+        private void backtrack(int target, int pos, long val, long prev, StringBuilder path) {
+    
+            // reached end → check if valid expression
+            if (pos == n) {
+                if (val == target)
+                    result.add(path.toString());
+                return;
+            }
+    
+            long curr = 0;
+            int len = path.length();
+    
+            // try extending operand from pos..i
+            for (int i = pos; i < n; i++) {
+    
+                // block numbers with leading zero (except single '0')
+                if (i > pos && chars[pos] == '0')
+                    break;
+    
+                curr = curr * 10 + (chars[i] - '0');
+    
+                if (pos == 0) {
+                    // first operand — no operator prefix
+                    path.append(curr);
+                    backtrack(target, i + 1, curr, curr, path);
+                    path.setLength(len);
+                } else {
+    
+                    // + : add normally
+                    path.append('+').append(curr);
+                    backtrack(target, i + 1, val + curr, curr, path);
+                    path.setLength(len);
+    
+                    // - : subtract and flip sign for prev
+                    path.append('-').append(curr);
+                    backtrack(target, i + 1, val - curr, -curr, path);
+                    path.setLength(len);
+    
+                    // * : rollback last operand and apply multiplication
+                    path.append('*').append(curr);
+                    backtrack(target, i + 1,
+                            // rollback prev & apply multiplication
+                            val - prev + prev * curr,
+                            prev * curr,
+                            path);
+                    path.setLength(len);
+                }
+            }
+        }
+    }
+
+    // ⏱️ Time Complexity:  O(n · 3^n) // Each of the n-1 gaps has 3 operator choices.
+    // 🧠 SPACE COMPLEXITY: O(n)       // Recursion depth + expression buffer.
