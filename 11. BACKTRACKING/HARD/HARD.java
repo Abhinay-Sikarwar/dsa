@@ -292,3 +292,60 @@
     // 🧠 SPACE COMPLEXITY: O(n)       // Recursion depth + expression buffer.
 
     // 140: WORD BREAK II
+// BACKTRACK TO BUILD SENTENCES, USING MEMOIZATION TO AVOID RECOMPUTATION.
+
+    class Solution {
+        private List<String> result = new ArrayList<>();
+        private Set<String> dict;
+        private Map<Integer, List<String>> memo = new HashMap<>();
+    
+        public List<String> wordBreak(String s, List<String> wordDict) {
+            dict = new HashSet<>(wordDict);
+            return backtrack(s, 0);
+        }
+    
+        private List<String> backtrack(String s, int i) {
+    
+            // reuse previously computed suffix results
+            if (memo.containsKey(i))
+                return memo.get(i);
+    
+            List<String> sentences = new ArrayList<>();
+    
+            // reached end → valid completed segmentation
+            if (i == s.length()) {
+                sentences.add("");
+                return sentences;
+            }
+    
+            // try every dictionary word as next prefix
+            for (String word : dict) {
+    
+                int len = word.length();
+                if (i + len > s.length()) continue;
+    
+                // choose word if it matches prefix
+                if (s.startsWith(word, i)) {
+    
+                    List<String> suffixSentences =
+                            // explore remaining suffix
+                            backtrack(s, i + len);
+    
+                    // append current word to suffix results
+                    for (String suf : suffixSentences) {
+                        if (suf.isEmpty())
+                            sentences.add(word);
+                        else
+                            sentences.add(word + " " + suf);
+                    }
+                }
+            }
+    
+            // memoize results for index i
+            memo.put(i, sentences);
+            return sentences;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(N · 2^N)  // N = length of s, worst-case exponential sentence combinations.
+    // 🧠 SPACE COMPLEXITY: O(N · K)   // K = number of sentences, memoization storage.
