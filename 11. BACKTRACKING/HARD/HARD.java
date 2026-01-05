@@ -351,3 +351,61 @@
     // 🧠 SPACE COMPLEXITY: O(N · K)   // K = number of sentences, memoization storage.
 
     // 79: WORD SEARCH
+// BACKTRACK TO SEARCH FOR WORD IN GRID, MARKING VISITED CELLS.
+
+    class Solution {
+        private int m, n;
+    
+        public boolean exist(char[][] board, String word) {
+            m = board.length;
+            n = board[0].length;
+    
+            // try starting DFS from every cell
+            for (int row = 0; row < m; row++) {
+                for (int col = 0; col < n; col++) {
+    
+                    // start search only if first char matches
+                    if (board[row][col] == word.charAt(0) &&
+                            backtrack(board, word, row, col, 0)) {
+    
+                        return true;
+                    }
+                }
+            }
+    
+            return false;
+        }
+    
+        // try to match word[idx] at (row,col)
+        private boolean backtrack(char[][] board, String word,
+                int row, int col, int idx) {
+    
+            // full word matched
+            if (idx == word.length())
+                return true;
+    
+            // out of bounds OR mismatch → fail
+            if (row < 0 || col < 0 || row >= m || col >= n
+                    || board[row][col] != word.charAt(idx)) {
+                return false;
+            }
+    
+            // mark as visited for this path
+            char temp = board[row][col];
+            board[row][col] = '#';
+    
+            // explore 4 directions (backtrack on failure)
+            boolean found = backtrack(board, word, row + 1, col, idx + 1) ||
+                    backtrack(board, word, row - 1, col, idx + 1) ||
+                    backtrack(board, word, row, col + 1, idx + 1) ||
+                    backtrack(board, word, row, col - 1, idx + 1);
+    
+            // restore cell (unmark)
+            board[row][col] = temp;
+    
+            return found;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(M·N·3^L)  // M,N = grid dimensions, L = word length.
+    // 🧠 SPACE COMPLEXITY: O(L)       // Recursion depth upto L.
