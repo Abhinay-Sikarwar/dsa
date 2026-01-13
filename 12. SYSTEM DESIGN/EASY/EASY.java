@@ -95,3 +95,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(1) average, O(N) worst-case (all keys in one bucket).
     // 🧠 SPACE COMPLEXITY: O(N)  // storing N key-value pairs.
+
+    // 1603. DESIGN PARKING SYSTEM
