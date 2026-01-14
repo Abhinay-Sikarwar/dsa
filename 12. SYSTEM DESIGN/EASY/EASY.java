@@ -97,3 +97,52 @@
     // 🧠 SPACE COMPLEXITY: O(N)  // storing N key-value pairs.
 
     // 1603. DESIGN PARKING SYSTEM
+// SIMPLE COUNTERS FOR EACH PARKING SLOT TYPE.
+
+    /**
+     * Your ParkingSystem object will be instantiated and called as such:
+     * ParkingSystem obj = new ParkingSystem(big, medium, small);
+     * boolean param_1 = obj.addCar(carType);
+     */
+    
+    class ParkingSystem {
+        private int bigSlots;    // remaining big slots
+        private int mediumSlots; // remaining medium slots
+        private int smallSlots;  // remaining small slots
+    
+        // initialize slot counts
+        public ParkingSystem(int big, int medium, int small) {
+            this.bigSlots = big;
+            this.mediumSlots = medium;
+            this.smallSlots = small;
+        }
+    
+        // try to park a car of given type
+        public boolean addCar(int carType) {
+            // Validate for big car
+            if (carType == 1) {
+                if (bigSlots == 0) return false;
+                bigSlots--;
+                return true;
+            }
+    
+            // Validate for medium car
+            if (carType == 2) {
+                if (mediumSlots == 0) return false;
+                mediumSlots--;
+                return true;
+            }
+    
+            // Validate for small car
+            if (carType == 3) {
+                if (smallSlots == 0) return false;
+                smallSlots--;
+                return true;
+            }
+    
+            return false;
+        }
+    }
+
+    // ⏱️ TIME COMPLEXITY: O(1) for both initialization and addCar.
+    // 🧠 SPACE COMPLEXITY: O(1) for storing fixed number of parking slots.
