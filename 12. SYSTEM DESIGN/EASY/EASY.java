@@ -146,3 +146,5 @@
 
     // ⏱️ TIME COMPLEXITY: O(1) for both initialization and addCar.
     // 🧠 SPACE COMPLEXITY: O(1) for storing fixed number of parking slots.
+
+    // 346. MOVING AVERAGE FROM DATA STREAM
